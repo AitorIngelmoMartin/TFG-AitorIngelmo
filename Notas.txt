@@ -5,3 +5,38 @@ Hoy he tenido la primera charla con Jose Luís. Ha sido una introducción al TFG
 Esto me ha permitido comprender mejor la embergadura de lo que tenemos entre manos.
     TAREAS QUE HACER
         *Estudiar el capítulo 17(páginas 981 a 1024) y hacer un resumen del mísmo.
+
+14/07/2022
+A día de hoy me encuentro en el penúltimo día de la formación de AWS. En su momento mandé el resumen, pero sin 
+recogerel apartado relacionado con el cálculo de la ganancia ni la composición de nuestra cámara anecoica.
+
+Comento lo de la formación porque he estado dandole varias vueltas a cómo hacer la GUI de la aplicación. Hablando con Fran llegué 
+a la conclusión de que HTML junto a CSS es lo que mejores resultanos me iban a dar.
+A raiz de esto, descarté empelar Tkinter o Kivy para buscar la forma de combinar Python con HTML y CSS. Como resultado me vi en la dicotomía de emplear
+dos frameworks muy populares en el desarrollo de aplicaciones web, Django y Flask.
+
+Originalmente pensé que podría hacer una aplicación web, pero desafortunadamente GitHub Pages solo funciona sobre repositorios públicos, por lo que de entrada
+descarto esta opción ya que no quería que los chicos del CATECHOM tubiesen que pagar un host.
+
+Porsupuesto pasó por mi mente usar AWS, pero la capa Allways Free no cubre los servicios mínimos que me permiten hostear la aplicación web.
+
+A raiz de esto, selecione de entre Django y Flask Flask, porque al aprecer su curva de aprendizaje es más suabe y no se centra tanto en el back-end. A fin de cuentas
+el Back-end va a ser la lógica aplicada al documento obtenido tras medir en la cámara.
+
+El siguiente paso ha sido mirar si puedo compilar en un solo ejecutable un probrama que emplee Flask. No voy a mentir, me ha llevado literalmente
+toda la tarde, pero finalmente he logrado dar con ello. Por lo que, efectivamente, puedo compilar un único archivo .py de forma que la aplicación
+haga llamas al servidor de forma transparente para el usuario.
+
+Aun no puedo cantar victoria de todas formas, me queda por comprobar lo siguiente:
+	
+	1) Confirmar que puedo interactuar desde el html con mi codigo python
+
+	2) Comprobar que puedo poner a funcionar lógica a través de un archivo proporcionado desde el html.
+	
+	3) Aberiguar cómo diantres elimino la consola tras hacer el .exe, aunque me va a venir bien para las pruebas.
+
+Por tanto, mis tareas hasta poder tener la reunión con Jose Luís para que me explique el uso del programa, es lo siguiente:
+	
+	1) Explorar los 3 puntos anteriores
+	
+	2) Averiguar si puedo manejar diferentes documentos HTML.
