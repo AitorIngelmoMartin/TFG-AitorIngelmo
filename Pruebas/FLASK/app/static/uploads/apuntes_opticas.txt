@@ -1,0 +1,7 @@
+Láser Fp
+
+
+Elemento láser semiconductor
+	Región activa
+	Estructura de realimentación
+	Sistema de guiado óptico.
