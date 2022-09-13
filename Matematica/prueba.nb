@@ -1,0 +1,182 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      5064,        173]
+NotebookOptionsPosition[      4306,        144]
+NotebookOutlinePosition[      4747,        161]
+CellTagsIndexPosition[      4704,        158]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"c", " ", "=", 
+   RowBox[{"3", "^", "8"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"f", " ", "=", 
+   RowBox[{"1.2", "^", "9"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Lambda]", " ", "=", 
+   RowBox[{"c", "/", "f"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"Distancia", " ", "=", " ", 
+  FractionBox[
+   RowBox[{"2", "*", 
+    RowBox[{"D", "^", "2"}]}], 
+   "\[Lambda]"]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.872042509849845*^9, 3.872042514505633*^9}, {
+   3.872045302688226*^9, 3.872045305457008*^9}, {3.8720454624372807`*^9, 
+   3.872045496222807*^9}, {3.872045529345829*^9, 3.872045661107783*^9}, 
+   3.872045908381903*^9}],
+
+Cell[BoxData[
+ RowBox[{"0.0015728639999999998`", " ", 
+  SuperscriptBox["D", "2"]}]], "Output",
+ CellChangeTimes->{{3.8720455658122077`*^9, 3.8720455936361456`*^9}, {
+   3.8720456335552273`*^9, 3.8720456616076536`*^9}, 3.8720458999143367`*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"5", " ", "y"}], "+", 
+  RowBox[{"12", " ", 
+   SuperscriptBox["y", "2"]}]}]], "Input",
+ CellChangeTimes->{{3.872045894596608*^9, 3.8720458960886326`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  UnderoverscriptBox["\[Sum]", 
+   RowBox[{"n", "=", "0"}], "1"], 
+  RowBox[{"(", 
+   RowBox[{"i", "+", "25"}], ")"}]}]], "Input",
+ CellChangeTimes->{{3.87204536697165*^9, 3.87204537048027*^9}, {
+  3.8720454039188232`*^9, 3.8720454281422434`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"50", "+", 
+  RowBox[{"2", " ", "i"}]}]], "Output",
+ CellChangeTimes->{3.872045429152272*^9}]
+}, Closed]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   SubsuperscriptBox["\[Integral]", 
+    TagBox[
+     FrameBox["lower"],
+     "Placeholder"], 
+    TagBox[
+     FrameBox["upper"],
+     "Placeholder"]], 
+   RowBox[{
+    UnderoverscriptBox["\[Sum]", 
+     RowBox[{
+      TagBox[
+       FrameBox["index"],
+       "Placeholder"], "=", 
+      TagBox[
+       FrameBox["start"],
+       "Placeholder"]}], 
+     TagBox[
+      FrameBox["end"],
+      "Placeholder"]], 
+    RowBox[{
+     TagBox[
+      FrameBox["expr"],
+      "SelectionPlaceholder"], 
+     RowBox[{"\[DifferentialD]", 
+      TagBox[
+       FrameBox["var"],
+       "Placeholder"]}]}]}]}], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{3.87204544140739*^9, 3.872047523491918*^9}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"K", " ", "=", " ", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"E", "[", 
+    RowBox[{"R_", ",", "\[Theta]_", ",", " ", "\[CapitalPhi]_"}], "]"}], ":=",
+    " ", 
+   RowBox[{
+    FractionBox[
+     RowBox[{"i", "*", "K", "*", 
+      RowBox[{"Cos", "[", "\[Theta]", "]"}], "*", 
+      SuperscriptBox["e", 
+       RowBox[{
+        RowBox[{"-", "i"}], "*", "K0", "*", "R"}]]}], 
+     RowBox[{"R", "\[IndentingNewLine]"}]], "*", "A"}]}]}]], "Input",
+ CellChangeTimes->{{3.8720475246754856`*^9, 3.87204766280229*^9}, {
+  3.872047743103416*^9, 3.8720479285801525`*^9}, {3.8720479693101816`*^9, 
+  3.872047970448597*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"SetDelayed", "::", "write"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Tag \[NoBreak]\\!\\(\[ExponentialE]\\)\[NoBreak] in \
+\[NoBreak]\\!\\(\[ExponentialE][\\(\\(R_, \[Theta]_, \[CapitalPhi]_\\)\\)]\\)\
+\[NoBreak] is Protected. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/write\\\", ButtonNote -> \
+\\\"SetDelayed::write\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{
+  3.8720478293402*^9, {3.872047918503253*^9, 3.8720479291950207`*^9}}],
+
+Cell[BoxData["$Failed"], "Output",
+ CellChangeTimes->{
+  3.8720478293402*^9, {3.8720479185064545`*^9, 3.872047929197011*^9}}]
+}, Open  ]]
+},
+WindowSize->{1904, 943},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification:>FEPrivate`If[
+  FEPrivate`Equal[FEPrivate`$VersionNumber, 6.], 2., 2. Inherited],
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 715, 18, 246, "Input"],
+Cell[1297, 42, 243, 4, 84, "Output"]
+}, Open  ]],
+Cell[1555, 49, 189, 5, 62, InheritFromParent],
+Cell[CellGroupData[{
+Cell[1769, 58, 271, 7, 111, "Input"],
+Cell[2043, 67, 116, 3, 84, "Output"]
+}, Closed]],
+Cell[2174, 73, 726, 30, 186, "Input"],
+Cell[CellGroupData[{
+Cell[2925, 107, 639, 16, 189, "Input"],
+Cell[3567, 125, 595, 12, 46, "Message"],
+Cell[4165, 139, 125, 2, 84, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

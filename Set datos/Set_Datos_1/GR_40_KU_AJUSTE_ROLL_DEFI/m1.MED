@@ -1,0 +1,22 @@
+FECHA         20/05/2010    18:35:37 
+OPERADOR      UAH
+CLASIF        <DEFAULT>
+DESCRIPCION   Aquí va una pequeña descripción de la medida.
+# Es una información adicional que no influye en el proceso.
+DIRECTORIO    UPM\INTERCOMP\GR_40_KU_AJUSTE_ROLL_DEFI
+FICHDATOS     m1
+LIMITES       C:\PROCENCA\LIMITES.LIM
+SONDA         S             H/V           
+MODO          CW
+NO_FREC        1 
+              12.500
+POTENCIA      7.00
+NO_PROM       100
+TIPO_MEDIDA    4 
+MEDIDA DE CAMPO PROXIMO ESFERICO --> POLAR
+SALTO         AZIM          0.00          120.00        2.50          50.00
+BARRIDO       ROLL          0.00          357.50        2.50          50.00         50.00         C
+DISTANCIA     379.00
+RADIO_ABP     20.00
+NUMMODOS      72
+FIN

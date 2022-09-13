@@ -1,0 +1,69 @@
+MEDIDAS        1            N
+              C:\camara\CLIENTES\UPM\INTERCOMP\GR_40_KU_AJUSTE_ROLL_DEFI\m1_12500.RFF
+
+
+******************************
+              INTERPOLACION
+******************************
+INI_INTERP
+TIPO_INTERP   SPLINES
+ARG3          5             -120.00       120.00        0.50
+ARG4          5             0.00          177.50        0.50
+FIN_INTERP    
+
+******************************
+              PARÁMETROS
+******************************
+INI_PARÁMETROS
+DIRECTIVIDAD  N
+GANANCIA      N
+ANCHO_HAZ     N
+TILT          N
+CENTRO_FASE   N
+RELAC._CP/XP  N
+XPD           N
+SLL           N
+FIN_PARÁMETROS              
+
+******************************
+              GRAFICOS
+******************************
+INI_GRAFICOS
+3D            N
+ZONAS_NIVEL   S
+CURVAS_NIVEL  N
+ARG3_CTE      0             
+ARG4_CTE      T             
+MODFASE       S             N
+C1C2          S             S
+REL_XPD       N
+REL_AXIAL     N
+SALVAR        N
+TITULO        Freq=12.5GHz |
+ETIQ_CMPTES   C1            C2
+ETIQ_GALIBO   Gálibo
+ETIQ_EJEY     dB
+EJEX          S             0             0             30
+EJEY          S             0             0             10
+GRID          S             N
+FIN_GRAFICOS  
+
+******************************
+              TRANSFORMACION
+******************************
+INI_TRANSF
+CMPTES_OUT    TPCX
+POL_REF       H
+GIRO          0
+GIRO_EULER    0             0             0             N
+FIN_TRANSF
+******************************
+              SALIDA
+******************************
+INI_SALIDA
+TNORMALIZ     C1            0.00
+ASCII         S             DBG
+CAMBIACMPTES  N
+FIN_SALIDA    
+
+FIN

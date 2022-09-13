@@ -1,0 +1,25 @@
+
+
+
+
+
+ORGANIZATION OF: c:\CAMARA\CLIENTES\UPM\INTERCOMP\GR_40_KU_AJUSTE_ROLL_DEFI\m1_12500.BNF
+CREATION: 24/05/2010     18:46:11
+ver PATH
+
+LEVEL OF RECORDS: 1
+
+ 2 SEQUENCES OF 1 FUNCTIONS
+
+E_PH             0.000000000      0    0    0    0    1
+                 0.000000000      0    0    0    0    1
+
+E_PH             0.000000000      0    0    0    0    1
+                 0.000000000      0    0    0    0    1
+
+UNUSED            0.000000000       0.000000000             0 EQUI  S
+UNUSED            0.000000000       0.000000000             0 EQUI  S
+THETA             0.000000000       120.0000000     Deg    49 EQUI  S
+PHI               0.000000000       357.5000000     Deg   144 EQUI  S
+
+FREQUENCY         12.50000000       12.50000000     GHz     1 CMPLX
