@@ -1,0 +1,8 @@
+Que fichero es el de entrada, y cual el de salida.
+
+En las funciones calculadas por FTT, hay un campo en theta y otro rn phi, pero en el ficehro que creo que es solo hay un campo copolar
+y otro contrapolar. 
+Imagino que hace referencia a cada campo
+
+En ciertas partes del manual hablan de MN como si fuesen los modos. Pero no entiendo de donde salen.
+No he visto en ningún archivo la mención a nada semejante.
