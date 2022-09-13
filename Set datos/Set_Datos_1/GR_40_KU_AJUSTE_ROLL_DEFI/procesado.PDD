@@ -1,0 +1,18 @@
+DAMA          C:\camara\CLIENTES\UPM\INTERCOMP\GR_40_KU_AJUSTE_ROLL_DEFI\m1.MED          
+
+NO_FREC        1 
+              12.500
+
+
+******************************
+              EXPAND
+******************************
+INI_EXPAND
+INSONDA       -1            
+ROUT          0
+OUTTHETA_SE   0             72
+OUTPHI_SE     0             71
+OUTSONDA      -1            
+FIN_EXPAND    
+
+FIN
