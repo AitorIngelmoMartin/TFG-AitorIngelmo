@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      1756,         75]
-NotebookOptionsPosition[      1340,         55]
-NotebookOutlinePosition[      1683,         70]
-CellTagsIndexPosition[      1640,         67]
+NotebookDataLength[      4068,        153]
+NotebookOptionsPosition[      3246,        121]
+NotebookOutlinePosition[      3590,        136]
+CellTagsIndexPosition[      3547,        133]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -51,9 +51,75 @@ Cell[BoxData[
   RowBox[{"12", " ", 
    SuperscriptBox["y", "2"]}]}]], "Output",
  CellChangeTimes->{3.872042529000247*^9}]
-}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Solve", "[", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+      RowBox[{"2", 
+       RowBox[{"x", "^", "2"}]}], " ", "+", 
+      RowBox[{"5", "x"}], " ", "-", "1"}], "\[Equal]", "0"}], ",", "x"}], 
+   "]"}], "\[IndentingNewLine]", "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.872042829415161*^9, 3.8720428478327184`*^9}, {
+  3.8720429224406548`*^9, 3.872042924025144*^9}, {3.872042960509459*^9, 
+  3.872042962953476*^9}, {3.8720430444505196`*^9, 3.872043050456395*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"x", "\[Rule]", 
+     RowBox[{
+      FractionBox["1", "4"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "5"}], "-", 
+        SqrtBox["33"]}], ")"}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"x", "\[Rule]", 
+     RowBox[{
+      FractionBox["1", "4"], " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "5"}], "+", 
+        SqrtBox["33"]}], ")"}]}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{3.872043051162854*^9}]
+}, Open  ]],
+
+Cell["\[AliasDelimiter]", "Text",
+ CellChangeTimes->{3.8720430427724447`*^9}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.872043058257323*^9, 3.8720430582749243`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{3.872042972617626*^9},
+ NumberMarks->False],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.872042971720931*^9, 3.872042971725917*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.872042864282611*^9, 3.872042880479046*^9}, 
+   3.8720429707467556`*^9}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.8720429188100348`*^9, 3.8720429188262825`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.872042902473798*^9, 3.872042904041204*^9}},
+ NumberMarks->False],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.872042898032755*^9, 3.8720428980490417`*^9}, 
+   3.8720429786124516`*^9}]
 },
-WindowSize->{707, 816},
+WindowSize->{1904, 943},
 WindowMargins->{{0, Automatic}, {Automatic, 0}},
 FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
 StyleDefinitions->"Default.nb"
@@ -75,11 +141,22 @@ Cell[801, 30, 116, 3, 31, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
 Cell[954, 38, 203, 7, 46, "Input"],
-Cell[1160, 47, 164, 5, 63, "Output"]
-}, Open  ]]
+Cell[1160, 47, 164, 5, 31, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1361, 57, 516, 12, 72, "Input"],
+Cell[1880, 71, 523, 19, 48, "Output"]
+}, Open  ]],
+Cell[2418, 93, 77, 1, 30, "Text"],
+Cell[2498, 96, 94, 1, 31, "Input"],
+Cell[2595, 99, 89, 2, 31, "Input"],
+Cell[2687, 103, 92, 1, 31, "Input"],
+Cell[2782, 106, 120, 2, 31, "Input"],
+Cell[2905, 110, 96, 1, 31, "Input"],
+Cell[3004, 113, 113, 2, 31, "Input"],
+Cell[3120, 117, 122, 2, 31, "Input"]
 }
 ]
 *)
 
 (* End of internal cache information *)
-
