@@ -12,7 +12,13 @@ ondas esféricas, he visto que emplean Z11.
 de medidas en NF" emplea como X el factor (2*pi/lambda)*r. Donde r es la coordenada cilíndrica y el otro factor es el cambio de fase en espacio libre.
 ¿Nosotros usamos estos valores tambien?
 
-5 Las funciones de HANKEL que usamos, son las que tengo apuntadas o es el caso de una función esférica
+5 Las funciones de HANKEL que usamos, son las que tengo apuntadas o es el caso de una función esférica.
+
+6 No sé qué variable es la que usa el manual para el calculo de las integrales de Pmn_a/b
+
+
+DUDAS DEL LIBRO
+	En la ecuación (17-5) habla de f(kx,ky). Comenta que es el espectro de la onda plana. Imagino que es del campo electrico medido en NF.
 
 
 
@@ -44,7 +50,7 @@ VARIABLES PARA FUNCIÓN HANKEL:
 		(nombre provisional)x: Es el argumento de la funcion de hankel.
 3)
 
-A-VARIABLES PARA EL CALCULO DE LAS INTEGRALES Am_theta y Bm_theta:
+A - VARIABLES PARA EL CALCULO DE LAS INTEGRALES Am_theta y Bm_theta:
 	
 		Theta: Ángulo proveniente de las coordenadas cilíndricas. Le leo del fichero de entrada.
 		
@@ -53,6 +59,9 @@ A-VARIABLES PARA EL CALCULO DE LAS INTEGRALES Am_theta y Bm_theta:
 		E_Theta: Campo eléctrico medido en Theta: Lo leo del fichero de entrada.
 		
 		E_Phi:   Campo eléctrico medido en Phi:   Lo leo del fichero de entrada.
-B-
+
+B - VARIABLES PARA EL CALCULO DE LAS INTEGRALES Pmn_a Y Pmn_b:
+	
+		Creo que me hace falta la variable Pn_|m|. No sé que variable es.
 
 
