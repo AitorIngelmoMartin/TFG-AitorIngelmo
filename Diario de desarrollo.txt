@@ -58,4 +58,37 @@ En otro orden de cosas, finalmente bajé por primera vez al CATECHOM el pasado 9
 me ha facilitado hoy mísmo diversos ficheros de datos. Gracias a ellos puedo comprobar mi código
 introduciendo los inputs y comprobando si salen los outputs.
 
+14/09/2022 - 10:10
+Desde la última entrada he estado leyendo los artículos y tomando cierta soltura con Wolfram Matematica (WM de ahora en adelante). Encontré emtre las 
+opciones de WM una que te ayuda a escribir expresiones matemáticas. Esto me ahorra literalmente el tener que aprender expresiones o nombres reservados.
+Precisamente el tener esta herramienta me hizo centrarme en el problema que tengo que resolver.
+
+Tengo un campo eléctrico (ternas reales e imaginarias) medido en diverentes valores de Theta y phi. A raiz de ellos, debo realizar todos los cáculos pertinentes
+para extrapolar de campo cercano a campo lejano.
+Estos cálculos creo que de hecho son los mísmo que vienen en el manual, solo que ahora debo poder dar más fineza al programa.
+Entre estas cuentas se incluye hacer la FTT, integrales y sumatorios. Una curiosa coincidencia es que en la clase de ayer de visión por ordenador, nos
+presentaron una librería que precisamete cubre todas estas cosas. Eso me ahorra el tener que ir mirando, auqnue no creo que haya más de una librería popular
+que haga todo esto.
+
+Tras resumir el problema, intenté deducir cual de entre todos los archivos que me han dado es el de entrada y cual el de salida. Para mi asombro y decepción, los
+archivos que salen en el manual no son los que tengo. De hecho, los que puedo abrir con el bloc de notas (casi todos) no tienen parecido con los del manual.
+
+Este asunto de ver que archivo uso creo que lo debo preguntar con Jose Luis. De hecho, debo preguntarle si he entendido bien el problema. No sería la primera 
+vez que interpreto mal lo que tengo que hacer y la lio.
+
+Resumiendo, actualmente tengo los siguientes puntos en mente:
+	
+	1) Debo confirmar que mi labor es programar de nuevo las cuentas del manual, pero con más fineza.
+	
+	2) Debo confirmar qué archivos son los que me interesan (entrada/salida).
+	
+	3) En cuanto a la interfaz, estoy seguro de que voy a usar DataExplorer. Debo mirar, tras entender lo anterior, que puedo modificar lo que
+	   hacen los botones. El motivo de esto es que voy a reutilizar alguno de los que no me hacen falta.
+
+	4) Debo entender que son las funciones de Kraus de orden N.
+
+Por otra parte, debo ser capaz de extraer información de los archivos ASCII. En estos dos días este punto es el que más he intentado, pero aún no lo logro.
+
+
+
 

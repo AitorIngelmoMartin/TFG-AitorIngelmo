@@ -1,8 +1,58 @@
-Que fichero es el de entrada, y cual el de salida.
+﻿1 Que fichero es el de entrada, y cual el de salida.
 
-En las funciones calculadas por FTT, hay un campo en theta y otro rn phi, pero en el ficehro que creo que es solo hay un campo copolar
+2 En las funciones calculadas por FTT, hay un campo en theta y otro rn phi, pero en el ficehro que creo que es solo hay un campo copolar
 y otro contrapolar. 
 Imagino que hace referencia a cada campo
 
-En ciertas partes del manual hablan de MN como si fuesen los modos. Pero no entiendo de donde salen.
-No he visto en ningún archivo la mención a nada semejante.
+3 En ciertas partes del manual hablan de MN como si fuesen los modos. Pero no entiendo de donde salen.
+No he visto en ningún archivo la mención a nada semejante. En los articulos que me has pasado, en concreto en el capítulo del libro sobre
+ondas esféricas, he visto que emplean Z11.
+
+4 En las funciones de HANKEL, me gustaría preguntarte cual es el valor de n y cual el de X. En el primer articulo sobre "prediccion de patrones de radiación aereos 
+de medidas en NF" emplea como X el factor (2*pi/lambda)*r. Donde r es la coordenada cilíndrica y el otro factor es el cambio de fase en espacio libre.
+¿Nosotros usamos estos valores tambien?
+
+5 Las funciones de HANKEL que usamos, son las que tengo apuntadas o es el caso de una función esférica
+
+
+
+
+
+
+
+
+
+
+
+
+
+*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-VARIABLES PARA EL PROGRAMA-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+1)
+
+VARIABLES PARA EL COEFICEINTE DE TRASLACIÓN: 
+
+VARIABLES LEIDAS DE LOS COEFICIENTES DE RECEPCIÓN DE LA SONDA:
+
+CÁLCULO DE LOS FACTORES DE CORRECCIÓN:
+
+2) 
+
+VARIABLES PARA FUNCIÓN HANKEL:
+	Necesita las 2 variables usadas por la función ya generada de la libreria SCIPY. Estas son
+		(nombre provisional)n: Puede ser float o entero según la documentación.
+		(nombre provisional)x: Es el argumento de la funcion de hankel.
+3)
+
+A-VARIABLES PARA EL CALCULO DE LAS INTEGRALES Am_theta y Bm_theta:
+	
+		Theta: Ángulo proveniente de las coordenadas cilíndricas. Le leo del fichero de entrada.
+		
+		Phi:   Ángulo proveniente de las coordenadas cilíndricas. Le leo del fichero de entrada.
+	
+		E_Theta: Campo eléctrico medido en Theta: Lo leo del fichero de entrada.
+		
+		E_Phi:   Campo eléctrico medido en Phi:   Lo leo del fichero de entrada.
+B-
+
+
