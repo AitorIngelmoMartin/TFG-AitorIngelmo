@@ -90,5 +90,21 @@ Resumiendo, actualmente tengo los siguientes puntos en mente:
 Por otra parte, debo ser capaz de extraer información de los archivos ASCII. En estos dos días este punto es el que más he intentado, pero aún no lo logro.
 
 
+15/09/2022 - 12:37
+Hoy he empezado por donde lo dejé ayer, leyendome la teoría del libro que me facilitó Jose Luís antes de verano. Tras haber leido partes de algunos árticulos, ha sido
+una lectura mucho más amigable de lo que recordaba.
+Gracias a tener en físico el manual y los árticulos, me he dado cuenta de que lo que sale en el libro es el desarrollo del caso plano. 
+
+He vuelto a mirar el 2o artículo, y me he dado cuenta de que que uno de los términos que no conocía era de hecho una función. 
+Al igual que lo que he hecho con las funciones de Hankel, me he leido las funciones de Legendre.
+Estas funciones no tienen una explicación simple como las de Hankel, pero me basta con saber que tienen una fórmula concreta. Al amrgen de esto, lo único que me queda
+por desentrañar son las funciones de onda esférica.
+
+Para esto voy a leer detenidamente el capítulo del libro que me adjuntó Jose Luis junto a los artículos. Ahora cobra más sentido el porqué me lo dió.
+
+Tras esto, creo que ya tendría los conocimientos teóricos básicos suficientes como para programar todo lo necesario. Debería empezar por extraer
+datos y comprobar que con una fila de valores obtengo el campo lejano correcto. 
+
+
 
 
