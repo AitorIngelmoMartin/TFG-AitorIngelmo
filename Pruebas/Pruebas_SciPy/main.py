@@ -1,3 +1,4 @@
+from math import cos
 import scipy
 import numpy as np
 """
@@ -12,3 +13,8 @@ def spherical_hn2(n,z,derivative=False):
     return scipy.special.spherical_jn(n,z,derivative=False)-1j*scipy.special.spherical_yn(n,z,derivative=False)
 
 print(spherical_hn2(2,4))
+
+solucion = scipy.special.lpmv(1, 1, cos(180))
+
+print(solucion)
+
