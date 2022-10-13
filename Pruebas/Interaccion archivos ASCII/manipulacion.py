@@ -21,6 +21,6 @@ file = open('archivo.ASC', 'r')
 for line in file:
         line = line.strip()
         columns = line.split()
+        Theta = columns[1]
         print(columns)
-
-print(type(columns))
+print(Theta)

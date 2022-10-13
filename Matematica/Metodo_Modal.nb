@@ -1,0 +1,159 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4739,        150]
+NotebookOptionsPosition[      4085,        125]
+NotebookOutlinePosition[      4429,        140]
+CellTagsIndexPosition[      4386,        137]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"numero_muestras", " ", "=", " ", "78"}], "\[IndentingNewLine]", 
+   RowBox[{"n", " ", "=", " ", 
+    RowBox[{"m", " ", "=", "numero_muestras"}]}], "\[IndentingNewLine]", 
+   RowBox[{"X", " ", "=", " ", 
+    RowBox[{"Y", " ", "=", " ", "15"}]}], "\[IndentingNewLine]", 
+   RowBox[{"Distancia_deseada", " ", "=", " ", "15000"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"E_muestreado", " ", "=", " ", "15"}], "\[IndentingNewLine]", 
+   RowBox[{"Kx", " ", "=", " ", 
+    RowBox[{"K", "*", "sin", 
+     RowBox[{"(", "Theta", ")"}], "*", "cos", 
+     RowBox[{"(", "Phi", ")"}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"Ky", " ", "=", " ", 
+    RowBox[{"K", "*", " ", "sin", 
+     RowBox[{"(", "Theta", ")"}], "*", "sin", 
+     RowBox[{"(", "Phi", ")"}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"Kz", " ", "=", " ", 
+    RowBox[{"K", "*", "cos", 
+     RowBox[{"(", "Theta", ")"}]}]}], "\[IndentingNewLine]", 
+   RowBox[{"Ad_KxKy", " ", "=", " ", 
+    RowBox[{
+     FractionBox["1", 
+      RowBox[{"n", "*", "m"}]], " ", "*", 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"i", "=", "1"}], "n"], 
+      RowBox[{
+       UnderoverscriptBox["\[Sum]", 
+        RowBox[{"i", "=", "1"}], "m"], 
+       RowBox[{"E_muestreado", "*", 
+        SuperscriptBox["\[ExponentialE]", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"-", "j"}], "*", "Kx", "*", "X"}], ")"}]], "*", 
+        SuperscriptBox["\[ExponentialE]", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"-", "j"}], "*", "Ky", "*", "Y"}], ")"}]]}]}]}]}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"E_lejano", " ", "=", " ", 
+    RowBox[{"j", "*", 
+     FractionBox[
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "j"}], "*", "K", "*", "Distancia_deseada"}], " ", 
+        ")"}]], 
+      RowBox[{"Distancia_deseada", " "}]], "*", "Kz", "*", 
+     "Ad_KxKy"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.874639768819947*^9, 3.8746400923285046`*^9}}],
+
+Cell[BoxData["78"], "Output",
+ CellChangeTimes->{3.874640095149505*^9}],
+
+Cell[BoxData["numero_muestras"], "Output",
+ CellChangeTimes->{3.874640095150508*^9}],
+
+Cell[BoxData["15"], "Output",
+ CellChangeTimes->{3.8746400951515045`*^9}],
+
+Cell[BoxData["15000"], "Output",
+ CellChangeTimes->{3.874640095152609*^9}],
+
+Cell[BoxData["15"], "Output",
+ CellChangeTimes->{3.8746400951536083`*^9}],
+
+Cell[BoxData[
+ RowBox[{"cos", " ", "K", " ", "Phi", " ", "sin", " ", "Theta"}]], "Output",
+ CellChangeTimes->{3.8746400951536083`*^9}],
+
+Cell[BoxData[
+ RowBox[{"K", " ", "Phi", " ", 
+  SuperscriptBox["sin", "2"], " ", "Theta"}]], "Output",
+ CellChangeTimes->{3.874640095158353*^9}],
+
+Cell[BoxData[
+ RowBox[{"cos", " ", "K", " ", "Theta"}]], "Output",
+ CellChangeTimes->{3.874640095164343*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["1", "2"], " ", 
+  SuperscriptBox["\[ExponentialE]", 
+   RowBox[{
+    RowBox[{"-", "15"}], " ", "j", " ", "K", " ", "Phi", " ", "sin", " ", 
+    RowBox[{"(", 
+     RowBox[{"cos", "+", "sin"}], ")"}], " ", "Theta"}]], " ", 
+  "\[ExponentialE]_muestreado"}]], "Output",
+ CellChangeTimes->{3.8746400955975456`*^9}],
+
+Cell[BoxData[
+ FractionBox[
+  RowBox[{"cos", " ", 
+   SuperscriptBox["\[ExponentialE]", 
+    RowBox[{
+     RowBox[{"-", "j"}], " ", "K", " ", "Distancia_deseada"}]], " ", "j", " ",
+    "K", " ", "Theta", " ", "Ad_KxKy"}], "Distancia_deseada"]], "Output",
+ CellChangeTimes->{3.8746400956085176`*^9}]
+}, Open  ]]
+},
+WindowSize->{1904, 943},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 2052, 52, 283, "Input"],
+Cell[2634, 76, 71, 1, 31, "Output"],
+Cell[2708, 79, 84, 1, 63, "Output"],
+Cell[2795, 82, 73, 1, 31, "Output"],
+Cell[2871, 85, 74, 1, 31, "Output"],
+Cell[2948, 88, 73, 1, 31, "Output"],
+Cell[3024, 91, 134, 2, 31, "Output"],
+Cell[3161, 95, 144, 3, 31, "Output"],
+Cell[3308, 100, 108, 2, 31, "Output"],
+Cell[3419, 104, 349, 9, 48, "Output"],
+Cell[3771, 115, 298, 7, 55, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
