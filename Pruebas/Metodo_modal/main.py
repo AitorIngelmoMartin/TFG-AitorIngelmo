@@ -12,7 +12,10 @@ K = (2*pi)/landa
 
 # Leo el campo complejo para cada punto
 Campo = []
-X = Y = Theta = Phi = []
+X = []
+Y = []
+Theta = []
+Phi   = []
 
 numero_muestras = 78
 Funcion_espectral_onda_plana = 0
