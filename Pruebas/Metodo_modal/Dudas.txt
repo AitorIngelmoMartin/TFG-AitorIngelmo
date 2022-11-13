@@ -1,0 +1,8 @@
+Que ocurre si tengo dos muestras consecutivas iguales y calculo delta x. Se que es algo dificil de ocurrir, pero me surge la duda.
+
+otra duda sobre esto es que pasa si la resta da negativo. Imagino que delta X mide la separacion minima entre elementos, y que esto es 
+clave para poder discretizar las integrales.
+        SOLUCION: La delta la haces sobre coordenadas, por lo que nunca podrá ser negativo.
+
+
+Entiendo que "r" es dato de la medida.
