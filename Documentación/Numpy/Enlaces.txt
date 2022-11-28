@@ -1,0 +1,7 @@
+
+
+	FFT - https://numpy.org/doc/stable/reference/routines.fft.html
+	
+		Lista con todas las FFT que maneja numpy. Tengo que mirar
+		mi caso comparando con la definición de fft e ifft que viene 
+		en la documentación.
