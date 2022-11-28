@@ -1,6 +1,7 @@
 from cmath import pi
 from math import cos, e, sin
 from numpy import fft, roll, arange,exp
+
 freq = 1.2e9
 landa = (3e8)/freq
 
@@ -10,36 +11,49 @@ Distancia = 12
 # Numero de onda en espacio libre
 K = (2*pi)/landa
 
-# Leo el campo complejo para cada punto
-Campo = [4,7,2]
-X = [1,2,3]
-Y = [7,4,6]
-Theta = [1,4,5]
-Phi   = [5,4,7]
+# Variables leidas----
+Campo = [4 +1j,7-8j,2-1j,-2+9j] #
+Theta = [1,4,5]      #
+Phi   = [5,4,7]      #
+                     #
+X = [1,2,3]          #  
+Y = [7,4,6]          #
+# --------------------
 
 N = len(Campo)
 print("El valor de N es:",N)
 
-M = (N-1)/2 #En mi caso M=N, ¿no?
+M = (N-1)/2
 print("El valor de M es:",M)
+
+N_x = len(X)
+M_x = (N_x-1)/2
+
+N_y = len(Y)
+M_y = (N_y-1)/2
 
 ckz1 = fft.fft(Campo)
 
-N = len(Theta) 
-r = 7
-coordenada_X  = [0,1,2,3,4,5]
-delta_X       = coordenada_X[1]-coordenada_X[0] 
-Campo = [25,50,51,45,54,1,1,4,4,2,5,6]
-#Modos en Ak
+r = 7 #No sé cómo sacarlo
+L = 6 #No sé cómo sacarlo
 
-print("Los modos en Z son:\n",ckz1)
-kvec = roll(arange(-M,M+1,1),int(M)+1)
-print(kvec)
+
+#Modos en Ak
+print("Los modos en Z0 son:\n",ckz1)
+
+#kvec = roll(arange(-M,M+1,1),int(M)+1)
+#print(kvec)
+
 Zvalue1 = 5
 Zvalue0 = 2
 
-ckz2 = exp(-1j*r*(Zvalue1-Zvalue0))
-field = fft.fft(ckz2)
+ckz2 = ((L*L)/(N_x*N_y))*exp(-1j*r*(Zvalue1-Zvalue0))
+print("Los modos en Z1 son:\n",ckz2)
+
+ckz   = ckz1*ckz2
+field = fft.fft(ckz)
+print("El valor del campo es:\n",field)
+
 
 """"
 Funcion_espectral_onda_plana = 0
