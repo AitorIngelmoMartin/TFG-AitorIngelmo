@@ -1,9 +1,0 @@
-
-
-	Qué pasa si N es par. M sale un número decimal, lo que no tiene sentido.
-
-	Dónde meto N_x/n_Y y demás. Es importante saberlo.
-
-	Hay que añadir el cálculo de "L".
-
-	Tengo que tener en cuanta que su caso tenia solo eje X. En qué cosas afecta eso ?¿	

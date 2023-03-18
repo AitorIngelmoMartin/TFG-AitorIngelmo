@@ -1,0 +1,4 @@
+NOMBRE DE LA TABLA TRATADA EN ESE MOMENTO
+	self.df.columns[]
+	
+	df = dataframe

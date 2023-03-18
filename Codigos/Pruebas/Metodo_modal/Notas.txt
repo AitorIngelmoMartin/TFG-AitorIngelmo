@@ -1,0 +1,31 @@
+﻿
+
+	* Nota sobre N Y M
+		Tiene sentido poner N = 2 M +1 porque queremos renumerar las posiciones de los elementos del vector 		que sale de la fft. El primer elemento del vector corresponde a n = 0 y el último  elemento corresponde al 		de una “frecuencia espacial” negativa, el penúltimo a la siguiente más negativa, etc. 
+
+	Esto se da hasta llegar a la posición central del vector. Lo que implica que la segunda mitad del 			espectro que surge de la fft corresponde a frecuencias negativas, motivo por el cual las renombramos con 		unas posiciones "m’s" que pueden ser negativas y van de -M a M, pasado por cero, aunque hay que recolocarlas 	porque aparecen en este orden:
+
+ 
+
+n:            0             1              2             3             4             …            N/2-1    N/2        N/2+1   …            N
+
+m:          0             1              2             3             4             …            M            -M          -M+1     …            -1
+ 
+
+	Y es que una fft se diferencia en eso de la transformada de Fourier continua: te mete los valores 			negativos de la ‘k’ que multiplica a la variable espacial (‘kx’ para kx x, ‘ky’ para ky y) en la 			segunda mitad del vector.
+
+	* Nota sobre la Delta_X:
+
+	Hay que tener en cuenta que tenemos dos dimensiones: ‘x’ y ‘z’. 
+	La delta de la que hablas es para la separación entre los valores de la muestra de valores de campo, que 		están tomados a una ‘z’ fija y común a todos ellos, pero en diferentes valores de ‘x’. Las distancias entre 		los puntos que tienen una cierta ‘z’ no dependen de cuánto vale esa ‘z’.4
+
+
+	* Notas sobre "L"
+
+	La ‘L’ es la longitud lineal de la zona medida.
+	Si las regiones medidas en ‘x’ e ‘y’ (ahora ya estamos metiendo la ‘y’) son iguales, las llamamos ‘L’ a los 	dos y la ‘dx’ se convierte en una ‘delta_x’ finita, e igual a L/N. 
+
+	Para ‘dy’ es lo mismo, y ponemos L/M por si acaso tomamos un número diferente de puntos en esa dirección.
+	Sería más general poner L_x/N y L_y/M, respectivamente. 
+
+	Cuidado: estas ‘N’ y ‘M’ no tienen la relación entre ellas de la Duda 2. De hecho sería mejor renombrarlas 	también y llamarlas ‘N_x’ y ‘N_y’ y así reservar las M’s para que tengamos N_x = 2 M_x +1 y N_y = 2 M_y+1.
