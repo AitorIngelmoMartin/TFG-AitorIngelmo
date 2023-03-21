@@ -82,6 +82,7 @@ for i in range(Nx):
 
 Delta_Kx = (2*np.pi) / (Delta_X * Nx)
 Delta_Ky = Delta_Kx
+
 #A partir de los modos del campo en Z2, obtengo el campo en Z2
-Campo_en_Z2 = Delta_Kx*Delta_Ky*np.fft.ifft(ckz2)
-print("El campo en Z2 tiene vale lo siguiente: \n",Campo_en_Z2)
+Campo_en_Z2 = Delta_X*Delta_Y*np.fft.ifft(ckz2)
+print("\n El campo en Z2 vale lo siguiente: \n",Campo_en_Z2)
