@@ -1,0 +1,19 @@
+Prueba ejeX con menos puntos d40 i23
+	Obteniendo de nuevo el indice a partir de una regla de 3, se confirma la idea que me plantee durante el estudio de la
+	dimension 60.
+	Y es que, aunque no lo parezca, los picos se estan acercando cada vez más sin llegar a solapar sus faldas.
+	Por lo que este resultado invita a probar con aún menos puntos.
+
+Prueba ejeX con menos puntos d20 i12
+	En base a lo anterior, decidí probar con un caso algo extremo. Obteniendo de nuevo el indice con una regla de 3, redondenado hacia arriba.
+	Y es que con tan solo 20 puntos por cada dimensión, seguimos obteniendo un resultado válido en cuanto al diagrama de la FFT.
+	Invitando incluso a reducir el número de puntos aún mas.
+
+	Sin embargo, en este caso se plantea otro enfoque que he estado ignorando. Por muy válido que sea el reducir el número de puntos a 20 por dimensión,
+	esta poda trae consigo una baja drástica de calidad en nuestras otras representaciones.
+	Siendo de hecho incapaces de ver la estructura de la antena en el primer plot.
+
+	Por lo que me planteo otra idea. Ya que a partir de esto, bajo mi punto de vista, nos merece por completo la pena reducir el número de puntos.
+	Ya que "nos da igual" el tener o no una definición exacta en los 2 primeros plots. 
+	Nosotros solo queremos obtener la transformada del campo; y para eso solo tenemos que cumplir con la teoría de muestreo. Cosa que creo
+	es independiente a la calidad o no que representan estos puntos en lo referente a los primeros 2 plots.

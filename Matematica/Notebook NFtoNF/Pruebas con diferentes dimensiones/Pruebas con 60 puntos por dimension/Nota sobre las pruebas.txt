@@ -1,0 +1,18 @@
+Prueba ejeX con60puntos d60 i34
+	Extrapolando el índice a partir de una regla de 3, obtenemos de hecho un resultado mejor
+	al visto en el caso anterior (d50 i 29)
+	
+Prueba ejeX con60puntos d60 i40
+	En este caso, saqué el indice sumandole 10 al 29 obtenido de la regla de 3.
+	Por su puesto, el resultado es erroneo en cuanto a las 2 primeras representaciones. Pero la FFT se plotea de forma
+	que parece correcta.
+	
+	DUDA-Ante esto, creo que la FFT siempre va a tener un resultado similar; independientemente de lo bien o mal que salga 
+	el plot de la antena. Pero no entiendo que sentido tiene esto, ya que se usan los mísmos datos.
+
+Prueba ejeX con60puntos d60 i29
+
+	A partir de la prueba anterior, este caso iba a sacar los 2 primeros plots con peor calidad.
+	Sin embargo, la FFT sigue presentando una estructura más que válida.
+	Es mas, me he percatado en este prueba, de que los picos se van alejando. Cosa que refleja lo que comentamos
+	de nyquist; y de que lo interesante es ver el caso limite donde sigue siendo válido el número de puntos.
