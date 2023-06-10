@@ -1,0 +1,26 @@
+{
+    "files": {
+      "Ex": "c:\\\\Users\\\\aitor\\\\OneDrive\\\\Desktop\\\\TFG-AitorIngelmo\\\\Codigos\\\\NF to NF\\\\codigo JL//microstrip_patch_antenna_Ex.txt",
+      "Ey": "c:\\\\Users\\\\aitor\\\\OneDrive\\\\Desktop\\\\TFG-AitorIngelmo\\\\Codigos\\\\NF to NF\\\\codigo JL//microstrip_patch_antenna_Ey.txt",
+      "Ez": "c:\\\\Users\\\\aitor\\\\OneDrive\\\\Desktop\\\\TFG-AitorIngelmo\\\\Codigos\\\\NF to NF\\\\codigo JL//microstrip_patch_antenna_Ez.txt",
+      "normE": "c:\\\\Users\\\\aitor\\\\OneDrive\\\\Desktop\\\\TFG-AitorIngelmo\\\\Codigos\\\\NF to NF\\\\codigo JL//microstrip_patch_antenna_normE.txt"
+    },
+    "file_type": [
+      "Ex",
+      "Ey",
+      "Ez",
+      "normE"
+    ],
+    "datavalues": {},
+    "lines": {},
+    "zValueplane": {},
+    "file_path_directory": "c:\\\\Users\\\\aitor\\\\OneDrive\\\\Desktop\\\\TFG-AitorIngelmo\\\\Codigos\\\\NF to NF\\\\codigo JL",
+    "shape": [
+      100,
+      100,
+      100
+    ],
+    "freq": 1575000000.0,
+    "length_unit": 0.001,
+    "res": 0.002
+  }

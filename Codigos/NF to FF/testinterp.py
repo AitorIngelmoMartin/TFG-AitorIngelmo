@@ -54,11 +54,10 @@ Ehatx_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehatx)  #jlap
 kxy = np.array([(kx[i,j],ky[i,j]) for i in range(kx.shape[0]) for j in range(ky.shape[0])])
 print(len(kx[11]))
 print(kxy[102])
-
 Ehatx_interp_data = Ehatx_interp_func(kxy)
+
 print(Ehatx_interp_data.shape[0])
 Ehatx_interp_data_ordenado = np.random.random((Nx, Nx)) + np.random.random((Nx, Nx)) * 1j
-
 
 posicion = 0
 for id_array in range (Nx):
