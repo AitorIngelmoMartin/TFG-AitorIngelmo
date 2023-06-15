@@ -42,7 +42,8 @@ def inputDataProcess(flow_config):
         fields.update({"zValueplane":zValueplane}) 
         fields.update({"zValueMaskedplane":zValueMaskedplane}) 
         fields.update({"zValueZeroedplane":zValueZeroedplane})
-        fields.update({'fields_transformed':{}})        
+        fields.update({'fields_transformed':{}})
+        fields.update({'quantitative_comparison':{}})          
         fields.update({'shape':flow_config['shape']})
         fields.update({'freq':flow_config['freq']})    
         fields.update({'length_unit':flow_config['length_unit']})
@@ -176,10 +177,24 @@ def nearfieldPoint0toPoint1(fields,cut):
         Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
 
         factorMultiplicativo = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
-        Ehat_component_reconstruido = factorMultiplicativo*(Ehat_component_interp_data_func)
-        representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(Ehat_component_reconstruido))
-        fields['fields_transformed'].update({f"FF_{fields_to_transform[i]}":Ehat_component_reconstruido})
+        Ehat_component_calculated = factorMultiplicativo*(Ehat_component_interp_data_func)
+        representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(Ehat_component_calculated))
+        fields['fields_transformed'].update({f"FF_{fields_to_transform[i]}":Ehat_component_calculated})
+
+        comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],Ehat_component_calculated)
+        plt.plot(comparison)
+        plt.show()
+        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})
+   
     
+    """
+    ¿puedes hacer una comparación cuantitativa? 
+    Se trata de calcular la diferencia con el resultado de Comsol y dividirlo por 
+    el valor del campo según Comsol, y así cuantificar la diferencia:
+        
+        Accuracy = Abs(Valor de Comsol para Ex en el punto z = z2 – Valor simulado para Ex en la transformación NF (en z=z1) a NF (en z=z2))
+                  /Abs(Valor de Comsol para Ex en el punto z = z2)
+    """
 
 def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
         
@@ -192,6 +207,15 @@ def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric fi
     cbar.ax.set_title(leyenda)
     plt.draw()
     plt.pause(pauseinterval)
+
+def quantitativeComparison(comsol_simulated_value,value_calculated_value):    
+    
+
+    comsol_simulated_value = np.where(np.abs(comsol_simulated_value) > 0, comsol_simulated_value, 0.0000001)
+    comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
+        
+    comparison_without_zeros = np.copy(comparison[np.nonzero(comparison)])
+    return comparison
 
 if __name__ == '__main__':
     plt.close('all')
@@ -218,7 +242,7 @@ if __name__ == '__main__':
     
     #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
     nearfieldPoint0toPoint1(fields,cut = 0)                
-    #print("FIN PROGRAMA")
+    print("FIN PROGRAMA")
     #     
     #except Exception as exc:
         #print(exc)
