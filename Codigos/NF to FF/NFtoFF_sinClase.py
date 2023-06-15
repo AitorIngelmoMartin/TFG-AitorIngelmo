@@ -41,7 +41,8 @@ def inputDataProcess(flow_config):
         fields.update({"lines":lines})
         fields.update({"zValueplane":zValueplane}) 
         fields.update({"zValueMaskedplane":zValueMaskedplane}) 
-        fields.update({"zValueZeroedplane":zValueZeroedplane})        
+        fields.update({"zValueZeroedplane":zValueZeroedplane})
+        fields.update({'fields_transformed':{}})        
         fields.update({'shape':flow_config['shape']})
         fields.update({'freq':flow_config['freq']})    
         fields.update({'length_unit':flow_config['length_unit']})
@@ -50,8 +51,6 @@ def inputDataProcess(flow_config):
     except Exception as exc:
         print(f"ERROR:{exc}")
 
-    
-    #zValueZeroedplaneReproducedvalue = dict()
     return fields
 def readData(fields,read_type='all'):
     """
@@ -67,7 +66,8 @@ def readData(fields,read_type='all'):
         for file_type, file_path in fields['files'].items():
             with open(file_path) as file:
                 fields['lines'][file_type] = file.readlines()
-
+    #TODO: Que lea los ficheros dentro de read_type en caso de no tener el valor por defecto
+     
 def extractMatrixData(fields):
     """
     Este método almacena en arrays los datos de los ficheros de Comsol leídos previamente con readData             
@@ -75,7 +75,7 @@ def extractMatrixData(fields):
     global delta_x,L_x,delta_y,L_y,coordz
     #filetypes = lines.keys()
     coord_flag = None
-    for file_type in fields['lines'].keys():
+    for file_type in fields['lines'].keys(): #file_type
         datatype     = file_type
         rawdatalines = fields['lines'][file_type][raw_data:]
         if coord_flag == None:
@@ -90,12 +90,11 @@ def extractMatrixData(fields):
             delta_y = coordy[1]-coordy[0]
             L_y     = coordy[-1]-coordy[0]
             coordz  = np.unique(coord[:,2])*fields['length_unit']
-            
+          
         fields['datavalues'][datatype] = np.array([complex(s.replace('i', 'j')) for i in range(len(rawdatalines)) \
             for k,s in zip(range(4),rawdatalines[i].split()) if k == 3])
         
 def extractZvalueCut(fields,field_components,cuts_to_extract):
-    #fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3]
     """
     Este método nos permite extraer los valores del campo en un cierto número de cortes o valores de z 
         "fields": Es el diccionario que contiene los datos que estamos tratando en el programa.
@@ -140,10 +139,10 @@ def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lamb
     plt.draw()
     plt.pause(pauseinterval)
 
-def nearfieldPoint0toPoint1(fields,cut0,cut1):
+def nearfieldPoint0toPoint1(fields,cut):
     zeroedvalueCut(fields,fields['file_type'])
-    Nx = fields['zValueZeroedplane']['Ex'][cut0].shape[0]
-    Ny = fields['zValueZeroedplane']['Ex'][cut0].shape[1]
+    Nx = fields['zValueZeroedplane']['Ex'][cut].shape[0]
+    Ny = fields['zValueZeroedplane']['Ex'][cut].shape[1]
 
     delta_kx  = 2*np.pi/(delta_x*Nx)
     delta_ky  = 2*np.pi/(delta_y*Ny) 
@@ -151,14 +150,13 @@ def nearfieldPoint0toPoint1(fields,cut0,cut1):
     factorf   = L_x*L_y*Nx*Ny/(4*np.pi**2*(Nx-1)*(Ny-1))        
     dimension = Nx
 
-    #AGREGADO LO VISTO CON JLAP
-    kx_array = np.arange(-Nx/2,Nx/2)*delta_kx #jlap
-    ky_array = np.arange(-Ny/2,Ny/2)*delta_kx #jlap          
-    #FIN AGREGACIÓN
+    kx_array = np.arange(-Nx/2,Nx/2)*delta_kx
+    ky_array = np.arange(-Ny/2,Ny/2)*delta_kx 
 
     # Generación de los valores de los ángulos
     theta = np.linspace(0, 2 * np.pi, dimension)
     phi   = np.linspace(0, 2 * np.pi, dimension)
+
     # Generación de la malla
     phi_mesh, theta_mesh = np.meshgrid(phi, theta)
     
@@ -166,14 +164,14 @@ def nearfieldPoint0toPoint1(fields,cut0,cut1):
     kx = k0*np.sin(theta_mesh)*np.cos(phi_mesh)
     ky = k0*np.sin(theta_mesh)*np.sin(phi_mesh)
     kz = k0*np.cos(theta_mesh)
+    
     kxy = np.array([[kx[i,j],ky[i,j]] for i in range(kx.shape[0]) for j in range(ky.shape[0])]).reshape(Nx,Nx,2)
-
-    fields.update({'fields_transformed':{}})
+    
     
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
     for i in range(len(fields['zValueZeroedplane'].keys())):
         #Estos valores corresponden a la "Ad(kx,ky)"
-        Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut0]))     
+        Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))     
         Ehat_component_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehat_component)
         Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
 
@@ -181,8 +179,7 @@ def nearfieldPoint0toPoint1(fields,cut0,cut1):
         Ehat_component_reconstruido = factorMultiplicativo*(Ehat_component_interp_data_func)
         representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(Ehat_component_reconstruido))
         fields['fields_transformed'].update({f"FF_{fields_to_transform[i]}":Ehat_component_reconstruido})
-
-    print("FIELD_TF",fields['fields_transformed'])
+    
 
 def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
         
@@ -220,7 +217,7 @@ if __name__ == '__main__':
     #print(fields)
     
     #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
-    nearfieldPoint0toPoint1(fields,0,1)                
+    nearfieldPoint0toPoint1(fields,cut = 0)                
     #print("FIN PROGRAMA")
     #     
     #except Exception as exc:
