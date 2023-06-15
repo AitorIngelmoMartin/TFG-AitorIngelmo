@@ -92,26 +92,32 @@ def extractMatrixData(fields):
             coordz  = np.unique(coord[:,2])*fields['length_unit']
             
         fields['datavalues'][datatype] = np.array([complex(s.replace('i', 'j')) for i in range(len(rawdatalines)) \
-            for k,s in zip(range(4),rawdatalines[i].split()) if k == 3]) #.reshape(inputshape[0], \
-                                                                                #inputshape[1],inputshape[2])
-def extractZvalueCut(fields,data_type,cuts_to_extract):
+            for k,s in zip(range(4),rawdatalines[i].split()) if k == 3])
+        
+def extractZvalueCut(fields,field_components,cuts_to_extract):
+    #fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3]
     """
     Este método nos permite extraer los valores del campo en un cierto número de cortes o valores de z 
-        "data_type": Esta variable contiene los tipos         
+        "fields": Es el diccionario que contiene los datos que estamos tratando en el programa.
+        "field_components":Es el array que contiene todas las componentes que sobre las cuales 
+                           queremos extraer los cortes.
+        "cuts_to_extract" : Es el array que contiene los cortes (medidos en metros) que deseamos extraer.       
     """    
     numberOfCuts = len(cuts_to_extract)
-    cutZvalues = np.array(cuts_to_extract)
-    
+    shape_0      = fields['shape'][0]
+    shape_1      = fields['shape'][1]
+
     if numberOfCuts == 1:
         indexarray = list(np.where(np.abs(coordz-cuts_to_extract)<fields['res'])[0])
     else:
         indexarray = [np.where(np.abs(coordz-cuts_to_extract[i])<fields['res'])[0][0] for i in range(numberOfCuts)]
-    position0 = np.array([fields['shape'][0]*fields['shape'][1]*indexarray[i] for i in range(numberOfCuts)])
-    indices = [range(position0[i],position0[i]+fields['shape'][0]*fields['shape'][1]) for i in range(numberOfCuts)]
+    position0 = np.array([shape_0*shape_1*indexarray[i] for i in range(numberOfCuts)])
+    indices   = [range(position0[i],position0[i]+shape_0*shape_1) for i in range(numberOfCuts)]
+    
+    for field_component in field_components:
+        field_component_value = fields['datavalues'][field_component]
+        fields['zValueplane'][field_component] = np.array([field_component_value[indices[i]] for i in range(numberOfCuts)]).reshape(numberOfCuts,shape_0,shape_1)
 
-    for datatype in data_type:
-        fields['zValueplane'][datatype] = np.array([fields['datavalues'][datatype][indices[i]] for i in range(numberOfCuts)]).reshape(numberOfCuts,fields['shape'][0], \
-                                                                                fields['shape'][1])
 def maskvalueCut(fields,datatypes):
     for datatype in datatypes:
         fields['zValueMaskedplane'][datatype] = ma.masked_invalid(fields['zValueplane'][datatype])
@@ -160,24 +166,23 @@ def nearfieldPoint0toPoint1(fields,cut0,cut1):
     kx = k0*np.sin(theta_mesh)*np.cos(phi_mesh)
     ky = k0*np.sin(theta_mesh)*np.sin(phi_mesh)
     kz = k0*np.cos(theta_mesh)
-
-    #Estos valores corresponden a la "Ad(kx,ky)"
-    Ehatx = factorf*np.fft.fft2((fields['zValueZeroedplane']['Ex'][cut0]))     
-    Ehatx_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehatx)  #jlap
     kxy = np.array([[kx[i,j],ky[i,j]] for i in range(kx.shape[0]) for j in range(ky.shape[0])]).reshape(Nx,Nx,2)
-    Ehatx_interp_data_func = Ehatx_interp_func(kxy)
 
-    #SI SE MANTIENE ESTO, PODEMOS HACER "DTYPE" UN EMPTY COMPLEX
-
-    #r = 60.e-3 - 15.e-3
-    factorMultiplicativo = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
-    EhatxReconstruido = factorMultiplicativo*(Ehatx_interp_data_func)
+    fields.update({'fields_transformed':{}})
     
-    #TODO
-    Ehaty = factorf*np.fft.fft2((fields['zValueZeroedplane']['Ey'][cut0]))
-    Ehatz = factorf*np.fft.fft2((fields['zValueZeroedplane']['Ez'][cut0]))
+    fields_to_transform = list(fields['zValueZeroedplane'].keys())
+    for i in range(len(fields['zValueZeroedplane'].keys())):
+        #Estos valores corresponden a la "Ad(kx,ky)"
+        Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut0]))     
+        Ehat_component_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehat_component)
+        Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
 
-    representarValores(3,'FFT 2D Ex del FF',np.abs(EhatxReconstruido))
+        factorMultiplicativo = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
+        Ehat_component_reconstruido = factorMultiplicativo*(Ehat_component_interp_data_func)
+        representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(Ehat_component_reconstruido))
+        fields['fields_transformed'].update({f"FF_{fields_to_transform[i]}":Ehat_component_reconstruido})
+
+    print("FIELD_TF",fields['fields_transformed'])
 
 def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
         
@@ -200,12 +205,11 @@ if __name__ == '__main__':
     readData(fields)        
     
     extractMatrixData(fields)   
-    
+
     extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
     
     #Este método quita de en medio los NaN.
     maskvalueCut(fields,fields['file_type'])
-
 
     #En estas líneas se hacen las representaciones de los cortes.
     plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
@@ -223,12 +227,6 @@ if __name__ == '__main__':
         #print(exc)
 
 """
-
-
-
-
-
-
 def plotZReproducedvalueCut(plotnumber,plotinfo,datatype,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
     plt.figure(plotnumber)
     im = plt.imshow(func(zValueZeroedplaneReproducedvalue[datatype]),cmap=cmap,aspect=aspect,extent=extent)
