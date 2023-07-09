@@ -161,7 +161,7 @@ def nearfieldPoint0toPoint1(fields,cut):
     kycoordinatesMatrix = np.rot90(kxcoordinatesMatrix,1)
    
     w2 = k0**2 - kxcoordinatesMatrix**2 - kycoordinatesMatrix**2
-    representarValores(4,'W2',w2)
+    plotValue(4,'W2',w2)
 
     valoresPositivos = np.where(w2 >= 0)
     valoresNegativos = np.where(w2 < 0)
@@ -169,31 +169,29 @@ def nearfieldPoint0toPoint1(fields,cut):
     w2[valoresNegativos] = -1j*np.sqrt(-1*w2[valoresNegativos])
     w = np.conjugate(w2)
 
-    #PLOTS de W
-    representarValores(5,'parte real W',np.real(w))      
-    representarValores(6,'parte imaginaria W',np.imag(w))
+    plotValue(5,'parte real W',np.real(w))      
+    plotValue(6,'parte imaginaria W',np.imag(w))
 
     phaseShift = np.exp(-j*w*(31.e-3 - 15.e-3))  
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
     for i in range(len(fields['zValueZeroedplane'].keys())):
         Ehat_component_calculated = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))
-        representarValores(3,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
+        plotValue(3,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
 
         fields['fields_transformed'].update({f"NF_{fields_to_transform[i]}":Ehat_component_calculated})
 
         EhatEnZ1 = Ehat_component_calculated*phaseShift
         EhatxReconstruido = np.fft.ifft2(EhatEnZ1)
-        representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
+        plotValue(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
 
-        """
+        
         comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],EhatxReconstruido)
-        plt.plot(comparison)
-        plt.show()
+        plotValue(4,f'Comparación cuantitativa NFtoNF {fields_to_transform[i]}',comparison)
         fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})        
-        """
+        
 
-def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
+def plotValue(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
         
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
@@ -205,13 +203,10 @@ def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric fi
     plt.draw()
     plt.pause(pauseinterval)
 
-def quantitativeComparison(comsol_simulated_value,value_calculated_value):    
-    
+def quantitativeComparison(comsol_simulated_value,value_calculated_value):        
 
     comsol_simulated_value = np.where(np.abs(comsol_simulated_value) > 0, comsol_simulated_value, 0.0000001)
     comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
-        
-    comparison_without_zeros = np.copy(comparison[np.nonzero(comparison)])
     return comparison
 
 if __name__ == '__main__':
