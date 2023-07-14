@@ -4,28 +4,34 @@ import numpy as np
 import numpy.ma as ma
 import matplotlib.pyplot as plt
 from scipy.interpolate import RegularGridInterpolator
+from mpl_toolkits.mplot3d import Axes3D
 
 #VARIABLES GLOBALES
 mu0           = 4*np.pi*1e-7
 c0            = 299792458
 raw_data      = 9
 pauseinterval = 0.01
+
 k0 ,delta_x,L_x,delta_y,L_y,coordz = 0,0,0,0,0,0
-flow_config = { 'directory':r'c:\\Users\\aitor\\OneDrive\\Desktop\\TFG-AitorIngelmo\\Codigos\\NF to NF\\codigo JL',
+flow_config = { 'directory':r'C:\\Users\\aitor\\OneDrive\\Desktop\\TFG-AitorIngelmo\\Codigos\\NF to FF',
                 'files_in_directory': [
                     'microstrip_patch_antenna_Ex.txt',
                     'microstrip_patch_antenna_Ey.txt',
                     'microstrip_patch_antenna_Ez.txt',
-                    'microstrip_patch_antenna_normE.txt'                
+                    'microstrip_patch_antenna_normE.txt',
+                    'microstrip_patch_antenna_Ephi.txt',
+                    'microstrip_patch_antenna_Etheta.txt',
+                    'microstrip_patch_antenna_Enorm.txt'
                 ],
-                'file_type':['Ex','Ey','Ez','normE'],
+                'file_type':['Ex','Ey','Ez','normE','Ephi','Etheta','Enorm'],
                 'work_mode':'NFtoFF',      
                 'shape':[100,100,100],
                 'freq':1.575e9,
                 'length_unit':1e-3,
-                'res':2e-3}
+                'res':2e-3
+                }
 
-def inputDataProcess(flow_config):
+def input_data_process(flow_config):
     # Este es el constructor de la clase. En él almacenamos los inputs como atributos de la clase.
     global k0
     try:
@@ -53,7 +59,7 @@ def inputDataProcess(flow_config):
         print(f"ERROR:{exc}")
 
     return fields
-def readData(fields,read_type='all'):
+def read_data(fields,read_type='all'):
     """
     Este método realiza la lectura de todos o parte de los ficheros de salida de Comsol 
     para las componentes del campo eléctrico.
@@ -69,9 +75,9 @@ def readData(fields,read_type='all'):
                 fields['lines'][file_type] = file.readlines()
     #TODO: Que lea los ficheros dentro de read_type en caso de no tener el valor por defecto
      
-def extractMatrixData(fields):
+def extract_matrix_data(fields):
     """
-    Este método almacena en arrays los datos de los ficheros de Comsol leídos previamente con readData             
+    Este método almacena en arrays los datos de los ficheros de Comsol leídos previamente con read_data             
     """
     global delta_x,L_x,delta_y,L_y,coordz
     #filetypes = lines.keys()
@@ -95,7 +101,7 @@ def extractMatrixData(fields):
         fields['datavalues'][datatype] = np.array([complex(s.replace('i', 'j')) for i in range(len(rawdatalines)) \
             for k,s in zip(range(4),rawdatalines[i].split()) if k == 3])
         
-def extractZvalueCut(fields,field_components,cuts_to_extract):
+def extract_z_cut(fields,field_components,cuts_to_extract):
     """
     Este método nos permite extraer los valores del campo en un cierto número de cortes o valores de z 
         "fields": Es el diccionario que contiene los datos que estamos tratando en el programa.
@@ -118,17 +124,17 @@ def extractZvalueCut(fields,field_components,cuts_to_extract):
         field_component_value = fields['datavalues'][field_component]
         fields['zValueplane'][field_component] = np.array([field_component_value[indices[i]] for i in range(numberOfCuts)]).reshape(numberOfCuts,shape_0,shape_1)
 
-def maskvalueCut(fields,datatypes):
+def mask_cut_values(fields,datatypes):
     for datatype in datatypes:
         fields['zValueMaskedplane'][datatype] = ma.masked_invalid(fields['zValueplane'][datatype])
 
-def zeroedvalueCut(fields,datatypes):
-    for datatype in datatypes:
-        indices = np.isnan(fields['zValueplane'][datatype])
-        fields['zValueZeroedplane'][datatype] = np.copy(fields['zValueplane'][datatype])
-        fields['zValueZeroedplane'][datatype][indices] = 0.0
+def extract_nan_values(fields,field_components):
+    for component in field_components:
+        indices = np.isnan(fields['zValueplane'][component])
+        fields['zValueZeroedplane'][component] = np.copy(fields['zValueplane'][component])
+        fields['zValueZeroedplane'][component][indices] = 0.0
 
-def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
+def plot_value(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
     plt.figure(plotnumber)
     im = plt.imshow(func(value_to_plot[datatype][cutNumber]).transpose(),cmap=cmap,aspect=aspect,extent=extent)
     plt.xlabel(plotinfo['xlabel'])
@@ -140,10 +146,10 @@ def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lamb
     plt.draw()
     plt.pause(pauseinterval)
 
-def nearfieldPoint0toPoint1(fields,cut):
-    zeroedvalueCut(fields,fields['file_type'])
-    Nx = fields['zValueZeroedplane']['Ex'][cut].shape[0]
-    Ny = fields['zValueZeroedplane']['Ex'][cut].shape[1]
+def transformation_to_farfield(fields,measure_cut):
+    extract_nan_values(fields,field_components = fields['file_type'])
+    Nx = fields['zValueZeroedplane']['Ex'][measure_cut].shape[0]
+    Ny = fields['zValueZeroedplane']['Ex'][measure_cut].shape[1]
 
     delta_kx  = 2*np.pi/(delta_x*Nx)
     delta_ky  = 2*np.pi/(delta_y*Ny) 
@@ -160,50 +166,58 @@ def nearfieldPoint0toPoint1(fields,cut):
 
     # Generación de la malla
     phi_mesh, theta_mesh = np.meshgrid(phi, theta)
-    
+
     #Cálculo de los Kx, Ky y Kz 
     kx = k0*np.sin(theta_mesh)*np.cos(phi_mesh)
     ky = k0*np.sin(theta_mesh)*np.sin(phi_mesh)
     kz = k0*np.cos(theta_mesh)
-    
+
     kxy = np.array([[kx[i,j],ky[i,j]] for i in range(kx.shape[0]) for j in range(ky.shape[0])]).reshape(Nx,Nx,2)
-    
-    
+
+    f_factor = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
+    suma = 0
     for i in range(len(fields['zValueZeroedplane'].keys())):
-        #Estos valores corresponden a la "Ad(kx,ky)"
-        Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))     
-        Ehat_component_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehat_component)
-        Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
+        field_component = fields_to_transform[i]   
+        if field_component in ['Ex','Ey','Ez']:
+            Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][field_component][measure_cut]))
+            Ehat_component_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehat_component)
+            Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
 
-        factorMultiplicativo = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
-        Ehat_component_calculated = factorMultiplicativo*(Ehat_component_interp_data_func)
-        representarValores(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(Ehat_component_calculated))
-        fields['fields_transformed'].update({f"FF_{fields_to_transform[i]}":Ehat_component_calculated})
+            Ehat_component_calculated = f_factor*(Ehat_component_interp_data_func)
+            represent_values(3,f'FFT 2D de {field_component} en FF',np.abs(Ehat_component_calculated),f'Electric field\n {field_component} (V/m)')
+            #suma += np.abs(Ehat_component_calculated)
+            fields['fields_transformed'][f"FF_{field_component}"]=Ehat_component_calculated
+            #if field_component =='normE':
 
-        comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],Ehat_component_calculated)
-        mapaDeRadiacion(phi_mesh,theta_mesh,np.abs(Ehat_component_calculated))
+            comparison = quantitative_comparison(fields['zValueZeroedplane'][field_component][1],Ehat_component_calculated)
+            represent_radiation_map(phi_mesh,theta_mesh,np.abs(Ehat_component_calculated))
 
-        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})
+            fields['quantitative_comparison'].update({f"{field_component}_comparison":comparison})
 
-def mapaDeRadiacion(Theta,phi,valor):     
-    # Crear la figura y los ejes 3D
+    #represent_radiation_map(phi_mesh,theta_mesh,suma)
+
+def represent_radiation_map(theta_mesh,phi_mesh,Ehat_component_calculated):     
+    #https://es.wikipedia.org/wiki/Coordenadas_esf%C3%A9ricas
+    # Representación tridimensional del diagrama de radiación
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    # Hacer el plot 3D
-    ax.plot_surface(Theta, phi, valor, cmap='viridis')
+    # Convierte las coordenadas esféricas en coordenadas cartesianas
+    x = Ehat_component_calculated * np.sin(theta_mesh) * np.cos(phi_mesh)
+    y = Ehat_component_calculated * np.sin(theta_mesh) * np.sin(phi_mesh)
+    z = Ehat_component_calculated * np.cos(theta_mesh)
 
-    # Personalizar el plot
-    ax.set_xlabel('Theta')
-    ax.set_ylabel('Phi')
-    ax.set_zlabel('Radiación')
+    ax.plot_surface(x, y, z, cmap='viridis')
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
     ax.set_title('Diagrama de Radiación')
 
-    # Mostrar el plot
     plt.show()
 
-def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
+def represent_values(plot_number, title, values_to_plot,leyenda,mapaDeColores = 'hot'):
         
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
@@ -215,70 +229,35 @@ def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric fi
     plt.draw()
     plt.pause(pauseinterval)
 
-def quantitativeComparison(comsol_simulated_value,value_calculated_value):    
-    
-
+def quantitative_comparison(comsol_simulated_value,value_calculated):
     comsol_simulated_value = np.where(np.abs(comsol_simulated_value) > 0, comsol_simulated_value, 0.0000001)
-    comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
+    comparison = np.abs(comsol_simulated_value - value_calculated) / np.abs(comsol_simulated_value)
+
     return comparison
 
 if __name__ == '__main__':
     plt.close('all')
     #try:
+    fields = input_data_process(flow_config)
 
-    fields = inputDataProcess(flow_config)
-    
-    readData(fields)        
-    
-    extractMatrixData(fields)   
+    read_data(fields)        
 
-    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
-    
+    extract_matrix_data(fields)   
+
+    extract_z_cut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
+
     #Este método quita de en medio los NaN.
-    maskvalueCut(fields,fields['file_type'])
+    mask_cut_values(fields,fields['file_type'])
 
     #En estas líneas se hacen las representaciones de los cortes.
     plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
-    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
-    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
-    
-    #fields.pop('lines')
-    #print(fields)
-    
-    #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
-    nearfieldPoint0toPoint1(fields,cut = 0)                
+    plot_value(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
+    plot_value(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
+
+    #fields.extract_nan_values(['Ex','Ey','Ez','normE'])
+    transformation_to_farfield(fields,measure_cut = 0)                
     print("FIN PROGRAMA")
-    #     
+    #
     #except Exception as exc:
         #print(exc)
 
-"""
-def plotZReproducedvalueCut(plotnumber,plotinfo,datatype,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
-    plt.figure(plotnumber)
-    im = plt.imshow(func(zValueZeroedplaneReproducedvalue[datatype]),cmap=cmap,aspect=aspect,extent=extent)
-    plt.xlabel(plotinfo['xlabel'])
-    plt.ylabel(plotinfo['ylabel'])
-    plt.title(plotinfo['title'])
-    if colorbar == True:
-        cbar = plt.colorbar(pad=0.075)
-        cbar.ax.set_title(plotinfo['legend'])
-    plt.draw()
-    plt.pause(pauseinterval)
-
-
-
-
-    "
-    Es interesante probar primero con cortes en 2d. Lo que implica fijas un ángulo y "mover" el otro.
-    Esto nos da un corte.
-
-    A la inversa(fijas el que moviamos y mover el que fijabamos), obtenemos el corte perpendular.
-    "    
-def representarValores3D(plot_number, Titulo, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
-    
-    ax = plt.axes(projection='3d')
-    ax.plot_surface(values_to_plot[0],values_to_plot[1],values_to_plot[2], rstride=1, cstride=1,
-                cmap=mapaDeColores, edgecolor='none')
-    ax.set_title('3D campo reconstruido')
-
-"""
