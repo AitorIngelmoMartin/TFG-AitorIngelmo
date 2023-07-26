@@ -1,0 +1,1096 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     44353,       1087]
+NotebookOptionsPosition[     43668,       1062]
+NotebookOutlinePosition[     44048,       1078]
+CellTagsIndexPosition[     44005,       1075]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"EfarTheta", "[", 
+    RowBox[{"N_", ",", " ", "phi_", ",", "theta_"}], "]"}], " ", ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Sum", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"I", "^", "n"}], " ", 
+      RowBox[{"Exp", "[", 
+       RowBox[{"I", " ", "m", " ", 
+        RowBox[{"phi", "[", "n", "]"}]}], "]"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"n", ",", "1", ",", "N"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"m", ",", " ", 
+       RowBox[{"-", "n"}], ",", " ", "n"}], "}"}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DemoEtheta", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{"i", ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", 
+       RowBox[{"-", "Pi"}], ",", "Pi", ",", 
+       RowBox[{"Pi", "/", "6."}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"DemoEphi", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{"i", ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "0", ",", "Pi", ",", 
+       RowBox[{"Pi", "/", "10."}]}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"EfarTheta", "[", 
+  RowBox[{"11", ",", " ", "DemoEphi", ",", "DemoEtheta"}], " ", 
+  "]"}]}], "Input",
+ CellChangeTimes->CompressedData["
+1:eJwdxU0oQwEAB/DXDvOQNW1WxGJWvrPkY81MSyGNZT4OZktrHFZsByvbUoqj
+pTZJmRxotTRlktgKI40ILY3hIE1KWxSlR+b9d/j1K9IZVcMMgiD4NJypZ4dG
+s+Jy2cfDDbY6IxReyDtJ4j/nnHKMft3l7MPupaJ5rDV4VvCjm+PBPHJmA5vl
+Xh9+th5sY/5beA9HJ3l+zLi73sevzLVT7I18JPB5uukHS54cHCN9SK3OxVe9
+0QKcEauowgfv03W4PKAX49LNQBNeNMVbsGR2qB23X2o6cGvufA9WKKb6MZ/c
+GsQDJd0aLPsbFZrofQJhJS6LUtU427wqwn4yux5T3xIpHpHmNFjog1+G1Ge1
+NhmmjLup05naAD62sw/xePn9Of5t67zAiXxRGN/aqQjuJI9iWKx7SOI2x2ea
+lV61VUziCbc3C7MFyyxcprRwsWvHl4dvGgtrcBfH2oxZ3BfCRq92BZn4H3Fh
+2C8=
+  "]],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"18.921367890472318`", "\[VeryThinSpace]", "+", 
+    RowBox[{"23.59604309807197`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{"16.386385267500202`", "\[VeryThinSpace]", "+", 
+    RowBox[{"20.4347727517228`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{"9.46068394523616`", "\[VeryThinSpace]", "+", 
+    RowBox[{"11.79802154903599`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "1.1585996311278214`*^-15"}], "-", 
+    RowBox[{"1.4448409326298418`*^-15", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "9.460683945236156`"}], "-", 
+    RowBox[{"11.798021549035983`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "16.386385267500195`"}], "-", 
+    RowBox[{"20.434772751722793`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "18.921367890472318`"}], "-", 
+    RowBox[{"23.59604309807197`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "16.386385267500202`"}], "-", 
+    RowBox[{"20.4347727517228`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "9.460683945236164`"}], "-", 
+    RowBox[{"11.798021549035996`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "1.1585996311278214`*^-15"}], "-", 
+    RowBox[{"1.4448409326298418`*^-15", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{"9.460683945236147`", "\[VeryThinSpace]", "+", 
+    RowBox[{"11.798021549035973`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{"16.386385267500195`", "\[VeryThinSpace]", "+", 
+    RowBox[{"20.434772751722793`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{"18.921367890472318`", "\[VeryThinSpace]", "+", 
+    RowBox[{"23.59604309807197`", " ", "\[ImaginaryI]"}]}]}], "}"}]], "Output",
+ CellChangeTimes->{3.899380221948287*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partw"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part \[NoBreak]\\!\\(1\\)\[NoBreak] of \
+\[NoBreak]\\!\\({}\\)\[NoBreak] does not exist. \\!\\(\\*ButtonBox[\\\"\
+\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/partw\\\", ButtonNote -> \
+\\\"Part::partw\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.8993802219722815`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(0 \[LeftDoubleBracket] \
+2 \[RightDoubleBracket]\\)\[NoBreak] is longer than depth of object. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/partd\\\", \
+ButtonNote -> \\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.8993802220012026`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "partd"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(0 \[LeftDoubleBracket] \
+1 \[RightDoubleBracket]\\)\[NoBreak] is longer than depth of object. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/partd\\\", \
+ButtonNote -> \\\"Part::partd\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.8993802220290704`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "pspec"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(mtheta\\)\[NoBreak] is \
+neither a machine-sized integer nor a list of machine-sized integers. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/pspec\\\", \
+ButtonNote -> \\\"Part::pspec\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.899380222057994*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "pspec"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(mtheta\\)\[NoBreak] is \
+neither a machine-sized integer nor a list of machine-sized integers. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/pspec\\\", \
+ButtonNote -> \\\"Part::pspec\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.899380222099742*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Part", "::", "pspec"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Part specification \[NoBreak]\\!\\(mtheta\\)\[NoBreak] is \
+neither a machine-sized integer nor a list of machine-sized integers. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/pspec\\\", \
+ButtonNote -> \\\"Part::pspec\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.8993802221266766`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"General", "::", "stop"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Further output of \[NoBreak]\\!\\(\\*StyleBox[\\(Part :: \
+pspec\\), \\\"MessageName\\\"]\\)\[NoBreak] will be suppressed during this \
+calculation. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/stop\\\", ButtonNote -> \
+\\\"General::stop\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.8993800640083623`*^9, 3.899380065018262*^9}, 
+   3.899380222141637*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "56.764103671416954`"}], "-", 
+         RowBox[{"70.7881292942159`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "49.15915580250061`"}], "-", 
+         RowBox[{"61.3043182551684`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "28.38205183570848`"}], "-", 
+         RowBox[{"35.39406464710797`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"3.4757988933834643`*^-15", "+", 
+         RowBox[{"4.334522797889525`*^-15", " ", "\[ImaginaryI]"}]}], ")"}], 
+       " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"28.382051835708467`", "\[VeryThinSpace]", "+", 
+         RowBox[{"35.39406464710795`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"49.159155802500585`", "\[VeryThinSpace]", "+", 
+         RowBox[{"61.30431825516838`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"56.764103671416954`", "\[VeryThinSpace]", "+", 
+         RowBox[{"70.7881292942159`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"49.15915580250061`", "\[VeryThinSpace]", "+", 
+         RowBox[{"61.3043182551684`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"28.382051835708495`", "\[VeryThinSpace]", "+", 
+         RowBox[{"35.39406464710799`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"3.4757988933834643`*^-15", "+", 
+         RowBox[{"4.334522797889525`*^-15", " ", "\[ImaginaryI]"}]}], ")"}], 
+       " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "28.382051835708438`"}], "-", 
+         RowBox[{"35.39406464710792`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "49.159155802500585`"}], "-", 
+         RowBox[{"61.30431825516838`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}], ",", 
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "0.03652715859666331`"}], "-", 
+      RowBox[{"0.043753454387079525`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", 
+       RowBox[{"0", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}], 
+      "+", 
+      RowBox[{"0", "\[LeftDoubleBracket]", "2", "\[RightDoubleBracket]"}]}], 
+     ")"}], " ", 
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"mtheta", "=", "1"}], "13"], 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"nphi", "=", "1"}], 
+       RowBox[{
+        RowBox[{"{", "}"}], "\[LeftDoubleBracket]", "1", 
+        "\[RightDoubleBracket]"}]], 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"-", "56.764103671416954`"}], "-", 
+         RowBox[{"70.7881292942159`", " ", "\[ImaginaryI]"}]}], ")"}], " ", 
+       SuperscriptBox["\[ExponentialE]", 
+        RowBox[{
+         RowBox[{"-", "\[ImaginaryI]"}], " ", 
+         RowBox[{
+         "0", "\[LeftDoubleBracket]", "nphi", "\[RightDoubleBracket]"}]}]], 
+       " ", 
+       RowBox[{"Cos", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3.141592653589793`"}], ",", 
+           RowBox[{"-", "2.6179938779914944`"}], ",", 
+           RowBox[{"-", "2.0943951023931957`"}], ",", 
+           RowBox[{"-", "1.5707963267948966`"}], ",", 
+           RowBox[{"-", "1.0471975511965979`"}], ",", 
+           RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+           "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+           "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+           "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+         "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], "]"}], 
+       " ", 
+       RowBox[{"\[Sqrt]", 
+        RowBox[{"(", 
+         RowBox[{"1", "-", 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "3.141592653589793`"}], ",", 
+               RowBox[{"-", "2.6179938779914944`"}], ",", 
+               RowBox[{"-", "2.0943951023931957`"}], ",", 
+               RowBox[{"-", "1.5707963267948966`"}], ",", 
+               RowBox[{"-", "1.0471975511965979`"}], ",", 
+               RowBox[{"-", "0.5235987755982991`"}], ",", "0.`", ",", 
+               "0.5235987755982987`", ",", "1.0471975511965974`", ",", 
+               "1.5707963267948966`", ",", "2.094395102393195`", ",", 
+               "2.617993877991494`", ",", "3.141592653589793`"}], "}"}], 
+             "\[LeftDoubleBracket]", "mtheta", "\[RightDoubleBracket]"}], 
+            "]"}], "2"]}], ")"}]}]}]}]}]}]}], "}"}]], "Output",
+ CellChangeTimes->{3.899380322424971*^9}]
+}, Open  ]]
+},
+WindowSize->{1904, 943},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.7000001668930054`,
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1784, 49, 211, "Input"],
+Cell[2366, 73, 1753, 36, 121, "Output"],
+Cell[4122, 111, 519, 11, 38, "Message"],
+Cell[4644, 124, 559, 11, 38, "Message"],
+Cell[5206, 137, 559, 11, 38, "Message"],
+Cell[5768, 150, 558, 11, 38, "Message"],
+Cell[6329, 163, 558, 11, 38, "Message"],
+Cell[6890, 176, 560, 11, 38, "Message"],
+Cell[7453, 189, 580, 12, 38, "Message"],
+Cell[8036, 203, 35616, 856, 2368, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
