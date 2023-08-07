@@ -35,7 +35,7 @@ def input_data_process(flow_config):
     # Este es el constructor de la clase. En él almacenamos los inputs como atributos de la clase.
     global k0
     try:
-        fields,files,datavalues,lines,zValueplane,zValueMaskedplane,zValueZeroedplane = {}, {}, {}, {}, {} , {}, {}     
+        fields,files = {}, {}     
         if len(flow_config['file_type']) == len(flow_config['files_in_directory']):
             for file_type in range(len(flow_config['file_type'])):
                 files.update({flow_config['file_type'][file_type]:f"{flow_config['directory']}//{flow_config['files_in_directory'][file_type]}"})
@@ -43,11 +43,11 @@ def input_data_process(flow_config):
             raise Exception("El número de ficheros en el directorio es distinto a la cantidad de ficheros introducido")
         fields.update({'files':files})
         fields.update({'file_type':flow_config['file_type']})
-        fields.update({"datavalues":datavalues})
-        fields.update({"lines":lines})
-        fields.update({"zValueplane":zValueplane}) 
-        fields.update({"zValueMaskedplane":zValueMaskedplane}) 
-        fields.update({"zValueZeroedplane":zValueZeroedplane})
+        fields.update({"datavalues":{}})
+        fields.update({"lines":{}})
+        fields.update({"zValueplane":{}}) 
+        fields.update({"zValueMaskedplane":{}}) 
+        fields.update({"zValueZeroedplane":{}})
         fields.update({'fields_transformed':{}})
         fields.update({'quantitative_comparison':{}})          
         fields.update({'shape':flow_config['shape']})
