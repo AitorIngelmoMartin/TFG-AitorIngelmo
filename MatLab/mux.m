@@ -22,6 +22,7 @@ E_theta = i*etha*((k*Io*l*sin(theta))/(4*pi*r))*(1+ (-i/k*r) - (1/(k*r)^2))*exp(
 E_phi = 0;
 %--------------------------------------------------------------------------
 %Polinomio asociado de legendre
+
 legendre_cos = legendre(1,cos(theta));
 legendre_cos = legendre_cos(2,:);
 
