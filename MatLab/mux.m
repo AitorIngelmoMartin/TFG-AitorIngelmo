@@ -3,13 +3,15 @@ clc;clear;close all
 %--------------------------------------------------------------------------
 %Datos
 f = 1e9;
-lambda = 3e9/f;
+lambda = 3e8/f;
 N = floor(2*pi*lambda);
 %Angulos
 puntos_del_campo = 50;
 theta = linspace(0, pi, puntos_del_campo);
 phi   = linspace(0, 2*pi, puntos_del_campo);
 z = 1
+n=1;
+m=1;
 %--------------------------------------------------------------------------
 %Variables campo
 etha = 120/pi;
@@ -36,14 +38,13 @@ legendre_deriv = -(1 + n)*cot(theta).*legendre_cos + ...
 %Función esférica de henkel de orden 2
 sphbesselj = ((-1)^(n+1)) * sqrt(pi/(2*z))*besselj(-n-0.5, z);
 sphbessely = ((-1)^(n+1)) * sqrt(pi/(2*z))*bessely(-n-0.5, z);
-h2 =  -sphbessely  - i*sphbesselj;
+h2 =  -sphbessely  - i*sphbesselj
 
 %--------------------------------------------------------------------------
 %Cálculo de Amn
-
-% Amn = 
-acoeff(m, n, k, r, theta, phi, E_theta, E_phi)
-
+z=k*r;
+h2_derivado = (-SphericalHankelH2(n,z)/(2*z)) + 1/2*(SphericalHankelH2(-1 + n, z)...
+    - SphericalHankelH2(1 + n, z))
 
 
 
