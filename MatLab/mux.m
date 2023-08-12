@@ -41,12 +41,8 @@ h2 =  -sphbessely  - i*sphbesselj;
 %--------------------------------------------------------------------------
 %Cálculo de Amn
 
-% Amn = zeros(1,puntos_del_campo)
-
-
-Amn_integral = @(tetha,phi) (E_theta*m*legendre_cos)*exp(-i*m*phi)
-integral2(fun,0,1,2,3)
-
+% Amn = 
+acoeff(m, n, k, r, theta, phi, E_theta, E_phi)
 
 
 
