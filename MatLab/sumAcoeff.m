@@ -1,4 +1,4 @@
-function result = acoeff(m, n, theta, phi, Etheta)
+function result = sumAcoeff(m, n, theta, phi, Etheta)
     Mtheta = length(theta);
     Nphi = length(phi);
     result = 0;

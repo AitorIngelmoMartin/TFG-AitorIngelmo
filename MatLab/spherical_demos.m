@@ -43,8 +43,17 @@ h2 =  -sphbessely  - i*sphbesselj;
 
 Amn_parte1 = -i*(2*n+1)/(4*pi*h2)*(factorial(n-m)/factorial(n+m))*(1/(n*(n+1)))*delta_phi*delta_theta;
 
-Amn_parte2 = acoeff(abs(m), n, theta, phi, E_theta);
+Amn_parte2 = sumAcoeff(abs(m), n, theta, phi, E_theta);
 Amn = sum(Amn_parte1*sum(Amn_parte2))
+% -0.00678276 - 0.00147836i
+
+%--------------------------------------------------------------------------
+%Cálculo de Bmn
+
+Bmn_parte1 = -i*(2*n+1)/(4*pi*h2)*(factorial(n-m)/factorial(n+m))*(1/(n*(n+1)))*delta_phi*delta_theta;
+
+Bmn_parte2 = sumAcoeff(abs(m), n, theta, phi, E_theta);
+Bmn = sum(Bmn_parte1*sum(Bmn_parte2))
 % -0.00678276 - 0.00147836i
 
 
