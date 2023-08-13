@@ -4,7 +4,7 @@ clc;clear;close all
 %Datos
 f = 1e9;
 lambda = 3e8/f;
-N = floor(2*pi*lambda);
+N = floor(2*pi/lambda);
 n = 1;
 m = 1;
 %Angulos
@@ -54,7 +54,19 @@ Bmn_parte2 = sumBcoeff(abs(m), n, theta, phi, E_theta);
 
 Bmn = sum(Bmn_parte1*sum(Bmn_parte2));
 
-% -0.486479 - 0.343352i
+%--------------------------------------------------------------------------
+%Cálculo de E_far_Theta
 
+Mtheta = length(theta);
+Nphi = length(phi);
+
+E_far_Theta=zeros(N,2*N);
+pos=1;
+for n=1:N
+    for m=-n:n
+        E_far_Theta = i^n.*exp(i*m.*phi)
+        pos=pos+1;
+    end
+end
 
 
