@@ -6,8 +6,8 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 # Crear datos de coordenadas (rango de -50 a 50 en x y y) con menos puntos (100)
-x = np.linspace(-50, 50, 100)
-y = np.linspace(-50, 50, 100)
+x = np.linspace(-40, 40, 1000)
+y = np.linspace(-40, 40, 1000)
 x, y = np.meshgrid(x, y)
 
 # Calcular la distancia desde el origen
@@ -22,7 +22,7 @@ phase_spherical = k * r
 phase_flat = np.zeros_like(r)
 
 # Calcular una interpolación suave entre las fases esférica y plana
-num_frames = 100
+num_frames = 1000
 interpolation_factor = np.linspace(0, 1, num_frames)
 smoothed_phase = (1 - interpolation_factor) * phase_spherical + interpolation_factor * phase_flat
 
