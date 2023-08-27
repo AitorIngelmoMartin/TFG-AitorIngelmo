@@ -1,0 +1,155 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      4756,        146]
+NotebookOptionsPosition[      4289,        126]
+NotebookOutlinePosition[      4669,        142]
+CellTagsIndexPosition[      4626,        139]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Zn", "[", 
+     RowBox[{"n_", ",", "c_", ",", "z_"}], "]"}], ":=", 
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{"c", "\[Equal]", "1"}], " ", ",", 
+      RowBox[{"SphericalBesselJ", "[", 
+       RowBox[{"n", ",", "z"}], "]"}], ",", "\[IndentingNewLine]", 
+      "                                  ", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"c", "\[Equal]", "2"}], ",", 
+        RowBox[{"SphericalBesselY", "[", 
+         RowBox[{"n", ",", "z"}], "]"}], ",", "\[IndentingNewLine]", 
+        "                                ", 
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"c", "\[Equal]", "3"}], ",", 
+          RowBox[{"SphericalHankelH1", "[", 
+           RowBox[{"n", ",", "z"}], "]"}], ",", "\[IndentingNewLine]", 
+          "\t\t\t", 
+          RowBox[{"SphericalHankelH2", "[", 
+           RowBox[{"n", ",", "z"}], "]"}]}], "]"}]}], "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"A", "[", 
+     RowBox[{"m_", ",", "n_", ",", "theta_"}], "]"}], ":=", 
+    FractionBox[
+     RowBox[{"m", " ", 
+      RowBox[{"LegendreP", "[", 
+       RowBox[{"n", ",", "m", ",", 
+        RowBox[{"Cos", "[", "theta", "]"}]}], "]"}]}], 
+     RowBox[{"Sin", "[", "theta", "]"}]]}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"B", "[", 
+     RowBox[{"m_", ",", "n_", ",", "theta_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{"-", 
+      FractionBox["1", "2"]}], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"LegendreP", "[", 
+        RowBox[{
+         RowBox[{"n", "+", "1"}], ",", 
+         RowBox[{"m", "+", "1"}], ",", 
+         RowBox[{"Cos", "[", "theta", "]"}]}], "]"}], " ", "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"n", "-", "m", "+", "1"}], ")"}], 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"-", "n"}], "+", "m", "+", "2"}], ")"}], 
+        RowBox[{"LegendreP", "[", 
+         RowBox[{
+          RowBox[{"n", "+", "1"}], ",", 
+          RowBox[{"m", "-", "1"}], ",", 
+          RowBox[{"Cos", "[", "theta", "]"}]}], "]"}]}]}], ")"}]}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"A", "[", 
+    RowBox[{"1", ",", "1", ",", "2."}], "]"}], "\[IndentingNewLine]", 
+   RowBox[{"B", "[", 
+    RowBox[{"1", ",", "1", ",", "\[Pi]"}], "]"}], "\[IndentingNewLine]", 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{"-", 
+    RowBox[{"Sign", "[", "0", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.902134178971375*^9, 3.9021341808748207`*^9}, {
+   3.9021342130919943`*^9, 3.902134328586059*^9}, {3.9021344757323723`*^9, 
+   3.9021344801078186`*^9}, 3.902135004196454*^9, {3.9021477205518494`*^9, 
+   3.9021479580990114`*^9}, {3.9021482509411416`*^9, 3.9021482525675373`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1.`"}]], "Output",
+ CellChangeTimes->{{3.9021479052115865`*^9, 3.9021479351811104`*^9}, 
+   3.90214826274387*^9}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{{3.9021479052115865`*^9, 3.9021479351811104`*^9}, 
+   3.9021482627498493`*^9}],
+
+Cell[BoxData["0"], "Output",
+ CellChangeTimes->{{3.9021479052115865`*^9, 3.9021479351811104`*^9}, 
+   3.902148262750847*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Limit", "[", 
+   RowBox[{
+    RowBox[{"Fsmn", "[", 
+     RowBox[{
+     "1", ",", "1", ",", "n", ",", "3", ",", "theta", ",", "phi", ",", "z"}], 
+     "]"}], ",", 
+    RowBox[{"theta", "\[Rule]", "0"}], ",", 
+    RowBox[{"Assumptions", "\[RuleDelayed]", 
+     RowBox[{"{", 
+      RowBox[{"m", "\[Element]", "Integers"}], "}"}]}]}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{3.9021477855582266`*^9}]
+},
+WindowSize->{1904, 943},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.7000001668930054`,
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 2837, 72, 564, "Input"],
+Cell[3419, 96, 142, 3, 49, "Output"],
+Cell[3564, 101, 143, 3, 49, "Output"],
+Cell[3710, 106, 124, 2, 49, "Output"]
+}, Open  ]],
+Cell[3849, 111, 436, 13, 50, "Input"]
+}
+]
+*)
+
+(* End of internal cache information *)
