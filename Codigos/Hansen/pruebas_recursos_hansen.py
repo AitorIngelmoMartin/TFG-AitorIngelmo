@@ -31,6 +31,10 @@ def legendre_cos_derivate(n,m,theta):
     if not theta == 0 and not theta == np.pi:
         return -(1 + n)*cot(theta)*legendre_polinom(n, np.abs(m), cos(theta)) + \
             (1 + n - np.abs(m))*cosec(theta)*legendre_polinom(n+1, np.abs(m), cos(theta))
+    elif m == 1:
+        return -0.5*n*(1 + n)
+    else:
+        return 0
 
 def expresion_sign(m):
     """Function that save the a NaN related with 0^0"""
@@ -41,5 +45,10 @@ def expresion_sign(m):
 def Ksmn(s, n, m, theta, phi):
     """Function that calculate the Ksmn expresion from hankel book"""
     if s == 1:
-        np.sqrt(2/(2*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n+1) *np.array[legendre_division(n, m, theta),-legendre_cos_derivate(n, m, theta)]
-print(legendre_cos_derivate(2,2,5))
+        return np.sqrt(2/(n*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n+1)*\
+            np.array([1j * legendre_division(n, m, theta),-legendre_cos_derivate(n, m, theta)])
+
+    if s == 2:
+        return np.sqrt(2/(2*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n)*\
+            np.array([legendre_cos_derivate(n, m, theta),1j * legendre_division(n, m, theta)])
+print(Ksmn(1, 1, 1, 5, 5))
