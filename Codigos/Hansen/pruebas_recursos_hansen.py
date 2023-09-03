@@ -45,10 +45,10 @@ def expresion_sign(m):
 def Ksmn(s, n, m, theta, phi):
     """Function that calculate the Ksmn expresion from hankel book"""
     if s == 1:
-        return np.sqrt(2/(n*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n+1)*\
+        return np.sqrt(2/(n*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n+1) * \
             np.array([1j * legendre_division(n, m, theta),-legendre_cos_derivate(n, m, theta)])
 
     if s == 2:
-        return np.sqrt(2/(2*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n)*\
+        return np.sqrt(2/(n*(n+1)))*expresion_sign(m)* np.exp(1j * m * phi) * (-1j)**(n) * \
             np.array([legendre_cos_derivate(n, m, theta),1j * legendre_division(n, m, theta)])
-print(Ksmn(1, 1, 1, 5, 5))
+print(Ksmn(2, 1, 1, 5, 5))
