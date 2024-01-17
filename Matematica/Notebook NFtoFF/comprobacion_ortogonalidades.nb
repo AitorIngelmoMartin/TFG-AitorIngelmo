@@ -1,0 +1,293 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      9757,        284]
+NotebookOptionsPosition[      9125,        260]
+NotebookOutlinePosition[      9469,        275]
+CellTagsIndexPosition[      9426,        272]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"z", "[", "3", "]"}], "[", "n_", "]"}], "[", "z_", "]"}], "=", 
+  RowBox[{"SphericalHankelH1", "[", 
+   RowBox[{"n", ",", "z"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"R", "[", "3", "]"}], "[", "1", "]"}], "[", "n_", "]"}], "[", 
+   "z_", "]"}], "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"z", "[", "3", "]"}], "[", "n", "]"}], "[", "z", 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"results01", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"Integrate", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"R", "[", "3", "]"}], "[", "1", "]"}], "[", "n", "]"}], 
+         "[", "r", "]"}], " ", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"R", "[", "3", "]"}], "[", "1", "]"}], "[", "m", "]"}], 
+         "[", "r", "]"}], " ", 
+        RowBox[{"r", "^", "2"}]}], ",", 
+       RowBox[{"{", 
+        RowBox[{"r", ",", "0", ",", "Infinity"}], "}"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"n", ",", 
+       RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"m", ",", 
+       RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}]}], ";", 
+  RowBox[{
+  "results01", "//", "MatrixForm"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.9144950309988456`*^9, 3.9144950348600664`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}]], "Output",
+ CellChangeTimes->{3.9144952631621246`*^9}],
+
+Cell[BoxData[
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}]], "Output",
+ CellChangeTimes->{3.914495263163125*^9}],
+
+Cell[BoxData[
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}]], "Output",
+ CellChangeTimes->{3.9144952631641245`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Integrate", "::", "idiv"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Integral of \[NoBreak]\\!\\(r\\^2\\\\ \
+\\(SphericalHankelH1[\\(\\(\\(\\(-1\\)\\), r\\)\\)]\\)\\^2\\)\[NoBreak] does \
+not converge on \[NoBreak]\\!\\({0, \[Infinity]}\\)\[NoBreak]. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/Integrate/idiv\\\", \
+ButtonNote -> \\\"Integrate::idiv\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.9144952636841545`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Integrate", "::", "idiv"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Integral of \[NoBreak]\\!\\(r\\^2\\\\ \
+\\(\\(SphericalHankelH1[\\(\\(\\(\\(-1\\)\\), r\\)\\)]\\)\\)\\\\ \
+\\(\\(SphericalHankelH1[\\(\\(0, r\\)\\)]\\)\\)\\)\[NoBreak] does not \
+converge on \[NoBreak]\\!\\({0, \[Infinity]}\\)\[NoBreak]. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/Integrate/idiv\\\", \
+ButtonNote -> \\\"Integrate::idiv\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.91449526412718*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"Integrate", "::", "idiv"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Integral of \[NoBreak]\\!\\(r\\^2\\\\ \
+\\(\\(SphericalHankelH1[\\(\\(\\(\\(-1\\)\\), r\\)\\)]\\)\\)\\\\ \
+\\(\\(SphericalHankelH1[\\(\\(1, r\\)\\)]\\)\\)\\)\[NoBreak] does not \
+converge on \[NoBreak]\\!\\({0, \[Infinity]}\\)\[NoBreak]. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/Integrate/idiv\\\", \
+ButtonNote -> \\\"Integrate::idiv\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.9144952642991896`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"General", "::", "stop"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Further output of \[NoBreak]\\!\\(\\*StyleBox[\\(Integrate \
+:: idiv\\), \\\"MessageName\\\"]\\)\[NoBreak] will be suppressed during this \
+calculation. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", \
+ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/General/stop\\\", ButtonNote -> \
+\\\"General::stop\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{3.9144952643441925`*^9}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         SuperscriptBox[
+          RowBox[{"SphericalHankelH1", "[", 
+           RowBox[{
+            RowBox[{"-", "1"}], ",", "r"}], "]"}], "2"]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"0", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"1", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}]},
+     {
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"0", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         SuperscriptBox[
+          RowBox[{"SphericalHankelH1", "[", 
+           RowBox[{"0", ",", "r"}], "]"}], "2"]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"0", ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"1", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}]},
+     {
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{
+           RowBox[{"-", "1"}], ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"1", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"0", ",", "r"}], "]"}], " ", 
+         RowBox[{"SphericalHankelH1", "[", 
+          RowBox[{"1", ",", "r"}], "]"}]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}], 
+      RowBox[{
+       SubsuperscriptBox["\[Integral]", "0", "\[Infinity]"], 
+       RowBox[{
+        RowBox[{
+         SuperscriptBox["r", "2"], " ", 
+         SuperscriptBox[
+          RowBox[{"SphericalHankelH1", "[", 
+           RowBox[{"1", ",", "r"}], "]"}], "2"]}], 
+        RowBox[{"\[DifferentialD]", "r"}]}]}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{3.914495265600264*^9}]
+}, Open  ]],
+
+Cell["\<\
+Si no lo puede integrar,prueba con NIntegrate*y,si a\[UAcute]n as\[IAcute] no \
+va,con l\[IAcute]mites altos pero finitos de integraci\[OAcute]n\
+\>", "Text",
+ CellChangeTimes->{3.9144950386582837`*^9}]
+},
+WindowSize->{1350, 633},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1536, 47, 191, "Input"],
+Cell[2118, 71, 138, 3, 44, "Output"],
+Cell[2259, 76, 136, 3, 44, "Output"],
+Cell[2398, 81, 138, 3, 44, "Output"],
+Cell[2539, 86, 569, 11, 37, "Message"],
+Cell[3111, 99, 622, 12, 37, "Message"],
+Cell[3736, 113, 625, 12, 37, "Message"],
+Cell[4364, 127, 534, 11, 35, "Message"],
+Cell[4901, 140, 3993, 111, 137, "Output"]
+}, Open  ]],
+Cell[8909, 254, 212, 4, 45, "Text"]
+}
+]
+*)
+
+(* End of internal cache information *)
