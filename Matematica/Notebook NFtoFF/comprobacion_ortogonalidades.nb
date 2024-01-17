@@ -10,14 +10,16 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      2832,         94]
-NotebookOptionsPosition[      2516,         79]
-NotebookOutlinePosition[      2860,         94]
-CellTagsIndexPosition[      2817,         91]
+NotebookDataLength[      9525,        240]
+NotebookOptionsPosition[      8856,        214]
+NotebookOutlinePosition[      9200,        229]
+CellTagsIndexPosition[      9157,        226]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
+
+Cell[CellGroupData[{
 Cell[BoxData[{
  RowBox[{
   RowBox[{
@@ -39,6 +41,19 @@ Cell[BoxData[{
    3.9144956439189024`*^9, 3.9144956484851637`*^9}, {3.9144962898488474`*^9, 
    3.91449629024187*^9}, {3.9144964850650134`*^9, 3.914496498554785*^9}, 
    3.914496594299261*^9}],
+
+Cell[BoxData[
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}]], "Output",
+ CellChangeTimes->{3.9144967217965536`*^9}],
+
+Cell[BoxData[
+ RowBox[{"SphericalHankelH1", "[", 
+  RowBox[{"n", ",", "z"}], "]"}]], "Output",
+ CellChangeTimes->{3.9144967217985535`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
 
 Cell[BoxData[
  RowBox[{
@@ -69,7 +84,127 @@ Cell[BoxData[
        RowBox[{"-", "1"}], ",", "1"}], "}"}]}], "]"}]}], ";", 
   RowBox[{"results01", "//", "MatrixForm"}]}]], "Input",
  CellChangeTimes->{{3.914496489287255*^9, 3.9144964906603336`*^9}, {
-  3.914496570791917*^9, 3.9144965719449825`*^9}}],
+   3.914496570791917*^9, 3.9144965719449825`*^9}, {3.914496743350786*^9, 
+   3.91449675774861*^9}, {3.914496791683551*^9, 3.9144968059213657`*^9}, {
+   3.9144968555642047`*^9, 3.9144968568502784`*^9}, {3.9144968977266164`*^9, 
+   3.914496898090637*^9}, 3.91449693870096*^9, {3.914497687306778*^9, 
+   3.914497688237831*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NIntegrate", "::", "ncvb"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"NIntegrate failed to converge to prescribed accuracy after \
+\[NoBreak]\\!\\(9\\)\[NoBreak] recursive bisections in \[NoBreak]\\!\\(r\\)\
+\[NoBreak] near \[NoBreak]\\!\\({r}\\)\[NoBreak] = \
+\[NoBreak]\\!\\({6.3886967935314255`*^56}\\)\[NoBreak]. NIntegrate obtained \
+\[NoBreak]\\!\\(1.3127786238884452`*^244 - \\(\\(2.2508309347614453`*^243\\\\ \
+\[ImaginaryI]\\)\\)\\)\[NoBreak] and \[NoBreak]\\!\\(1.3128597060682114`*^244\
+\\)\[NoBreak] for the integral and error estimates. \\!\\(\\*ButtonBox[\\\"\
+\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/NIntegrate/ncvb\\\", ButtonNote -> \
+\\\"NIntegrate::ncvb\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.914496722459592*^9, 3.91449675880167*^9}, {
+   3.9144967936996665`*^9, 3.914496806539401*^9}, 3.9144968584463696`*^9, 
+   3.9144968998777394`*^9, 3.9144969394090004`*^9, 3.9144986939453545`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NIntegrate", "::", "ncvb"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"NIntegrate failed to converge to prescribed accuracy after \
+\[NoBreak]\\!\\(9\\)\[NoBreak] recursive bisections in \[NoBreak]\\!\\(r\\)\
+\[NoBreak] near \[NoBreak]\\!\\({r}\\)\[NoBreak] = \
+\[NoBreak]\\!\\({6.3886967935314255`*^56}\\)\[NoBreak]. NIntegrate obtained \
+\[NoBreak]\\!\\(1.2098151282028724`*^244 - \\(\\(1.434898221679017`*^244\\\\ \
+\[ImaginaryI]\\)\\)\\)\[NoBreak] and \
+\[NoBreak]\\!\\(1.849976246075502`*^244\\)\[NoBreak] for the integral and \
+error estimates. \\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\
+\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/NIntegrate/ncvb\\\", ButtonNote -> \
+\\\"NIntegrate::ncvb\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.914496722459592*^9, 3.91449675880167*^9}, {
+   3.9144967936996665`*^9, 3.914496806539401*^9}, 3.9144968584463696`*^9, 
+   3.9144968998777394`*^9, 3.9144969394090004`*^9, 3.914498694151366*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"NIntegrate", "::", "ncvb"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"NIntegrate failed to converge to prescribed accuracy after \
+\[NoBreak]\\!\\(9\\)\[NoBreak] recursive bisections in \[NoBreak]\\!\\(r\\)\
+\[NoBreak] near \[NoBreak]\\!\\({r}\\)\[NoBreak] = \
+\[NoBreak]\\!\\({6.3886967935314255`*^56}\\)\[NoBreak]. NIntegrate obtained \
+\[NoBreak]\\!\\(1.3319347259934442`*^244 - \\(\\(6.8568589233968616`*^16\\\\ \
+\[ImaginaryI]\\)\\)\\)\[NoBreak] and \[NoBreak]\\!\\(1.3128597060682116`*^244\
+\\)\[NoBreak] for the integral and error estimates. \\!\\(\\*ButtonBox[\\\"\
+\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", ButtonFrame->None, \
+ButtonData:>\\\"paclet:ref/message/NIntegrate/ncvb\\\", ButtonNote -> \
+\\\"NIntegrate::ncvb\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.914496722459592*^9, 3.91449675880167*^9}, {
+   3.9144967936996665`*^9, 3.914496806539401*^9}, 3.9144968584463696`*^9, 
+   3.9144968998777394`*^9, 3.9144969394090004`*^9, 3.9144986943563776`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  StyleBox[
+   RowBox[{"General", "::", "stop"}], "MessageName"], 
+  RowBox[{
+  ":", " "}], "\<\"Further output of \
+\[NoBreak]\\!\\(\\*StyleBox[\\(NIntegrate :: ncvb\\), \\\"MessageName\\\"]\\)\
+\[NoBreak] will be suppressed during this calculation. \
+\\!\\(\\*ButtonBox[\\\"\[RightSkeleton]\\\", ButtonStyle->\\\"Link\\\", \
+ButtonFrame->None, ButtonData:>\\\"paclet:ref/message/General/stop\\\", \
+ButtonNote -> \\\"General::stop\\\"]\\)\"\>"}]], "Message", "MSG",
+ CellChangeTimes->{{3.914496722459592*^9, 3.91449675880167*^9}, {
+   3.9144967936996665`*^9, 3.914496806539401*^9}, 3.9144968584463696`*^9, 
+   3.9144968998777394`*^9, 3.9144969394090004`*^9, 3.914498694449383*^9}],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{"1.3127786238884452`*^244", "-", 
+       RowBox[{"2.2508309347614453`*^243", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{"1.2098151282028724`*^244", "-", 
+       RowBox[{"1.434898221679017`*^244", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{"1.3319347259934442`*^244", "-", 
+       RowBox[{"6.8568589233968616`*^16", " ", "\[ImaginaryI]"}]}]},
+     {
+      RowBox[{"1.2098151282028724`*^244", "-", 
+       RowBox[{"1.434898221679017`*^244", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{
+       RowBox[{"-", "6.38276021064706`*^15"}], "-", 
+       RowBox[{"2.6447133498818893`*^244", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{"1.434898221679017`*^244", "-", 
+       RowBox[{"1.2098151282028724`*^244", " ", "\[ImaginaryI]"}]}]},
+     {
+      RowBox[{"1.3319347259934442`*^244", "-", 
+       RowBox[{"6.8568589233968616`*^16", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{"1.434898221679017`*^244", "-", 
+       RowBox[{"1.2098151282028724`*^244", " ", "\[ImaginaryI]"}]}], 
+      RowBox[{"1.3127786238884452`*^244", "+", 
+       RowBox[{"2.2508309347614453`*^243", " ", "\[ImaginaryI]"}]}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{{3.9144967229306183`*^9, 3.9144967596237173`*^9}, {
+   3.914496794885734*^9, 3.9144968071224337`*^9}, 3.9144968589153967`*^9, 
+   3.9144969054850597`*^9, 3.9144969399550314`*^9, 3.914498695026416*^9}]
+}, Open  ]],
 
 Cell["\<\
 Si no lo puede integrar,prueba con NIntegrate*y,si a\[UAcute]n as\[IAcute] no \
@@ -93,9 +228,20 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[557, 20, 745, 20, 104, "Input"],
-Cell[1305, 42, 992, 29, 75, "Input"],
-Cell[2300, 73, 212, 4, 45, "Text"]
+Cell[CellGroupData[{
+Cell[579, 22, 745, 20, 104, "Input"],
+Cell[1327, 44, 138, 3, 44, "Output"],
+Cell[1468, 49, 138, 3, 44, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1643, 57, 1267, 33, 104, "Input"],
+Cell[2913, 92, 1043, 17, 74, "Message"],
+Cell[3959, 111, 1041, 18, 74, "Message"],
+Cell[5003, 131, 1042, 17, 74, "Message"],
+Cell[6048, 150, 706, 13, 35, "Message"],
+Cell[6757, 165, 1868, 40, 122, "Output"]
+}, Open  ]],
+Cell[8640, 208, 212, 4, 45, "Text"]
 }
 ]
 *)
