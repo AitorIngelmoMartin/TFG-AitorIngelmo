@@ -130,7 +130,7 @@ def zeroedvalueCut(fields,datatypes):
 
 def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
     plt.figure(plotnumber)
-    im = plt.imshow(func(value_to_plot[datatype][cutNumber]).transpose(),cmap=cmap,aspect=aspect,extent=extent)
+    im = plt.imshow(np.rot90(np.rot90(func(value_to_plot[datatype][cutNumber]))),cmap=cmap,aspect=aspect,extent=extent)
     plt.xlabel(plotinfo['xlabel'])
     plt.ylabel(plotinfo['ylabel'])
     plt.title(plotinfo['title'])
@@ -172,7 +172,7 @@ def nearfieldPoint0toPoint1(fields,cut):
     plotValue(5,'parte real W',np.real(w))      
     plotValue(6,'parte imaginaria W',np.imag(w))
 
-    phaseShift = np.exp(-j*w*(31.e-3 - 15.e-3))  
+    phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3))  
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
     for i in range(len(fields['zValueZeroedplane'].keys())):
@@ -191,7 +191,7 @@ def nearfieldPoint0toPoint1(fields,cut):
         fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})        
         
 
-def plotValue(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
+def plotValue(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'jet'):
         
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
@@ -219,15 +219,15 @@ if __name__ == '__main__':
     
     extractMatrixData(fields)   
 
-    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
+    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,30.e-3])
     
     #Este método quita de en medio los NaN.
     maskvalueCut(fields,fields['file_type'])
 
     #En estas líneas se hacen las representaciones de los cortes.
-    plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
-    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
-    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
+    plotinfo = {'xlabel':'x','ylabel':'y','title':'Enorm','legend':'Electric field\n (V/m)'}
+    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='jet')
+    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='jet')
     
     #fields.pop('lines')
     #print(fields)

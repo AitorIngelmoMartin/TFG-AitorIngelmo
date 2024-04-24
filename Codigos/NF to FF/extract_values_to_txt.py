@@ -59,21 +59,17 @@ def input_data_process(flow_config):
         print(f"ERROR:{exc}")
 
     return fields
-def read_data(fields,read_type='all'):
+
+def read_data(fields: dict):
     """
-    Este método realiza la lectura de todos o parte de los ficheros de salida de Comsol 
-    para las componentes del campo eléctrico.
-        "fields": Es el diccionario principal sobre el que estamos trabajando
-        "read_type": Es una variable opcional empleada para definir el modo de lectura.
-                        Por defecto lee todos los ficheros. Pero podemos especificarle que
-                        lea algunos en concreto si la igualamos a un diccionario que contenga 
-                        los ficheros a leer.                  
+    This method reads all or part of the Comsol output files for the electric field components. 
+    output files for the electric field components.
+        "fields": It is the main dictionary we are working on.        
     """
-    if read_type == 'all':
-        for file_type, file_path in fields['files'].items():
-            with open(file_path) as file:
-                fields['lines'][file_type] = file.readlines()
-    #TODO: Que lea los ficheros dentro de read_type en caso de no tener el valor por defecto
+    for file_type, file_path in fields['files'].items():
+        with open(file_path) as file:
+            fields['lines'][file_type] = file.readlines()
+
      
 def extract_matrix_data(fields):
     """
@@ -206,7 +202,7 @@ def extract_values_to_file(theta,phi,normE):
 % Expressions:        1
 % Description:        Electric field, y component
 % Length unit:        mm
-% Theta                       Phi                        r
+% Theta           Phi              r
 """
     with open('python_FF_normR.txt', 'w') as f:
         f.write(header)

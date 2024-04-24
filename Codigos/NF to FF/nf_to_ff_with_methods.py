@@ -13,26 +13,27 @@ raw_data      = 9
 pauseinterval = 0.01
 
 k0 ,delta_x,L_x,delta_y,L_y,coordz = 0,0,0,0,0,0
-flow_config = { 'directory':r'C:\\Users\\aitor\\OneDrive\\Desktop\\TFG-AitorIngelmo\\Codigos\\NF to FF',
-                'files_in_directory': [
-                    'microstrip_patch_antenna_Ex.txt',
-                    'microstrip_patch_antenna_Ey.txt',
-                    'microstrip_patch_antenna_Ez.txt',
-                    'microstrip_patch_antenna_normE.txt',
-                    'microstrip_patch_antenna_Ephi.txt',
-                    'microstrip_patch_antenna_Etheta.txt',
-                    'microstrip_patch_antenna_Enorm.txt'
-                ],
-                'file_type':['Ex','Ey','Ez','normE','Ephi','Etheta','Enorm'],
-                'work_mode':'NFtoFF',      
-                'shape':[100,100,100],
-                'freq':1.575e9,
-                'length_unit':1e-3,
-                'res':2e-3
-                }
+flow_config = { 
+    'directory':r'NF to FF',
+    'files_in_directory': [
+        'microstrip_patch_antenna_Ex.txt',
+        'microstrip_patch_antenna_Ey.txt',
+        'microstrip_patch_antenna_Ez.txt',
+        'microstrip_patch_antenna_normE.txt',
+        'microstrip_patch_antenna_Ephi.txt',
+        'microstrip_patch_antenna_Etheta.txt',
+        'microstrip_patch_antenna_Enorm.txt'
+    ],
+    'file_type':['Ex','Ey','Ez','normE','Ephi','Etheta','Enorm'],
+    'work_mode':'NFtoFF',      
+    'shape':[100,100,100],
+    'freq':1.575e9,
+    'length_unit':1e-3,
+    'res':2e-3
+}
 
 def input_data_process(flow_config):
-    # Este es el constructor de la clase. En él almacenamos los inputs como atributos de la clase.
+    """Function used to read data from the JSON file."""
     global k0
     try:
         fields,files = {}, {}     
@@ -87,7 +88,7 @@ def extract_matrix_data(fields):
         rawdatalines = fields['lines'][file_type][raw_data:]
         if coord_flag == None:
             coord_flag = 1
-            coord      = np.array([[float(s) for k,s in zip(range(4),rawdatalines[i].split()) if k<3 ] \
+            coord = np.array([[float(s) for k,s in zip(range(4),rawdatalines[i].split()) if k<3 ] \
                 for i in range(len(rawdatalines))]).reshape(len(rawdatalines),3)
             
             coordx  = np.unique(coord[:,0])*fields['length_unit']
@@ -134,19 +135,8 @@ def extract_nan_values(fields,field_components):
         fields['zValueZeroedplane'][component] = np.copy(fields['zValueplane'][component])
         fields['zValueZeroedplane'][component][indices] = 0.0
 
-def plot_value(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
-    plt.figure(plotnumber)
-    im = plt.imshow(func(value_to_plot[datatype][cutNumber]).transpose(),cmap=cmap,aspect=aspect,extent=extent)
-    plt.xlabel(plotinfo['xlabel'])
-    plt.ylabel(plotinfo['ylabel'])
-    plt.title(plotinfo['title'])
-    if colorbar == True:
-        cbar = plt.colorbar(pad=0.075)
-        cbar.ax.set_title(plotinfo['legend'])
-    plt.draw()
-    plt.pause(pauseinterval)
-
 def transformation_to_farfield(fields,measure_cut):
+    print(fields['file_type'])
     extract_nan_values(fields,field_components = fields['file_type'])
     Nx = fields['zValueZeroedplane']['Ex'][measure_cut].shape[0]
     Ny = fields['zValueZeroedplane']['Ex'][measure_cut].shape[1]
@@ -179,24 +169,23 @@ def transformation_to_farfield(fields,measure_cut):
     suma = 0
     for i in range(len(fields['zValueZeroedplane'].keys())):
         field_component = fields_to_transform[i]   
-        if field_component in ['Ex','Ey','Ez']:
+        if field_component in ['Ex','Ey','Ez','Enorm']:
             Ehat_component = factorf*np.fft.fft2((fields['zValueZeroedplane'][field_component][measure_cut]))
             Ehat_component_interp_func = RegularGridInterpolator((kx_array, ky_array), Ehat_component)
             Ehat_component_interp_data_func = Ehat_component_interp_func(kxy)
 
             Ehat_component_calculated = f_factor*(Ehat_component_interp_data_func)
-            represent_values(3,f'FFT 2D de {field_component} en FF',np.abs(Ehat_component_calculated),f'Electric field\n {field_component} (V/m)')
-            #suma += np.abs(Ehat_component_calculated)
+            represent_values(3,f'FFT 2D de {field_component}',np.abs(Ehat_component_calculated),f'Electric field\n {field_component} (V/m)')
+            # suma += np.abs(Ehat_component_calculated)
             fields['fields_transformed'][f"FF_{field_component}"]=Ehat_component_calculated
-            #if field_component =='normE':
 
             comparison = quantitative_comparison(fields['zValueZeroedplane'][field_component][1],Ehat_component_calculated)
             represent_radiation_map(phi_mesh,theta_mesh,np.abs(Ehat_component_calculated))
 
             fields['quantitative_comparison'].update({f"{field_component}_comparison":comparison})
 
-    #represent_radiation_map(phi_mesh,theta_mesh,suma)
-
+    # represent_radiation_map(phi_mesh,theta_mesh,suma)
+    
 def represent_radiation_map(theta_mesh,phi_mesh,Ehat_component_calculated):     
     #https://es.wikipedia.org/wiki/Coordenadas_esf%C3%A9ricas
     # Representación tridimensional del diagrama de radiación
@@ -213,12 +202,12 @@ def represent_radiation_map(theta_mesh,phi_mesh,Ehat_component_calculated):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.set_title('Diagrama de Radiación')
+    ax.set_title('Diagrama de Radiación suma absoluta')
 
     plt.show()
 
-def represent_values(plot_number, title, values_to_plot,leyenda,mapaDeColores = 'hot'):
-        
+def represent_values(plot_number, title, values_to_plot,leyenda,mapaDeColores = 'jet'):
+
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
     plt.xlabel('x')
@@ -235,6 +224,18 @@ def quantitative_comparison(comsol_simulated_value,value_calculated):
 
     return comparison
 
+def plot_value(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
+    plt.figure(plotnumber)
+    im = plt.imshow(func(value_to_plot[datatype][cutNumber]),cmap=cmap,aspect=aspect,extent=extent)
+    plt.xlabel(plotinfo['xlabel'])
+    plt.ylabel(plotinfo['ylabel'])
+    plt.title(plotinfo['title'])
+    if colorbar == True:
+        cbar = plt.colorbar(pad=0.075)
+        cbar.ax.set_title(plotinfo['legend'])
+    plt.draw()
+    plt.pause(pauseinterval)
+
 if __name__ == '__main__':
     plt.close('all')
     #try:
@@ -244,20 +245,22 @@ if __name__ == '__main__':
 
     extract_matrix_data(fields)   
 
-    extract_z_cut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
+    extract_z_cut(fields,fields['file_type'],cuts_to_extract = [40.e-3,50.e-3])
 
     #Este método quita de en medio los NaN.
     mask_cut_values(fields,fields['file_type'])
 
-    #En estas líneas se hacen las representaciones de los cortes.
-    plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
-    plot_value(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
-    plot_value(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
+    # #En estas líneas se hacen las representaciones de los cortes.
+    # plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
+    # plot_value(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='jet')
+    # plot_value(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='jet')
+    
+    #En estas líneas se hacen las representaciones de los cortes.   
+    plotinfo_normE = {'xlabel':'x','ylabel':'y','title':'normE','legend':'Electric field\n normE (V/m)'}
+    plot_value(1,fields['zValueMaskedplane'],plotinfo_normE,'normE',0,func=np.abs,cmap='jet')
+    plot_value(2,fields['zValueMaskedplane'],plotinfo_normE,'normE',1,func=np.abs,cmap='jet')
 
-    #fields.extract_nan_values(['Ex','Ey','Ez','normE'])
-    transformation_to_farfield(fields,measure_cut = 0)                
-    print("FIN PROGRAMA")
-    #
+    transformation_to_farfield(fields,measure_cut = 0)
+
     #except Exception as exc:
         #print(exc)
-
