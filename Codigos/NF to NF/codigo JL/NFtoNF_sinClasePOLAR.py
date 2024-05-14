@@ -130,7 +130,7 @@ def zeroedvalueCut(fields,datatypes):
 
 def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
     plt.figure(plotnumber)
-    im = plt.imshow(func(value_to_plot[datatype][cutNumber]).transpose(),cmap=cmap,aspect=aspect,extent=extent)
+    im = plt.imshow(np.rot90(np.rot90(func(value_to_plot[datatype][cutNumber]))),cmap=cmap,aspect=aspect,extent=extent)
     plt.xlabel(plotinfo['xlabel'])
     plt.ylabel(plotinfo['ylabel'])
     plt.title(plotinfo['title'])
@@ -160,7 +160,7 @@ def nearfieldPoint0toPoint1(fields,cut):
             kxcoordinatesMatrix[i-1][j-1]=(delta_kx*indice)
     kycoordinatesMatrix = np.rot90(kxcoordinatesMatrix,1)
    
-    w2 = k0**2 - kxcoordinatesMatrix**2 - kycoordinatesMatrix**2    
+    w2 = k0**2 - kxcoordinatesMatrix**2 - kycoordinatesMatrix**2
 
     valoresPositivos = np.where(w2 >= 0)
     valoresNegativos = np.where(w2 < 0)
@@ -168,87 +168,47 @@ def nearfieldPoint0toPoint1(fields,cut):
     w2[valoresNegativos] = -1j*np.sqrt(-1*w2[valoresNegativos])
     w = np.conjugate(w2)
 
-    #PLOTS de W
-    #representarValores(4,'W2',w2)
-    #representarValores(5,'parte real W',np.real(w))      
-    #representarValores(6,'parte imaginaria W',np.imag(w))
-
-    phaseShift = np.exp(-j*w*(31.e-3 - 15.e-3))  
+    phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3))  
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
     for i in range(len(fields['zValueZeroedplane'].keys())):
         Ehat_component_calculated = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))
-        #representarValores(3,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
-
+ 
         fields['fields_transformed'].update({f"NF_{fields_to_transform[i]}":Ehat_component_calculated})
 
         EhatEnZ1 = Ehat_component_calculated*phaseShift
         EhatxReconstruido = np.fft.ifft2(EhatEnZ1)
 
-        representarValores(3,f'Valor 2D original {fields_to_transform[i]}',np.abs(fields['zValueZeroedplane'][fields_to_transform[i]][1]).transpose())
-        representarValores(4,f'Valor 2D reconstruido de {fields_to_transform[i]}',np.abs(EhatxReconstruido).transpose())
+def quantitativeComparison(comsol_simulated_value,value_calculated_value):        
 
-        comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],EhatxReconstruido)
-        drawHistogram(values=[EhatxReconstruido,fields['zValueZeroedplane'][fields_to_transform[i]][1]],magnitud=fields_to_transform[i])
-        
-        extractOutOfMeasurePoints(comparison)
-        representarValores(5,f'Comparación cuantitativa NFtoNF {fields_to_transform[i]}',comparison)
-        fields['quantitative_comparison'][f"{fields_to_transform[i]}_comparison"] = comparison        
-
-def representarValores(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):        
-    plt.figure(plot_number)
-    im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
-    plt.xlabel('x')
-    plt.ylabel('y')
-    plt.title(title)
-    cbar = plt.colorbar()
-    cbar.ax.set_title(leyenda)
-    plt.draw()
-    plt.pause(pauseinterval)
-
-def extractOutOfMeasurePoints(EhatxReconstruido):
-    r = 50
-    cumplido = 0
-    for nx in range(100):
-        for ny in range(100):
-            distancia_al_centro = np.sqrt((nx - r)**2 + (ny - (100 - r - 1))**2)                                              
-            if distancia_al_centro>=r:
-                EhatxReconstruido[nx,ny] = -999
-                cumplido +=1
-    print("lo han cumplido",cumplido)
-
-def quantitativeComparison(comsol_simulated_value,value_calculated):
-    comsol_simulated_value = np.where(np.abs(comsol_simulated_value) > 0, comsol_simulated_value, 999)
-    comparison = np.abs(comsol_simulated_value - value_calculated) / np.abs(comsol_simulated_value)    
-    
+    comsol_simulated_value = np.where(np.abs(comsol_simulated_value) > 0, comsol_simulated_value, 0.0000001)
+    comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
     return comparison
 
-def drawHistogram(values,magnitud):
-    if type(values) == list:
-        value_array = []
-        colores = ['blue','red']
-        for i in range(len(values)):
-            histogram = np.histogram(values[i], bins=np.arange(11))
-            plt.bar(histogram[1][:-1], histogram[0])
-            if i == 0:
-                histogram, bins = np.histogram(values[i].flatten(), bins=np.arange(11))
-            else:
-                histogram, _ = np.histogram(values[i].flatten(), bins=bins)
-            value_array.append(values[i].flatten())
-        
-        plt.hist(value_array, bins=bins, color=colores, label=[f'{magnitud} reconstruido', f'{magnitud} COMSOL'])
-        plt.xlabel('Valor')
-        plt.ylabel('Cantidad de apariciones')
-        plt.title(f'Histograma de la comparación de {magnitud}')
-        plt.legend()
-        plt.show()
-    else:
-        histogram = np.histogram(values, bins=np.arange(11))
-        plt.bar(histogram[1][:-1], histogram[0])
-        plt.xlabel('Valor')
-        plt.ylabel('Frecuencia')
-        plt.title('Histograma de la matriz')
-        plt.show()
+def represent_polar_diagram(plotnumber: int, field: list):
+    """Function used to generate polar plots"""
+
+    #Cálculo de r y phi
+    # r = np.abs(field)
+    # phi = np.angle(field)
+    plt.figure(plotnumber)
+
+    # Crear el gráfico polar
+    
+    r = np.array([])
+    phi = np.array([])
+
+    for fila in field:
+        for valor in fila:
+            r = np.append(r, np.abs(valor))
+            phi = np.append(phi,np.angle(valor))
+    print(r)
+    print(phi)
+    plt.polar(r,np.radians(phi))
+
+    plt.show()
+
+
 if __name__ == '__main__':
     plt.close('all')
     #try:
@@ -259,17 +219,24 @@ if __name__ == '__main__':
     
     extractMatrixData(fields)   
 
-    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
+    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,30.e-3])
     
     #Este método quita de en medio los NaN.
     maskvalueCut(fields,fields['file_type'])
+    
+    #fields.pop('lines')
+    #print(fields)
+    
+    #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
+    nearfieldPoint0toPoint1(fields,cut = 0)
 
-    #En estas líneas se hacen las representaciones de los cortes.
-    plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
-    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
-    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
+    #Plots diagramas de radiación
+    print(fields.keys())
+    # print(fields['zValueMaskedplane'].keys())
 
-    nearfieldPoint0toPoint1(fields,cut = 0)                
+    print(fields['zValueZeroedplane']['normE'][0].shape)
+    represent_polar_diagram(30,fields['zValueMaskedplane']['Ex'][0])
+
     print("FIN PROGRAMA")
     #     
     #except Exception as exc:

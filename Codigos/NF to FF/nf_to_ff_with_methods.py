@@ -180,7 +180,7 @@ def transformation_to_farfield(fields,measure_cut):
             fields['fields_transformed'][f"FF_{field_component}"]=Ehat_component_calculated
 
             comparison = quantitative_comparison(fields['zValueZeroedplane'][field_component][1],Ehat_component_calculated)
-            represent_radiation_map(phi_mesh,theta_mesh,np.abs(Ehat_component_calculated))
+            # represent_radiation_map(phi_mesh,theta_mesh,np.abs(Ehat_component_calculated))
 
             fields['quantitative_comparison'].update({f"{field_component}_comparison":comparison})
 
@@ -236,6 +236,20 @@ def plot_value(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda 
     plt.draw()
     plt.pause(pauseinterval)
 
+def represent_polar_diagram(plotnumber: int, field: list):
+    """Function used to generate polar plots"""
+
+    #Cálculo de r y phi
+    r = np.abs(field)
+    phi = np.angle(field)
+
+    # Crear el gráfico polar
+    plt.figure(plotnumber)
+    ax = plt.polar(phi,r)
+
+    # Mostrar el gráfico
+    plt.show()
+
 if __name__ == '__main__':
     plt.close('all')
     #try:
@@ -261,6 +275,10 @@ if __name__ == '__main__':
     plot_value(2,fields['zValueMaskedplane'],plotinfo_normE,'normE',1,func=np.abs,cmap='jet')
 
     transformation_to_farfield(fields,measure_cut = 0)
+    print("EH\n")
+    #Plots diagramas de radiación
+    represent_polar_diagram(10,fields['fields_transformed'][f"FF_Enorm"])
 
     #except Exception as exc:
         #print(exc)
+

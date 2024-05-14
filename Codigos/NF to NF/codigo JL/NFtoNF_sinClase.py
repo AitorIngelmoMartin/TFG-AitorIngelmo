@@ -209,6 +209,23 @@ def quantitativeComparison(comsol_simulated_value,value_calculated_value):
     comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
     return comparison
 
+def represent_polar_diagram(plotnumber: int, field: list):
+    """Function used to generate polar plots"""
+
+    #Cálculo de r y phi
+    r = np.abs(field)
+    phi = np.angle(field)
+    print(field.shape)
+    print(field[0])
+
+    # Crear el gráfico polar
+    plt.figure(plotnumber)
+    plt.polar(r,np.radians(phi))
+
+    # Mostrar el gráfico
+    plt.show()
+
+
 if __name__ == '__main__':
     plt.close('all')
     #try:
@@ -233,7 +250,12 @@ if __name__ == '__main__':
     #print(fields)
     
     #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
-    nearfieldPoint0toPoint1(fields,cut = 0)                
+    nearfieldPoint0toPoint1(fields,cut = 0)
+
+    #Plots diagramas de radiación
+    print(fields['fields_transformed'].keys())
+    represent_polar_diagram(30,fields['fields_transformed'][f"NF_normE"])
+
     print("FIN PROGRAMA")
     #     
     #except Exception as exc:
