@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[      5166,        159]
-NotebookOptionsPosition[      4594,        134]
-NotebookOutlinePosition[      4937,        149]
-CellTagsIndexPosition[      4894,        146]
+NotebookDataLength[      8055,        251]
+NotebookOptionsPosition[      7210,        217]
+NotebookOutlinePosition[      7553,        232]
+CellTagsIndexPosition[      7510,        229]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -130,6 +130,89 @@ Cell[BoxData[
  CellChangeTimes->{
   3.9247707371978407`*^9, {3.9247708776848764`*^9, 3.924770920191307*^9}, 
    3.92477095363422*^9}]
+}, Open  ]],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"LegendrePDer", "[", 
+   RowBox[{"n_", ",", "m_", ",", "theta_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", "1"}], "/", "2"}], " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"n", "+", "m"}], ")"}], 
+      RowBox[{"(", 
+       RowBox[{"n", "-", "m", "+", "1"}], ")"}], " ", 
+      RowBox[{"LegendreP", "[", 
+       RowBox[{"n", ",", 
+        RowBox[{"m", "-", "1"}], ",", 
+        RowBox[{"Cos", "[", "theta", "]"}]}], "]"}]}], "-", 
+     RowBox[{"LegendreP", "[", 
+      RowBox[{"n", ",", 
+       RowBox[{"m", "+", "1"}], ",", 
+       RowBox[{"Cos", "[", "theta", "]"}]}], "]"}]}], 
+    ")"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"LegendrePDer", "[", 
+  RowBox[{"1", ",", "1", ",", "5."}], "]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.9247715416188507`*^9, 3.9247715534185257`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"LegendrePDerSin", "[", 
+   RowBox[{"n_", ",", "m_", ",", "theta_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"Sin", "[", "theta", "]"}], " ", 
+   RowBox[{"LegendrePDer", "[", 
+    RowBox[{"n", ",", "m", ",", "theta"}], "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"LegendrePDerSin", "[", 
+  RowBox[{"1", ",", "1", ",", "5."}], "]"}]}], "Input",
+ CellChangeTimes->{{3.924771685424076*^9, 3.9247717020630283`*^9}}],
+
+Cell[BoxData["0.2720105554446849`"], "Output",
+ CellChangeTimes->{3.9247717031960926`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"mLegendrePDividedBySin", "[", 
+     RowBox[{"n_", ",", "m_", ",", "theta_"}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"-", "1"}], "/", "2"}], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"LegendreP", "[", 
+        RowBox[{
+         RowBox[{"n", "-", "1"}], ",", 
+         RowBox[{"m", "+", "1"}], ",", 
+         RowBox[{"Cos", "[", "theta", "]"}]}], "]"}], "+", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"n", "+", "m", "-", "1"}], ")"}], 
+        RowBox[{"(", 
+         RowBox[{"n", "+", "m"}], ")"}], " ", 
+        RowBox[{"LegendreP", "[", 
+         RowBox[{
+          RowBox[{"n", "-", "1"}], ",", 
+          RowBox[{"m", "-", "1"}], ",", 
+          RowBox[{"Cos", "[", "theta", "]"}]}], "]"}]}]}], ")"}]}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{"mLegendrePDividedBySin", "[", 
+    RowBox[{"1", ",", "1", ",", "5"}], "]"}]}]}]], "Input",
+ CellChangeTimes->{{3.924772100219801*^9, 3.924772110650398*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", "1"}]], "Output",
+ CellChangeTimes->{3.924772111702458*^9}]
 }, Open  ]]
 },
 WindowSize->{707, 505},
@@ -160,6 +243,15 @@ Cell[2923, 89, 634, 10, 44, "Output"]
 Cell[CellGroupData[{
 Cell[3594, 104, 657, 16, 133, "Input"],
 Cell[4254, 122, 324, 9, 44, "Output"]
+}, Open  ]],
+Cell[4593, 134, 887, 25, 220, "Input"],
+Cell[CellGroupData[{
+Cell[5505, 163, 443, 10, 104, InheritFromParent],
+Cell[5951, 175, 90, 1, 44, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6078, 181, 1026, 29, 220, "Input"],
+Cell[7107, 212, 87, 2, 44, "Output"]
 }, Open  ]]
 }
 ]
