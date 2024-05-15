@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     15750,        484]
-NotebookOptionsPosition[     14190,        425]
-NotebookOutlinePosition[     14567,        441]
-CellTagsIndexPosition[     14524,        438]
+NotebookDataLength[     17033,        523]
+NotebookOptionsPosition[     15358,        460]
+NotebookOutlinePosition[     15735,        476]
+CellTagsIndexPosition[     15692,        473]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -414,6 +414,41 @@ Cell[BoxData[
 
 Cell[CellGroupData[{
 
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Cfunc", "[", 
+   RowBox[{"m_", ",", "n_", ",", "theta_", ",", "phi_"}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"0", ",", 
+     RowBox[{"I", " ", 
+      RowBox[{"mLegendrePDividedBySin", "[", 
+       RowBox[{"n", ",", "m", ",", "theta"}], "]"}]}], ",", 
+     RowBox[{"-", 
+      RowBox[{"LegendrePDer", "[", 
+       RowBox[{"n", ",", "m", ",", "theta"}], "]"}]}]}], "}"}], " ", 
+   RowBox[{"Exp", "[", 
+    RowBox[{"I", " ", "m", " ", "phi"}], "]"}]}]}], "\[IndentingNewLine]", 
+ RowBox[{"Cfunc", "[", 
+  RowBox[{"3.", ",", "3", ",", "4", ",", "4"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.924775018825736*^9, 3.9247750265451775`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"0.`", "\[VeryThinSpace]", "+", 
+    RowBox[{"0.`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "13.829496653481403`"}], "-", 
+    RowBox[{"21.749281610796043`", " ", "\[ImaginaryI]"}]}], ",", 
+   RowBox[{
+    RowBox[{"-", "14.216279183263099`"}], "+", 
+    RowBox[{"9.03956226730279`", " ", "\[ImaginaryI]"}]}]}], "}"}]], "Output",
+ CellChangeTimes->{3.924775026920199*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
 Cell[BoxData[""], "Input",
  CellChangeTimes->{{3.9247747961620007`*^9, 3.92477480962177*^9}}],
 
@@ -483,8 +518,12 @@ Cell[12761, 382, 661, 16, 164, "Input"],
 Cell[13425, 400, 472, 11, 77, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[13934, 416, 93, 1, 47, "Input"],
-Cell[14030, 419, 144, 3, 47, "Output"]
+Cell[13934, 416, 686, 17, 135, "Input"],
+Cell[14623, 435, 442, 11, 77, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[15102, 451, 93, 1, 47, "Input"],
+Cell[15198, 454, 144, 3, 47, "Output"]
 }, Open  ]]
 }
 ]
