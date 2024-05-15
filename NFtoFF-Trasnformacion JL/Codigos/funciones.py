@@ -38,14 +38,34 @@ def legendre_polinom_derived(n: int, m: int, theta: int):
     return -0.5*(((n+m)*(n-m+1)*legendre_polinom(n,m-1,cos(theta))) - (legendre_polinom(n, m+1, cos(theta))))    
 # print(legendre_polinom_derived(1,1,5))    
 
-def legendre_polinom_derived_multiplied_by_sin(n: int, m: int, theta: int):
+def legendre_polinom_derived_sin(n: int, m: int, theta: int):
     """Function that calculate the derivate of the legendre polinom multiplied by Sin(Theta)"""
     return sin(theta)*legendre_polinom_derived(n, m, theta)
-# print(legendre_polinom_derived_multiplied_by_sin(1,1,5))
+# print(legendre_polinom_derived_sin(1,1,5))
     
 def m_legendre_polinom_derived_by_sin(n: int, m: int, theta: int):
     """Function that calculate the derivate of the legendre polinom multiplicated by Sin(Theta)"""
     return -0.5*((legendre_polinom(n-1,m+1,cos(theta))) + ((n+m-1)*(n+m)*legendre_polinom(n-1,m-1,cos(theta))))
 # print(m_legendre_polinom_derived_by_sin(1,1,5))
+
+def b_sin_function(m: int, n: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Bmn"""
+    return np.array([0, legendre_polinom_derived_sin(n, m, theta)*np.exp(1j*m*phi),1j*m*legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)])
+# print(b_sin_function(2,2,5,5))
+
+def c_sin_function(m: int, n: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Cmn"""
+    return np.array([0, 1j*m*legendre_polinom(n, m, cos(theta))*np.exp(1j*m*phi),-legendre_polinom_derived_sin(n,m,theta)*np.exp(1j*m*phi)])
+# print(c_sin_function(2,2,5,5))
+
+def m_sin_function(m: int, n: int,k: int,R: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Mmn*sin(theta)"""
+    return gamma(m,n)*spherical_hankenl_H1(n, k*R)*c_sin_function(m,n,theta,phi)
+# print(m_sin_function(2,2,5,5,5,5))
+
+def n_sin_function(m: int, n: int,k: int,R: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Nmn*sin(theta)"""
+    return gamma(m,n)*((n*(n+1)*(spherical_hankenl_H1(n,k*R)/(k*R)))*(p_function(m,n,theta,phi)*sin(theta))+((hRDer(n,k,R)/(k*R))*b_sin_function(m, n, theta, phi)))
+# print(n_sin_function(2,2,5,5,5,5))
 
 
