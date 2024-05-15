@@ -2,11 +2,11 @@
 
 from math import factorial
 import numpy as np
-import scipy
+from scipy import special
 
 def spherical_hankenl_H1(n: int,m: int):
     """Spherical Hankel function of first kind"""
-    return scipy.special.spherical_jn(n,m)+1j*scipy.special.spherical_yn(n,m)
+    return special.spherical_jn(n,m)+1j*special.spherical_yn(n,m)
 
 def hRDer(n: int, k: int, R: int):
     """Derivada de la función Hankel"""
@@ -16,4 +16,22 @@ def hRDer(n: int, k: int, R: int):
 def gamma(m: int, n: int):
     """Function gamma used in our transformation"""
     return np.sqrt(((2*n+1)*factorial(n-m))/(4*np.pi*n*(n+1)*factorial(n+m)))
-# print(gamma(1,2))    
+# print(gamma(1,2))
+
+def legendre_polinom(n,m,z):
+    """Function that calculate the legendre polinom"""
+    if m > n:
+        return 0
+    elif n <= m:
+        legendre_associate_polynom = special.lpmn(n,m, z)
+        return legendre_associate_polynom[0][n][0]+1j*legendre_associate_polynom[0][n][1]
+    else:
+        legendre_associate_polynom = special.lpmn(m,n, z)
+        return legendre_associate_polynom[0][m][0]+1j*legendre_associate_polynom[0][m][1]
+    legendre_associate_polynom[0][m][n]
+print(legendre_polinom(1,1,3))
+# print(special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])
+# print((1+special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])+(5+1j*4))
+# def p_function(m: int, n: int, theta: int, phi: int):
+#     """Functional base Pmn in our spherical system"""
+#     return np.array([,0,0])
