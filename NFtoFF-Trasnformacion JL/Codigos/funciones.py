@@ -68,4 +68,7 @@ def n_sin_function(m: int, n: int,k: int,R: int, theta: int, phi: int):
     return gamma(m,n)*((n*(n+1)*(spherical_hankenl_H1(n,k*R)/(k*R)))*(p_function(m,n,theta,phi)*sin(theta))+((hRDer(n,k,R)/(k*R))*b_sin_function(m, n, theta, phi)))
 # print(n_sin_function(2,2,5,5,5,5))
 
-
+def b_function(m: int, n: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Bmn)"""
+    return np.array([0, legendre_polinom_derived(n,m,theta)*np.exp(1j*m*phi),1j*m*m_legendre_polinom_derived_by_sin(n,m,theta)*np.exp(1j*m*phi)])
+print(b_function(1,1,3,3))
