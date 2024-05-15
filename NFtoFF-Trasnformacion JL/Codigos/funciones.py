@@ -22,14 +22,12 @@ def legendre_polinom(n,m,z):
     """Function that calculate the legendre polinom"""
     if m > n:
         return 0
-    elif n <= m:
-        legendre_associate_polynom = special.lpmn(n,m, z)
-        return legendre_associate_polynom[0][n][0]+1j*legendre_associate_polynom[0][n][1]
     else:
-        legendre_associate_polynom = special.lpmn(m,n, z)
-        return legendre_associate_polynom[0][m][0]+1j*legendre_associate_polynom[0][m][1]
-    legendre_associate_polynom[0][m][n]
-print(legendre_polinom(1,1,3))
+        return special.clpmn(m, n, z, 2)[0][m][n]
+
+# print(legendre_polinom(1,1,4))
+# print(special.clpmn(1, 1, 4,2)[0])
+
 # print(special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])
 # print((1+special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])+(5+1j*4))
 # def p_function(m: int, n: int, theta: int, phi: int):
