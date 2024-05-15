@@ -24,7 +24,6 @@ def legendre_polinom(n: int, m: int, z: int):
         return 0
     else:
         return special.clpmn(m, n, z, 2)[0][m][n]
-
 # print(legendre_polinom(1,1,4))
 # print(special.clpmn(1, 1, 4,2)[0])
 
@@ -63,17 +62,48 @@ def m_sin_function(m: int, n: int,k: int,R: int, theta: int, phi: int):
     return gamma(m,n)*spherical_hankenl_H1(n, k*R)*c_sin_function(m,n,theta,phi)
 # print(m_sin_function(2,2,5,5,5,5))
 
-def n_sin_function(m: int, n: int,k: int,R: int, theta: int, phi: int):
+def n_sin_function(m: int, n: int, k: int,R: int, theta: int, phi: int):
     """Function used to calculate our spherical base function Nmn*sin(theta)"""
     return gamma(m,n)*((n*(n+1)*(spherical_hankenl_H1(n,k*R)/(k*R)))*(p_function(m,n,theta,phi)*sin(theta))+((hRDer(n,k,R)/(k*R))*b_sin_function(m, n, theta, phi)))
 # print(n_sin_function(2,2,5,5,5,5))
 
 def b_function(m: int, n: int, theta: int, phi: int):
-    """Function used to calculate our spherical base function Bmn)"""
-    return np.array([0, legendre_polinom_derived(n,m,theta)*np.exp(1j*m*phi),1j*m*m_legendre_polinom_derived_by_sin(n,m,theta)*np.exp(1j*m*phi)])
-# print(b_function(1,1,3,3))
+    """Function used to calculate our spherical base function Bmn"""
+    return np.array([0, legendre_polinom_derived(n,m,theta)*np.exp(1j*m*phi),1j*m_legendre_polinom_derived_by_sin(n,m,theta)*np.exp(1j*m*phi)])
+# print(b_function(3,3,4,4))
 
 def c_function(m: int, n: int, theta: int, phi: int):
     """Function used to calculate our spherical base function Cmn"""
-    return np.array([0, 1j*m_legendre_polinom_derived_by_sin(n,m,theta)*np.exp(1j*m*phi), -legendre_polinom_derived(n,m,theta)*np.exp(1j*m*phi)])
-# print(c_function(3,3,4,4))
+    return np.array([0, 1j*m_legendre_polinom_derived_by_sin(n,m,theta)*np.exp(1j*m*phi),-legendre_polinom_derived(n,m,theta)*np.exp(1j*m*phi)])
+# print(c_function(1,1,3,3))
+
+def m_function(m: int, n: int, k: int, R: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Mmn"""
+    return gamma(m,n)*spherical_hankenl_H1(n, k*R)*c_function(m,n,theta,phi)
+# print(m_function(3,3,4,4,4,4))
+
+def n_function(m: int, n: int, k: int, R: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function Nmn"""
+    return gamma(m,n)*((n*(n+1)*(spherical_hankenl_H1(n,k*R)/(k*R)))*p_function(m,n,theta,phi)+((hRDer(n,k,R)/(k*R))*b_function(m, n, theta, phi)))
+# print(n_function(3,3,4,4,4,4))
+
+def z1(m: int, n: int):
+    """Function Z1mn"""
+    return (-1)**m*((4*np.pi)/(2*n+1))
+print(z1(2,2))
+
+def z2(m: int, n: int):
+    """Function Z2mn"""
+    return (-1)**m*(4*np.pi*n)*((n+1)/(2*n+1))
+print(z2(3,3))
+
+def z3(m: int, n: int):
+    """Function Z3mn, wich is the same than Z2mn"""
+    return (-1)**m*(4*np.pi*n)*((n+1)/(2*n+1))
+print(z3(4,4))
+
+def a_function(g_data: list, m: int, n: int, k: int, R: int):
+    """Function used to calculate our spherical base function Amn"""
+    return (((-1)**m)/(4*np.pi*gamma(n,m)))*g_data[n][n+m+1] * 1/(spherical_hankenl_H1(n, k*R))
+g_data = [1,[1,2,3,4],[1,2,3],[1,2,3],2]
+print(a_function(g_data,1,1,2,2))
