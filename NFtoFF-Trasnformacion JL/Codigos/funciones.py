@@ -1,6 +1,6 @@
 """File used to program all the required functions to make the transformation"""
 
-from math import factorial
+from math import factorial, cos
 import numpy as np
 from scipy import special
 
@@ -28,8 +28,7 @@ def legendre_polinom(n,m,z):
 # print(legendre_polinom(1,1,4))
 # print(special.clpmn(1, 1, 4,2)[0])
 
-# print(special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])
-# print((1+special.lpmn(1,1,3)[0][1][0]+1j*special.lpmn(1,1,3)[0][1][1])+(5+1j*4))
-# def p_function(m: int, n: int, theta: int, phi: int):
-#     """Functional base Pmn in our spherical system"""
-#     return np.array([,0,0])
+def p_function(m: int, n: int, theta: int, phi: int):
+    """Functional base Pmn in our spherical system"""
+    return np.array([(legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)),0,0])
+# print(p_function(1,1,5,5))
