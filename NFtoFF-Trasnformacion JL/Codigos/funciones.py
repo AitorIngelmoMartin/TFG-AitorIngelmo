@@ -1,5 +1,6 @@
 """File used to program all the required functions to make the transformation"""
 
+from math import factorial
 import numpy as np
 import scipy
 
@@ -10,4 +11,9 @@ def spherical_hankenl_H1(n: int,m: int):
 def hRDer(n: int, k: int, R: int):
     """Derivada de la función Hankel"""
     return ((1+n)*spherical_hankenl_H1(n,k*R)) - (k*R*spherical_hankenl_H1(1+n,k*R))
-print(hRDer(2, 3, 5))
+# print(hRDer(2, 3, 5))
+
+def gamma(m: int, n: int):
+    """Function gamma used in our transformation"""
+    return np.sqrt(((2*n+1)*factorial(n-m))/(4*np.pi*n*(n+1)*factorial(n+m)))
+# print(gamma(1,2))    
