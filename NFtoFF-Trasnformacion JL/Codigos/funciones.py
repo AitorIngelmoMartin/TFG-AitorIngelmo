@@ -1,6 +1,6 @@
 """File used to program all the required functions to make the transformation"""
 
-from math import factorial, cos
+from math import factorial, cos, sin
 import numpy as np
 from scipy import special
 
@@ -18,7 +18,7 @@ def gamma(m: int, n: int):
     return np.sqrt(((2*n+1)*factorial(n-m))/(4*np.pi*n*(n+1)*factorial(n+m)))
 # print(gamma(1,2))
 
-def legendre_polinom(n,m,z):
+def legendre_polinom(n: int, m: int, z: int):
     """Function that calculate the legendre polinom"""
     if m > n:
         return 0
@@ -32,3 +32,20 @@ def p_function(m: int, n: int, theta: int, phi: int):
     """Functional base Pmn in our spherical system"""
     return np.array([(legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)),0,0])
 # print(p_function(1,1,5,5))
+
+def legendre_polinom_derived(n: int, m: int, theta: int):
+    """Function that calculate the derivate of the legendre polinom"""
+    return -0.5*(((n+m)*(n-m+1)*legendre_polinom(n,m-1,cos(theta))) - (legendre_polinom(n, m+1, cos(theta))))    
+# print(legendre_polinom_derived(1,1,5))    
+
+def legendre_polinom_derived_multiplied_by_sin(n: int, m: int, theta: int):
+    """Function that calculate the derivate of the legendre polinom multiplied by Sin(Theta)"""
+    return sin(theta)*legendre_polinom_derived(n, m, theta)
+# print(legendre_polinom_derived_multiplied_by_sin(1,1,5))
+    
+def m_legendre_polinom_derived_by_sin(n: int, m: int, theta: int):
+    """Function that calculate the derivate of the legendre polinom multiplicated by Sin(Theta)"""
+    return -0.5*((legendre_polinom(n-1,m+1,cos(theta))) + ((n+m-1)*(n+m)*legendre_polinom(n-1,m-1,cos(theta))))
+# print(m_legendre_polinom_derived_by_sin(1,1,5))
+
+
