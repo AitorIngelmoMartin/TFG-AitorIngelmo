@@ -20,10 +20,10 @@ def gamma(m: int, n: int):
 
 def legendre_polinom(n: int, m: int, z: int):
     """Function that calculate the legendre polinom"""
-    if m > n:
+    if np.abs(m) > n:
         return 0
     else:
-        return special.clpmn(m, n, z, 2)[0][m][n]
+        return special.clpmn(m, n, z, 2)[0][np.abs(m)][n]
 # print(legendre_polinom(1,1,4))
 # print(special.clpmn(1, 1, 4,2)[0])
 
@@ -102,16 +102,38 @@ def z3(m: int, n: int):
     return (-1)**m*(4*np.pi*n)*((n+1)/(2*n+1))
 # print(z3(4,4))
 
-def a_function(g_data: list, m: int, n: int, k: int, R: int):
+def a_coef_function(g_data: list, m: int, n: int, k: int, R: int):
     """Function used to calculate our spherical base function Amn"""
     return (((-1)**m)*(g_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* (1/spherical_hankenl_H1(n, k*R))
 # g_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(g_data[1][1+1+1])
 # print(a_function(g_data,1,1,2,2))
 
-def b_function(e_data: list, m: int, n: int, k: int, R: int):
-    """Function used to calculate our spherical base function Bmn"""
+def b_coef_function(e_data: list, m: int, n: int, k: int, R: int):
+    """Function used to calculate our spherical base function Acoefmn"""
     return (((-1)**m)*(e_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* ((k*R)/hRDer(n, k, R))
 e_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(e_data[1][1+1+1])
 # print(b_function(e_data,1,1,2,2))
+
+# a_coeff_dummy = [[1.0, 1.0, 1.0], [0.25, 0.5, 1.0, 0.5, 0.25], [0.03703703703703703, 0.1111111111111111, 0.3333333333333333, 1.0, 0.3333333333333333, 0.1111111111111111, 0.03703703703703703], [0.00390625, 0.015625, 0.0625, 0.25, 1.0, 0.25, 0.0625, 0.015625, 0.00390625], [0.0003200000000000001, 0.0016000000000000003, 0.008000000000000002, 0.04000000000000001, 0.2, 1.0, 0.2, 0.04000000000000001, 0.008000000000000002, 0.0016000000000000003, 0.0003200000000000001]]
+# b_coeff_dummy = [[1.0, 1.0, 1.0], [0.0625, 0.25, 1.0, 0.25, 0.0625], [0.001371742112482853, 0.012345679012345678, 0.1111111111111111, 1.0, 0.1111111111111111, 0.012345679012345678, 0.001371742112482853], [1.52587890625e-05, 0.000244140625, 0.00390625, 0.0625, 1.0, 0.0625, 0.00390625, 0.000244140625, 1.52587890625e-05], [1.0240000000000002e-07, 2.56e-06, 6.400000000000001e-05, 0.0016, 0.04, 1.0, 0.04, 0.0016, 6.400000000000001e-05, 2.56e-06, 1.0240000000000002e-07]]
+def e_field_sint(*,k: int, R: int, acoeff: list, bcoeff: list, theta: int, phi: int, M: int):
+    """Function used to obtain a sintetic Field"""
+    N = len(acoeff)
+    total_result = 0
+    for n in range(1, N + 1):
+        values_calculated = 0
+        for m in range(-n, n + 1):
+            value = ((2*n+1)/(n*(n+1)))*(acoeff[n-1][m+n]*m_function(m,n,k,R,theta,phi) + bcoeff[n-1][m+n]*n_function(m,n,k,R,theta,phi))
+            values_calculated += value
+        total_result += values_calculated
+    return total_result
+# total_result = e_field_sint(k=2*np.pi,
+#              R=1,
+#              acoeff=a_coeff_dummy,
+#              bcoeff=b_coeff_dummy,
+#              theta=0,
+#              phi=0,
+#              M=1)
+# print(total_result)
