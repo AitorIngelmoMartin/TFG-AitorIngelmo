@@ -90,20 +90,28 @@ def n_function(m: int, n: int, k: int, R: int, theta: int, phi: int):
 def z1(m: int, n: int):
     """Function Z1mn"""
     return (-1)**m*((4*np.pi)/(2*n+1))
-print(z1(2,2))
+# print(z1(2,2))
 
 def z2(m: int, n: int):
     """Function Z2mn"""
     return (-1)**m*(4*np.pi*n)*((n+1)/(2*n+1))
-print(z2(3,3))
+# print(z2(3,3))
 
 def z3(m: int, n: int):
     """Function Z3mn, wich is the same than Z2mn"""
     return (-1)**m*(4*np.pi*n)*((n+1)/(2*n+1))
-print(z3(4,4))
+# print(z3(4,4))
 
 def a_function(g_data: list, m: int, n: int, k: int, R: int):
     """Function used to calculate our spherical base function Amn"""
-    return (((-1)**m)/(4*np.pi*gamma(n,m)))*g_data[n][n+m+1] * 1/(spherical_hankenl_H1(n, k*R))
-g_data = [1,[1,2,3,4],[1,2,3],[1,2,3],2]
-print(a_function(g_data,1,1,2,2))
+    return (((-1)**m)*(g_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* (1/spherical_hankenl_H1(n, k*R))
+# g_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
+# print(g_data[1][1+1+1])
+# print(a_function(g_data,1,1,2,2))
+
+def b_function(e_data: list, m: int, n: int, k: int, R: int):
+    """Function used to calculate our spherical base function Bmn"""
+    return (((-1)**m)*(e_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* ((k*R)/hRDer(n, k, R))
+e_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
+# print(e_data[1][1+1+1])
+# print(b_function(e_data,1,1,2,2))
