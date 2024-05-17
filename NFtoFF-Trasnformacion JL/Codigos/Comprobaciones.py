@@ -146,7 +146,7 @@ def make_polarplot_of_EdipoloTheta():
 
     # Mostrar el gráfico
     plt.show()
-make_polarplot_of_EdipoloTheta()
+# make_polarplot_of_EdipoloTheta()
 
 # PolarPlot de la componente theta del campo de un dipolo
 def make_polarplot_of_EdipoloTheta():
@@ -183,5 +183,37 @@ def make_polarplot_of_EdipoloTheta():
 
     # Mostrar el gráfico
     plt.show()
-make_polarplot_of_EdipoloTheta()
+# make_polarplot_of_EdipoloTheta()
 
+#####################
+#### Verificación del campo del Dipolo
+#####################
+
+theta_array = np.arange(-60, 61, 1)
+# print(len(theta_values))
+
+def calculate_dmn_from_dipole_field(N: int,m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
+    """Function used to obtain the dmn value from our Dipole field"""
+    theta_values = np.linspace(0, np.pi, num=N)
+    phi_values = np.linspace(0, 2*np.pi, num=N)
+    delta_theta = theta_values[1] - theta_values[0]
+    delta_phi = phi_values[1] - phi_values[0]
+
+    total_result = 0
+    for theta in theta_values:
+        for phi in phi_values:
+            value = [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.p_function(-m,n,theta,phi)*sin(theta)
+            total_result += value*delta_theta*delta_phi
+    return total_result
+
+dmn_dipole = calculate_dmn_from_dipole_field(
+    N=2000,
+    m=0,
+    n=1,
+    r=1,
+    k=2*np.pi,
+    eta=120*np.pi,
+    l=1/50,
+    Io=1)
+print(dmn_dipole)
+# 5.01442 - 0.79807 I
