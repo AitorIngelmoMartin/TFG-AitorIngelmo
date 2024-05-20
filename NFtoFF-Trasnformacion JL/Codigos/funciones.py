@@ -49,7 +49,7 @@ def m_legendre_polinom_derived_by_sin(n: int, m: int, theta: int):
 
 def b_sin_function(m: int, n: int, theta: int, phi: int):
     """Function used to calculate our spherical base function Bmn"""
-    return np.array([0, legendre_polinom_derived_sin(n, m, theta)*np.exp(1j*m*phi),1j*m*legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)])
+    return np.array([0, legendre_polinom_derived_sin(n, m, theta)*np.exp(1j*m*phi), 1j*m*legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)])
 # print(b_sin_function(2,2,5,5))
 
 def c_sin_function(m: int, n: int, theta: int, phi: int):

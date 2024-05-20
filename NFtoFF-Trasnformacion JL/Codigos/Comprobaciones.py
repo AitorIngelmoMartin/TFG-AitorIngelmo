@@ -89,12 +89,12 @@ def make_polarplot_of_EfieldSint():
 def e_dipole_r_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
     return ((eta * Io * cos(theta))/(2*np.pi*r*r)) * (1 + 1/(1j*k*r))*np.exp(-1j*k*r)
-# print(e_dipole_r_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
+print(e_dipole_r_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
 
 def e_dipole_theta_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
     return ((1j*eta*((k*Io*l*sin(theta))/(4*np.pi*r))) * (1+(1/(1j*k*r))-(1/(k*k*r*r))))*np.exp(-1j*k*r)
-# print(e_dipole_theta_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
+print(e_dipole_theta_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
 
 def e_dipole_far_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric farfield using Balanis 4.10a and 4.10b"""
@@ -186,34 +186,34 @@ def make_polarplot_of_EdipoloTheta():
 # make_polarplot_of_EdipoloTheta()
 
 #####################
-#### Verificación del campo del Dipolo
+#### Verificación del campo del Dipolo cambiando Nintegrate por sumatorios
 #####################
 
 theta_array = np.arange(-60, 61, 1)
 # print(len(theta_values))
 
-def calculate_dmn_from_dipole_field(N: int,m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
-    """Function used to obtain the dmn value from our Dipole field"""
-    theta_values = np.linspace(0, np.pi, num=N)
-    phi_values = np.linspace(0, 2*np.pi, num=N)
+def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
+    """Function used to obtain a single value of emn from our Dipole field"""
+    theta_values = np.linspace(0, np.pi, num=number_of_points)
+    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
     delta_theta = theta_values[1] - theta_values[0]
     delta_phi = phi_values[1] - phi_values[0]
 
     total_result = 0
     for theta in theta_values:
         for phi in phi_values:
-            value = [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.p_function(-m,n,theta,phi)*sin(theta)
-            total_result += value*delta_theta*delta_phi
+            total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_function(-m,n,theta,phi)*sin(theta)*delta_theta*delta_phi
     return total_result
 
-dmn_dipole = calculate_dmn_from_dipole_field(
-    N=2000,
-    m=0,
-    n=1,
-    r=1,
-    k=2*np.pi,
-    eta=120*np.pi,
-    l=1/50,
-    Io=1)
-print(dmn_dipole)
-# 5.01442 - 0.79807 I
+# emn_dipole = calculate_emn_from_dipole_field(
+#     number_of_points=1000,
+#     m=0,
+#     n=1,
+#     r=1,
+#     k=2*np.pi,
+#     eta=120*np.pi,
+#     l=1/50,
+#     Io=1)
+# print(emn_dipole)
+# -5.03157983-30.81354763j
+# -5.02655 - 30.7828 I

@@ -168,7 +168,7 @@ def nearfieldPoint0toPoint1(fields,cut):
     w2[valoresNegativos] = -1j*np.sqrt(-1*w2[valoresNegativos])
     w = np.conjugate(w2)
 
-    phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3))  
+    phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3)) # TODO: Hacer que Z2 y Z1 sean dinámicos 
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
     for i in range(len(fields['zValueZeroedplane'].keys())):
