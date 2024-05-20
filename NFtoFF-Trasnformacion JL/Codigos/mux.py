@@ -10,3 +10,8 @@ matriz = []
 demo_array = [0.+0.j,-5.03662149-30.84442293j, 0.+0.j]
 matriz.append(sum(demo_array))
 print(matriz)
+number_of_modes = 3
+for n in range(1, number_of_modes + 1):
+    value_calculated = []
+    for m in range(-n, n + 1):
+        print(f"Pareja:{n},{m}")

@@ -89,12 +89,12 @@ def make_polarplot_of_EfieldSint():
 def e_dipole_r_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
     return ((eta * Io * cos(theta))/(2*np.pi*r*r)) * (1 + 1/(1j*k*r))*np.exp(-1j*k*r)
-print(e_dipole_r_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
+# print(e_dipole_r_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
 
 def e_dipole_theta_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
     return ((1j*eta*((k*Io*l*sin(theta))/(4*np.pi*r))) * (1+(1/(1j*k*r))-(1/(k*k*r*r))))*np.exp(-1j*k*r)
-print(e_dipole_theta_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
+# print(e_dipole_theta_field(r=150,k=2*np.pi,eta=120*np.pi,Io=1,l=0.05,theta=5))
 
 def e_dipole_far_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric farfield using Balanis 4.10a and 4.10b"""
@@ -202,7 +202,7 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
     total_result = 0
     for theta in theta_values:
         for phi in phi_values:
-            total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_function(-m,n,theta,phi)*sin(theta)*delta_theta*delta_phi
+            total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
     return total_result
 
 # emn_dipole = calculate_emn_from_dipole_field(
@@ -218,18 +218,19 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
 # -5.03157983-30.81354763j
 # -5.02655 - 30.7828 I
 
-# emn_dipole = calculate_emn_from_dipole_field(
-#     number_of_points=1000,
-#     m=0,
-#     n=3,
-#     r=1,
-#     k=2*np.pi,
-#     eta=120*np.pi,
-#     l=1/50,
-#     Io=1)
-# print(emn_dipole)
-# -0.0000353043 - 0.000216205 I
+emn_dipole = calculate_emn_from_dipole_field(
+    number_of_points=1000,
+    m=0,
+    n=3,
+    r=1,
+    k=2*np.pi,
+    eta=120*np.pi,
+    l=1/50,
+    Io=1)
+print(emn_dipole)
 # −0.0000000000367656364−0.000000000223229146j
+# -0.0000353043 - 0.000216205 I
+
 
 # emn_dipole = calculate_emn_from_dipole_field(
 #     number_of_points=1000,
@@ -247,6 +248,8 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
 def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes: int, r: int, k: int, eta: int, l: int, Io: int):
     """Function used to obtain a all values of emn from our Dipole field"""
     total_result = []
+    threshold = 1e-10
+    
     for n in range(1, number_of_modes + 1):
         value_calculated = []
         for m in range(-n, n + 1):
@@ -260,7 +263,10 @@ def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes:
                 l=l,
                 Io=Io)
             dummy = sum(emn_dipole)
+            if abs(dummy) < threshold:
+                dummy = 0.0
             value_calculated.append(dummy)
             print(dummy)
         total_result.append(value_calculated)
-# print(calculate_emn_data_from_dipole_field(500, 5, 1, 2*np.pi, 120*np.pi, 1/50, 1))
+    return total_result
+print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
