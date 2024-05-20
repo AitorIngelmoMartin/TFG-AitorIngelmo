@@ -217,3 +217,50 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
 # print(emn_dipole)
 # -5.03157983-30.81354763j
 # -5.02655 - 30.7828 I
+
+# emn_dipole = calculate_emn_from_dipole_field(
+#     number_of_points=1000,
+#     m=0,
+#     n=3,
+#     r=1,
+#     k=2*np.pi,
+#     eta=120*np.pi,
+#     l=1/50,
+#     Io=1)
+# print(emn_dipole)
+# -0.0000353043 - 0.000216205 I
+# −0.0000000000367656364−0.000000000223229146j
+
+# emn_dipole = calculate_emn_from_dipole_field(
+#     number_of_points=1000,
+#     m=0,
+#     n=5,
+#     r=1,
+#     k=2*np.pi,
+#     eta=120*np.pi,
+#     l=1/50,
+#     Io=1)
+# print(emn_dipole)
+# -0.0000891836 - 0.000546163 I
+# −0.0000000000914217448−0.000000000563104167j
+
+def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes: int, r: int, k: int, eta: int, l: int, Io: int):
+    """Function used to obtain a all values of emn from our Dipole field"""
+    total_result = []
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            emn_dipole = calculate_emn_from_dipole_field(
+                number_of_points=number_of_points,
+                m=m,
+                n=n,
+                r=r,
+                k=k,
+                eta=eta,
+                l=l,
+                Io=Io)
+            dummy = sum(emn_dipole)
+            value_calculated.append(dummy)
+            print(dummy)
+        total_result.append(value_calculated)
+# print(calculate_emn_data_from_dipole_field(500, 5, 1, 2*np.pi, 120*np.pi, 1/50, 1))
