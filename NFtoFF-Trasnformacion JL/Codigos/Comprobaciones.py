@@ -21,42 +21,61 @@ def test_z1_matrix(N):
 
 # Calculo de Amncoef
 def make_dummy_a_coef(N):
-    """Function used to test the orthogonality of Z1"""
+    """Function used to test the orthogonality of Amn"""
     total_result = []
     for n in range(1, N + 1):
         value_calculated = []
         for m in range(-n, n + 1):
             value_calculated.append((1/n)**np.abs(m))
         total_result.append(value_calculated)
-    # print(total_result)
-
+    return total_result
 # make_dummy_a_coef(5)
 
 # Calculo de Bmncoef
 def make_dummy_b_coef(N):
-    """Function used to test the orthogonality of Z1"""
+    """Function used to test the orthogonality of Bmn"""
     total_result = []
     for n in range(1, N + 1):
         value_calculated = []
         for m in range(-n, n + 1):
             value_calculated.append((1/(n*n))**np.abs(m))
         total_result.append(value_calculated)
-    # print(total_result)
-
+    return total_result
 # make_dummy_b_coef(5)
 
 # Valores planos de Amncoef y Bmncoef hardcodeados para ahorrar cálculos
 a_coeff_dummy = [[1.0, 1.0, 1.0], [0.25, 0.5, 1.0, 0.5, 0.25], [0.03703703703703703, 0.1111111111111111, 0.3333333333333333, 1.0, 0.3333333333333333, 0.1111111111111111, 0.03703703703703703], [0.00390625, 0.015625, 0.0625, 0.25, 1.0, 0.25, 0.0625, 0.015625, 0.00390625], [0.0003200000000000001, 0.0016000000000000003, 0.008000000000000002, 0.04000000000000001, 0.2, 1.0, 0.2, 0.04000000000000001, 0.008000000000000002, 0.0016000000000000003, 0.0003200000000000001]]
 b_coeff_dummy = [[1.0, 1.0, 1.0], [0.0625, 0.25, 1.0, 0.25, 0.0625], [0.001371742112482853, 0.012345679012345678, 0.1111111111111111, 1.0, 0.1111111111111111, 0.012345679012345678, 0.001371742112482853], [1.52587890625e-05, 0.000244140625, 0.00390625, 0.0625, 1.0, 0.0625, 0.00390625, 0.000244140625, 1.52587890625e-05], [1.0240000000000002e-07, 2.56e-06, 6.400000000000001e-05, 0.0016, 0.04, 1.0, 0.04, 0.0016, 6.400000000000001e-05, 2.56e-06, 1.0240000000000002e-07]]
 
+
+a_coeff_dummy = [[1.0, 1.0, 1.0]]
+b_coeff_dummy = [[1.0, 1.0, 1.0]]
 # Comprobación del cálculo de EfieldSint
-total_result = funciones.e_field_sint(k=2*np.pi,
-             R=1,
-             acoeff=a_coeff_dummy,
-             bcoeff=b_coeff_dummy,
-             theta=0,
-             phi=0)
-# print(total_result)
+# total_result = funciones.e_field_sint(k=2*np.pi,
+#              R=1,
+#              acoeff=a_coeff_dummy,
+#              bcoeff=b_coeff_dummy,
+#              theta=0,
+#              phi=0)
+# # print(total_result)
+
+def calculate_emn_from_EfieldSint(number_of_points: int, m: int, n: int, r: int, k: int, N : int):
+    """Function used to obtain a single value of emn from our sintetic field"""
+    theta_values = np.linspace(0, np.pi, num=number_of_points)
+    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
+    delta_theta = theta_values[1] - theta_values[0]
+    delta_phi = phi_values[1] - phi_values[0]
+
+    acoeff = make_dummy_a_coef(N)
+    bcoeff = make_dummy_b_coef(N)
+
+    total_result = 0
+    for theta in theta_values:
+        for phi in phi_values:
+            total_result += funciones.e_field_sint(k=k, R=r, acoeff=acoeff,bcoeff=bcoeff,theta=0,phi=0)*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
+    return total_result
+# print(calculate_emn_from_EfieldSint(number_of_points=500, m=0, n=1, r=1, k=2*np.pi,N=5))
+# {-0.154949 + 0.951506 I, 0.109974 - 0.673486 I, -0.0778651 + 0.475551 I}
 
 # PolarPlot de EfieldSint
 def make_polarplot_of_EfieldSint():
@@ -65,7 +84,7 @@ def make_polarplot_of_EfieldSint():
     result_array = []
     for theta in theta_values:
 
-        total_result = funciones.e_field_sint(
+        total_result = funciones.e_field_sint(  
             k=2*np.pi,
             R=50,
             acoeff=a_coeff_dummy,
@@ -202,21 +221,9 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
     total_result = 0
     for theta in theta_values:
         for phi in phi_values:
-            total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
-    return total_result
-
-# emn_dipole = calculate_emn_from_dipole_field(
-#     number_of_points=1000,
-#     m=0,
-#     n=1,
-#     r=1,
-#     k=2*np.pi,
-#     eta=120*np.pi,
-#     l=1/50,
-#     Io=1)
-# print(emn_dipole)
-# -5.03157983-30.81354763j
-# -5.02655 - 30.7828 I
+            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
+            total_result += [0,e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
+    return total_result*delta_theta*delta_phi
 
 emn_dipole = calculate_emn_from_dipole_field(
     number_of_points=1000,
@@ -230,20 +237,6 @@ emn_dipole = calculate_emn_from_dipole_field(
 print(emn_dipole)
 # −0.0000000000367656364−0.000000000223229146j
 # -0.0000353043 - 0.000216205 I
-
-
-# emn_dipole = calculate_emn_from_dipole_field(
-#     number_of_points=1000,
-#     m=0,
-#     n=5,
-#     r=1,
-#     k=2*np.pi,
-#     eta=120*np.pi,
-#     l=1/50,
-#     Io=1)
-# print(emn_dipole)
-# -0.0000891836 - 0.000546163 I
-# −0.0000000000914217448−0.000000000563104167j
 
 def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes: int, r: int, k: int, eta: int, l: int, Io: int):
     """Function used to obtain a all values of emn from our Dipole field"""
@@ -269,4 +262,4 @@ def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes:
             print(dummy)
         total_result.append(value_calculated)
     return total_result
-print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
+# print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
