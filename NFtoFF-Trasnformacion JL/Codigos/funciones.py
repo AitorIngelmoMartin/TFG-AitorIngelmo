@@ -103,16 +103,16 @@ def z3(m: int, n: int):
 # print(z3(4,4))
 
 def a_coef_function(g_data: list, m: int, n: int, k: int, R: int):
-    """Function used to calculate our spherical base function Amn"""
+    """Function used to calculate our spherical base function Acoefmn"""
     return (((-1)**m)*(g_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* (1/spherical_hankenl_H1(n, k*R))
 # g_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(g_data[1][1+1+1])
 # print(a_function(g_data,1,1,2,2))
 
 def b_coef_function(e_data: list, m: int, n: int, k: int, R: int):
-    """Function used to calculate our spherical base function Acoefmn"""
+    """Function used to calculate our spherical base function Bcoefmn"""
     return (((-1)**m)*(e_data[n-1][n+m])/(4*np.pi*gamma(n,m)))* ((k*R)/hRDer(n, k, R))
-e_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
+# e_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(e_data[1][1+1+1])
 # print(b_function(e_data,1,1,2,2))
 
@@ -141,6 +141,7 @@ def make_dummy_b_coef(N):
             value_calculated.append((1/(n*n))**np.abs(m))
         total_result.append(value_calculated)
     return total_result
+
 def e_field_sint(*,k: int, R: int, acoeff: list, bcoeff: list, theta: int, phi: int):
     """Function used to obtain a sintetic Field"""
     M = len(acoeff)
@@ -152,11 +153,12 @@ def e_field_sint(*,k: int, R: int, acoeff: list, bcoeff: list, theta: int, phi: 
             values_calculated += value
         total_result += values_calculated
     return total_result
-total_result = e_field_sint(k=2*np.pi,
-             R=1,
-             acoeff=make_dummy_a_coef(N),
-             bcoeff=make_dummy_b_coef(N),
-             theta=0,
-             phi=0)
+
+# total_result = e_field_sint(k=2*np.pi,
+#              R=1,
+#              acoeff=make_dummy_a_coef(N),
+#              bcoeff=make_dummy_b_coef(N),
+#              theta=0,
+#              phi=0)
 # print(total_result)
 

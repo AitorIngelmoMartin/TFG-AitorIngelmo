@@ -4,6 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import cos, sin
 
+# Global variables
+threshold = 1e-10
+
 #####################
 #### EfieldSint
 #####################
@@ -222,7 +225,7 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
     for theta in theta_values:
         for phi in phi_values:
             # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
-            total_result += [0,e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
+            total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*funciones.b_sin_function(-m,n,theta,phi)
     return total_result*delta_theta*delta_phi
 
 emn_dipole = calculate_emn_from_dipole_field(
@@ -234,7 +237,7 @@ emn_dipole = calculate_emn_from_dipole_field(
     eta=120*np.pi,
     l=1/50,
     Io=1)
-print(emn_dipole)
+# print(emn_dipole)
 # −0.0000000000367656364−0.000000000223229146j
 # -0.0000353043 - 0.000216205 I
 
@@ -263,3 +266,79 @@ def calculate_emn_data_from_dipole_field(number_of_points: int, number_of_modes:
         total_result.append(value_calculated)
     return total_result
 # print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
+
+def calculate_gmn_from_dipole_field(number_of_points: int, m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
+    """Function used to obtain a single value of gmn from our Dipole field"""
+    theta_values = np.linspace(0, np.pi, num=number_of_points)
+    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
+    delta_theta = theta_values[1] - theta_values[0]
+    delta_phi = phi_values[1] - phi_values[0]
+
+    total_result = 0
+    for theta in theta_values:
+        for phi in phi_values:
+            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.c_sin_function(-m,n,theta,phi)
+            total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*funciones.c_sin_function(-m,n,theta,phi)
+    return total_result*delta_theta*delta_phi
+
+# gmn_dipole = calculate_gmn_from_dipole_field(
+#     number_of_points=1000,
+#     m=0,
+#     n=1,
+#     r=1,
+#     k=2*np.pi,
+#     eta=120*np.pi,
+#     l=1/50,
+#     Io=1)
+# print(gmn_dipole)
+
+def calculate_gmn_data_from_dipole_field(number_of_points: int, number_of_modes: int, r: int, k: int, eta: int, l: int, Io: int):
+    """Function used to obtain a all values of gmn from our Dipole field"""
+    total_result = []
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            emn_dipole = calculate_gmn_from_dipole_field(
+                number_of_points=number_of_points,
+                m=m,
+                n=n,
+                r=r,
+                k=k,
+                eta=eta,
+                l=l,
+                Io=Io)
+            dummy = sum(emn_dipole)
+            if abs(dummy) < threshold:
+                dummy = 0.0
+            value_calculated.append(dummy)
+            print(dummy)
+        total_result.append(value_calculated)
+    return total_result
+# print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
+
+def calculate_bmnffcoef_from_dipole_field(number_of_modes: int, emn: list, r: int, k: int):
+    """Function used to obtain a all values of bmnffcoef from our Dipole field"""
+    total_result = []
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            b_coef_value = funciones.b_coef_function(e_data=emn,
+                                           m=m,
+                                           n=n,
+                                           k=k,
+                                           R=r)
+            if abs(b_coef_value) < threshold:
+                b_coef_value = 0.0
+            value_calculated.append(b_coef_value)
+        total_result.append(value_calculated)
+    return total_result
+dummy_emn = [0,-5.02655 - 30.7828j,0]
+
+b_coef = calculate_bmnffcoef_from_dipole_field(
+    number_of_modes=1,
+    emn=dummy_emn,
+    r=1,
+    k=2*np.pi)
+print(b_coef)
