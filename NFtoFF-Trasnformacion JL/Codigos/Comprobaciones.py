@@ -292,3 +292,7 @@ ff_calculated = calculate_far_field(
     w=1,
     t=1)
 print(ff_calculated)
+
+def dipole_e_theta_far_field(k , I, l, theta, r):
+    return 1j*(120*np.pi)*k*I*l*sin(theta)*(1/(4*np.pi*r))*np.exp(-1j*k*r)
+print([0,dipole_e_theta_far_field(2*np.pi,1,1/50,1,1),0])
