@@ -7,107 +7,6 @@ from math import cos, sin
 # Global variables
 threshold = 1e-10
 
-#####################
-#### EfieldSint
-#####################
-
-# Print de la matriz triangular obtenida al cacular Z1
-def test_z1_matrix(N):
-    """Function used to test the orthogonality of Z1"""
-    total_result = []
-    for n in range(1, N + 1):
-        value_calculated = []
-        for m in range(-n, n + 1):
-            value_calculated.append(funciones.z1(m,n))
-        total_result.append(value_calculated)
-    print(total_result)
-
-# Calculo de Amncoef
-def make_dummy_a_coef(N):
-    """Function used to test the orthogonality of Amn"""
-    total_result = []
-    for n in range(1, N + 1):
-        value_calculated = []
-        for m in range(-n, n + 1):
-            value_calculated.append((1/n)**np.abs(m))
-        total_result.append(value_calculated)
-    return total_result
-# make_dummy_a_coef(5)
-
-# Calculo de Bmncoef
-def make_dummy_b_coef(N):
-    """Function used to test the orthogonality of Bmn"""
-    total_result = []
-    for n in range(1, N + 1):
-        value_calculated = []
-        for m in range(-n, n + 1):
-            value_calculated.append((1/(n*n))**np.abs(m))
-        total_result.append(value_calculated)
-    return total_result
-# make_dummy_b_coef(5)
-
-# Valores planos de Amncoef y Bmncoef hardcodeados para ahorrar cálculos
-a_coeff_dummy = [[1.0, 1.0, 1.0], [0.25, 0.5, 1.0, 0.5, 0.25], [0.03703703703703703, 0.1111111111111111, 0.3333333333333333, 1.0, 0.3333333333333333, 0.1111111111111111, 0.03703703703703703], [0.00390625, 0.015625, 0.0625, 0.25, 1.0, 0.25, 0.0625, 0.015625, 0.00390625], [0.0003200000000000001, 0.0016000000000000003, 0.008000000000000002, 0.04000000000000001, 0.2, 1.0, 0.2, 0.04000000000000001, 0.008000000000000002, 0.0016000000000000003, 0.0003200000000000001]]
-b_coeff_dummy = [[1.0, 1.0, 1.0], [0.0625, 0.25, 1.0, 0.25, 0.0625], [0.001371742112482853, 0.012345679012345678, 0.1111111111111111, 1.0, 0.1111111111111111, 0.012345679012345678, 0.001371742112482853], [1.52587890625e-05, 0.000244140625, 0.00390625, 0.0625, 1.0, 0.0625, 0.00390625, 0.000244140625, 1.52587890625e-05], [1.0240000000000002e-07, 2.56e-06, 6.400000000000001e-05, 0.0016, 0.04, 1.0, 0.04, 0.0016, 6.400000000000001e-05, 2.56e-06, 1.0240000000000002e-07]]
-
-
-a_coeff_dummy = [[1.0, 1.0, 1.0]]
-b_coeff_dummy = [[1.0, 1.0, 1.0]]
-# Comprobación del cálculo de EfieldSint
-# total_result = funciones.e_field_sint(k=2*np.pi,
-#              R=1,
-#              acoeff=a_coeff_dummy,
-#              bcoeff=b_coeff_dummy,
-#              theta=0,
-#              phi=0)
-# # print(total_result)
-
-def calculate_emn_from_EfieldSint(number_of_points: int, m: int, n: int, r: int, k: int, N : int):
-    """Function used to obtain a single value of emn from our sintetic field"""
-    theta_values = np.linspace(0, np.pi, num=number_of_points)
-    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
-    delta_theta = theta_values[1] - theta_values[0]
-    delta_phi = phi_values[1] - phi_values[0]
-
-    acoeff = make_dummy_a_coef(N)
-    bcoeff = make_dummy_b_coef(N)
-
-    total_result = 0
-    for theta in theta_values:
-        for phi in phi_values:
-            total_result += funciones.e_field_sint(k=k, R=r, acoeff=acoeff,bcoeff=bcoeff,theta=0,phi=0)*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
-    return total_result
-# print(calculate_emn_from_EfieldSint(number_of_points=500, m=0, n=1, r=1, k=2*np.pi,N=5))
-# {-0.154949 + 0.951506 I, 0.109974 - 0.673486 I, -0.0778651 + 0.475551 I}
-
-# PolarPlot de EfieldSint
-def make_polarplot_of_EfieldSint():
-    """Function used to draw the polar plor of EfieldSint from [-pi,pi]"""
-    theta_values = np.linspace(-np.pi, np.pi, num=100)
-    result_array = []
-    for theta in theta_values:
-
-        total_result = funciones.e_field_sint(  
-            k=2*np.pi,
-            R=50,
-            acoeff=a_coeff_dummy,
-            bcoeff=b_coeff_dummy,
-            theta=theta,
-            phi=0)
-        result_array.append(np.abs(total_result))
-
-    # Crear el gráfico polar
-    plt.figure(figsize=(8,8))
-    plt.polar(theta_values, result_array)
-
-    # Mostrar el gráfico
-    plt.show()
-# make_polarplot_of_EfieldSint()
-
-#####################
-#### Edipolo
-#####################
-
 def e_dipole_r_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
     """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
     return ((eta * Io * cos(theta))/(2*np.pi*r*r)) * (1 + 1/(1j*k*r))*np.exp(-1j*k*r)
@@ -145,7 +44,6 @@ def make_polarplot_of_EdipoloR():
     # Mostrar el gráfico
     plt.show()
 # make_polarplot_of_EdipoloR()
-
 
 # PolarPlot de la componente theta del campo de un dipolo
 def make_polarplot_of_EdipoloTheta():
@@ -317,8 +215,8 @@ def calculate_gmn_data_from_dipole_field(number_of_points: int, number_of_modes:
     return total_result
 # print(calculate_emn_data_from_dipole_field(500, 2, 1, 2*np.pi, 120*np.pi, 1/50, 1))
 
-def calculate_bmnffcoef_from_dipole_field(number_of_modes: int, emn: list, r: int, k: int):
-    """Function used to obtain a all values of bmnffcoef from our Dipole field"""
+def calculate_bmnffcoef_from_emn(number_of_modes: int, emn: list, r: int, k: int):
+    """Function used to obtain a all values of bmnffcoef from bmn"""
     total_result = []
     
     for n in range(1, number_of_modes + 1):
@@ -334,11 +232,63 @@ def calculate_bmnffcoef_from_dipole_field(number_of_modes: int, emn: list, r: in
             value_calculated.append(b_coef_value)
         total_result.append(value_calculated)
     return total_result
-dummy_emn = [[0,-5.02655 - 30.7828j,0]]
 
-b_coef = calculate_bmnffcoef_from_dipole_field(
+# dummy_emn = [[0,-5.02655 - 30.7828j,0]]
+# b_coef = calculate_bmnffcoef_from_emn(
+#     number_of_modes=1,
+#     emn=dummy_emn,
+#     r=1,
+#     k=2*np.pi)
+# print(b_coef)
+
+def calculate_amnffcoef_from_gmn(number_of_modes: int, gmn: list, r: int, k: int):
+    """Function used to obtain a all values of Amnffcoef from gmn"""
+    total_result = []
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            b_coef_value = funciones.a_coef_function(g_data=gmn,
+                                           m=m,
+                                           n=n,
+                                           k=k,
+                                           R=r)
+            if abs(b_coef_value) < threshold:
+                b_coef_value = 0.0
+            value_calculated.append(b_coef_value)
+        total_result.append(value_calculated)
+    return total_result
+
+# dummy_gmn = [[0,0,0]]
+# a_coef = calculate_amnffcoef_from_gmn(
+#     number_of_modes=1,
+#     gmn=dummy_gmn,
+#     r=1,
+#     k=2*np.pi)
+# print(a_coef)
+
+def calculate_far_field(number_of_modes: int, a_coef_value: list, b_coef_value: list, r: int, k: int, theta: int, phi: int, w: int, t: int):
+    """Function used to obtainthe far field"""
+    total_result = 0
+    
+    for n in range(1, number_of_modes + 1):
+        for m in range(-n, n + 1):
+            far_field_value = ((2*n+1)/(n*(n+1)))*(a_coef_value[n-1][n+m]*funciones.m_function_far_field_aproximation(m,n,k,r,theta,phi)+b_coef_value[n-1][n+m]*funciones.n_function_far_field_aproximation(m,n,k,r,theta,phi))
+            # if abs(far_field_value) < threshold:
+            #     far_field_value = 0.0
+            total_result += far_field_value
+    return total_result*np.exp(1j*w*t)
+
+a_coef_dummy = [[0.0, 0.0, 0.0]]
+b_coef_dummy = [[0.0, (43.332568590557884-14.539313370261027j), 0.0]]
+ff_calculated = calculate_far_field(
     number_of_modes=1,
-    emn=dummy_emn,
+    a_coef_value=a_coef_dummy,
+    b_coef_value=b_coef_dummy,
     r=1,
-    k=2*np.pi)
-print(b_coef)
+    k=2*np.pi,
+    theta=1,
+    phi=1,
+    w=1,
+    t=1)
+print(ff_calculated)

@@ -16,7 +16,7 @@ def hRDer(n: int, k: int, R: int):
 def gamma(m: int, n: int):
     """Function gamma used in our transformation"""
     return np.sqrt(((2*n+1)*factorial(n-m))/(4*np.pi*n*(n+1)*factorial(n+m)))
-print(gamma(-1,1))
+# print(gamma(-1,1))
 
 def legendre_polinom(n: int, m: int, z: int):
     """Function that calculate the legendre polinom"""
@@ -162,3 +162,12 @@ def e_field_sint(*,k: int, R: int, acoeff: list, bcoeff: list, theta: int, phi: 
 #              phi=0)
 # print(total_result)
 
+def m_function_far_field_aproximation(m: int, n: int, k: int, r: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function MmnAprox"""
+    return (1j**(n+1))*gamma(m,n)*((np.exp(-1j*k*r))/(k*r))*c_function(m,n,theta,phi)
+# print(m_function_far_field_aproximation(1,1,1,2,4,5))
+
+def n_function_far_field_aproximation(m: int, n: int, k: int, r: int, theta: int, phi: int):
+    """Function used to calculate our spherical base function NmnAprox"""
+    return (1j**(n))*gamma(m,n)*((np.exp(-1j*k*r))/(k*r))*b_function(m,n,theta,phi)
+# print(n_function_far_field_aproximation(1,1,1,2,4,5))
