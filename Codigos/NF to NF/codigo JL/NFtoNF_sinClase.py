@@ -215,8 +215,6 @@ def represent_polar_diagram(plotnumber: int, field: list):
     #Cálculo de r y phi
     r = np.abs(field)
     phi = np.angle(field)
-    print(field.shape)
-    print(field[0])
 
     # Crear el gráfico polar
     plt.figure(plotnumber)
@@ -247,13 +245,13 @@ if __name__ == '__main__':
     plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='jet')
     
     #fields.pop('lines')
-    #print(fields)
+    # print(fields['zValueZeroedplane'].keys())
     
     #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
     nearfieldPoint0toPoint1(fields,cut = 0)
 
     #Plots diagramas de radiación
-    print(fields['fields_transformed'].keys())
+    # print(fields['fields_transformed'].keys())
     represent_polar_diagram(30,fields['fields_transformed'][f"NF_normE"])
 
     print("FIN PROGRAMA")
