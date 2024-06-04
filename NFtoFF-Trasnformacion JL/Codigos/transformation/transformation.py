@@ -3,6 +3,7 @@ import os, sys
 import numpy as np
 import numpy.ma as ma
 from math import cos, sin
+from pandas import read_csv
 import matplotlib.pyplot as plt
 from scipy.interpolate import RegularGridInterpolator
 
@@ -103,7 +104,37 @@ def extract_matrix_data(fields):
         fields['field_readed'][datatype] = np.array([complex(s.replace('i', 'j')) for i in range(len(rawdatalines)) \
             for k,s in zip(range(4),rawdatalines[i].split()) if k == 3])
 
-def mask_values(fields,datatypes):
+def extract_coordinates(flow_config: dict, fields: dict):
+    """Function used to extract coordinates from our files"""
+    fields['field_readed_masked']['coordinates'] = {}
+
+    # Definir las cabeceras manualmente
+    column_names = ['x', 'y', 'z', 'Evalue']
+
+    files_directory = flow_config['directory']
+
+    # Delete of the normE field
+    flow_config['files_in_directory'].pop()
+
+    index = 0
+    for file in flow_config['files_in_directory']:
+        file_path = f"{files_directory}/{file}"
+    
+        # Leer el archivo, saltando las líneas que comienzan con '%'
+        data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names, skiprows=1)
+        
+        x_coordinates = np.ma.masked_invalid(data['x'].to_numpy())
+        y_coordinates = np.ma.masked_invalid(data['y'].to_numpy())
+        z_coordinates = np.ma.masked_invalid(data['z'].to_numpy())
+
+        fields['field_readed_masked']['coordinates'][file_type[index]] = {}
+        fields['field_readed_masked']['coordinates'][file_type[index]]['x_coordinates'] = x_coordinates
+        fields['field_readed_masked']['coordinates'][file_type[index]]['y_coordinates'] = y_coordinates
+        fields['field_readed_masked']['coordinates'][file_type[index]]['z_coordinates'] = z_coordinates
+
+        index += 1
+
+def mask_values(fields, datatypes):
     for datatype in datatypes:
         field_component_with_no_nan = np.nan_to_num(fields['field_readed'][datatype], nan=0)
         fields['field_readed_masked'][datatype] = field_component_with_no_nan[np.nonzero(field_component_with_no_nan)]
@@ -111,9 +142,47 @@ def mask_values(fields,datatypes):
 def change_coordinate_system_to_spherical(fields: dict):
     """Function used to change the coordinate system from cartesians to sphericals"""
 
-    make_interpolator(fields['field_readed_masked']['Ex'],1,5,0,np.pi,0,2*np.pi,100)
+    interpolator = make_interpolator(fields,'Ex')
 
-def make_interpolator(field_component, r_init: int, r_end: int, theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int):
+    spherical_greed = generate_spherical_grid()
+
+    interpolated_value = interpolator(spherical_greed)
+
+    print(interpolated_value)
+
+def make_interpolator(fields: dict, component: str):
+    """Function used to make an interpolator to obtain spherical values"""
+
+    x_coordenates = fields['field_readed_masked']['coordinates'][component]['x_coordinates']
+    y_coordenates = fields['field_readed_masked']['coordinates'][component]['y_coordinates']
+    z_coordenates = fields['field_readed_masked']['coordinates'][component]['z_coordinates']
+    print(type(x_coordenates))
+    field_values = np.array([fields['field_readed_masked']['Ex'], fields['field_readed_masked']['Ey'], fields['field_readed_masked']['Ez']])
+    coordinates  = np.array([x_coordenates, y_coordenates, z_coordenates])
+    print(type(field_values))
+    print(type(coordinates))
+    # # Creation of the interpolator
+    # spherical_field_interpolador = RegularGridInterpolator(points=coordinates, values=field_values)
+
+    # return spherical_field_interpolador
+
+def generate_spherical_grid(r_init: int, r_end: int, theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int):
+    """Function used to generate a spherical grid"""
+    # Creation of base coordinates
+    # r = np.arange(r_init, r_end)
+    r = 1
+    theta = np.linspace(theta_init, theta_end, number_of_values)
+    phi = np.linspace(phi_init, phi_end, number_of_values)
+    
+    r_grid, theta_grid, phi_grid = np.meshgrid(r, theta, phi, indexing='ij')
+
+    X_spherical = r_grid*np.sin(theta_grid)*np.cos(phi_grid)
+    Y_spherical = r_grid*np.sin(theta_grid)*np.sin(phi_grid)
+    Z_spherical = r_grid*np.cos(theta_grid)
+
+    return (X_spherical, Y_spherical, Z_spherical)
+
+def make_interpolatorOLD(field: dict, component: str, r_init: int, r_end: int, theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int):
     """Function used to make an interpolator to obtain spherical values"""
 
     # Creation of base coordinates
@@ -123,11 +192,13 @@ def make_interpolator(field_component, r_init: int, r_end: int, theta_init: int,
     phi = np.linspace(phi_init, phi_end, number_of_values)
 
     spherical_field_component = []
-    for field_componenet_value in field_component:
-        spherical_field_component.append(field_componenet_value*(np.sin(theta)*np.cos(phi) + np.sin(theta)*np.sin(phi) + np.cos(theta)))
-    print(spherical_field_component)
+    if component == 'Ex':
+        for field_componenet_value in field[component]:
+            spherical_field_component.append(field_componenet_value*(np.sin(theta)*np.cos(phi) + np.sin(theta)*np.sin(phi) + np.cos(theta)))
+        print(spherical_field_component)
+
     # Creation of the interpolator
-    # interpolador = RegularGridInterpolator((r, theta, phi), valores, bounds_error=False, fill_value=None)
+    spherical_field_interpolador = RegularGridInterpolator((r, theta, phi), spherical_field_component, bounds_error=False, fill_value=None)
 
 if __name__ == '__main__':
     plt.close('all')
@@ -139,9 +210,12 @@ if __name__ == '__main__':
     
     extract_matrix_data(fields)
     
+    extract_coordinates(flow_config, fields)
 
     # Este método quita de en medio los NaN.
-    mask_values(fields,fields['file_type'])
+    mask_values(fields, fields['file_type'])
+    
+    # print(fields['field_readed_masked']['Ex'])
 
     change_coordinate_system_to_spherical(fields)
     # near_field_to_far_field_transformation(fields)
