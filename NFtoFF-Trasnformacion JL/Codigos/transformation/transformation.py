@@ -156,13 +156,12 @@ def make_interpolator(fields: dict, component: str):
     x_coordenates = fields['field_readed_masked']['coordinates'][component]['x_coordinates']
     y_coordenates = fields['field_readed_masked']['coordinates'][component]['y_coordinates']
     z_coordenates = fields['field_readed_masked']['coordinates'][component]['z_coordinates']
-    print(type(x_coordenates))
-    field_values = np.array([fields['field_readed_masked']['Ex'], fields['field_readed_masked']['Ey'], fields['field_readed_masked']['Ez']])
+
+    field_values = np.array([np.abs(fields['field_readed_masked']['Ex']), np.abs(fields['field_readed_masked']['Ey']), np.abs(fields['field_readed_masked']['Ez'])])
     coordinates  = np.array([x_coordenates, y_coordenates, z_coordenates])
-    print(type(field_values))
-    print(type(coordinates))
-    # # Creation of the interpolator
-    # spherical_field_interpolador = RegularGridInterpolator(points=coordinates, values=field_values)
+
+    # Creation of the interpolator
+    spherical_field_interpolador = RegularGridInterpolator(points=coordinates, values=fields['field_readed_masked']['Ex'])
 
     # return spherical_field_interpolador
 
@@ -201,7 +200,7 @@ def make_interpolatorOLD(field: dict, component: str, r_init: int, r_end: int, t
     spherical_field_interpolador = RegularGridInterpolator((r, theta, phi), spherical_field_component, bounds_error=False, fill_value=None)
 
 if __name__ == '__main__':
-    plt.close('all')
+
     #try:
 
     fields = input_data_process(flow_config)
@@ -214,8 +213,6 @@ if __name__ == '__main__':
 
     # Este método quita de en medio los NaN.
     mask_values(fields, fields['file_type'])
-    
-    # print(fields['field_readed_masked']['Ex'])
 
     change_coordinate_system_to_spherical(fields)
     # near_field_to_far_field_transformation(fields)
