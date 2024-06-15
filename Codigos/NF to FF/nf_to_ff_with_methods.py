@@ -14,7 +14,7 @@ pauseinterval = 0.01
 
 k0 ,delta_x,L_x,delta_y,L_y,coordz = 0,0,0,0,0,0
 flow_config = { 
-    'directory':r'NF to FF',
+    'directory':r'c:\\Users\\aitor\\OneDrive\\Desktop\\TFG-AitorIngelmo\\Codigos\\NF to FF',
     'files_in_directory': [
         'microstrip_patch_antenna_Ex.txt',
         'microstrip_patch_antenna_Ey.txt',
@@ -165,7 +165,7 @@ def transformation_to_farfield(fields,measure_cut):
     kxy = np.array([[kx[i,j],ky[i,j]] for i in range(kx.shape[0]) for j in range(ky.shape[0])]).reshape(Nx,Nx,2)
 
     f_factor = (1j*kz*np.exp(-1j*k0))/(2*np.pi)
-    fields_to_transform = list(fields['zValueZeroedplane'].keys())
+    fields_to_transform = list(fields['zValueZeroedplane'].keys())  
     suma = 0
     for i in range(len(fields['zValueZeroedplane'].keys())):
         field_component = fields_to_transform[i]   

@@ -5,7 +5,7 @@ import numpy.ma as ma
 from math import cos, sin
 from pandas import read_csv
 import matplotlib.pyplot as plt
-from scipy.interpolate import RegularGridInterpolator
+from scipy.interpolate import LinearNDInterpolator
 
 
 # Import 'funciones' module
@@ -85,12 +85,15 @@ def read_data(fields):
             z_coordinates = data_with_no_nans['z'].to_numpy()
             E_value = data_with_no_nans['E_value'].to_numpy()
 
+            E_value_str = np.array([str(val) for val in E_value])
+            E_value_j = np.char.replace(E_value_str , 'i', 'j')
+            complex_E_value = E_value_j.astype(complex)
+
             fields['field_readed_masked']['values_readed'][file_type] = {}
             fields['field_readed_masked']['values_readed'][file_type]['x_coordinates'] = x_coordinates
             fields['field_readed_masked']['values_readed'][file_type]['y_coordinates'] = y_coordinates
             fields['field_readed_masked']['values_readed'][file_type]['z_coordinates'] = z_coordinates
-            fields['field_readed_masked']['values_readed'][file_type]['E_value'] = E_value
-
+            fields['field_readed_masked']['values_readed'][file_type]['E_value'] = complex_E_value
 
 def extract_matrix_data(fields):
     """
@@ -154,66 +157,77 @@ def mask_values(fields, datatypes):
 def change_coordinate_system_to_spherical(fields: dict):
     """Function used to change the coordinate system from cartesians to sphericals"""
 
-    interpolator = make_interpolator(fields)
+    r_grid, theta_grid, phi_grid = generate_spherical_values(theta_init=-np.pi/3,
+                                              theta_end=np.pi/3,
+                                              phi_init=0,
+                                              phi_end=2*np.pi,
+                                              number_of_values = 5,
+                                              r=0.01)
 
-    spherical_greed = generate_spherical_grid()
+    Ex_interpolator = make_interpolator(fields, 'Ex')
+    Ey_interpolator = make_interpolator(fields, 'Ey')
+    Ez_interpolator = make_interpolator(fields, 'Ez')
 
-    interpolated_value = interpolator(spherical_greed)
 
-    print(interpolated_value)
+    x_spherical, y_spherical, z_spherical = translate_spherical_values_to_cartesians(r_grid, theta_grid, phi_grid)
 
-def make_interpolator(fields: dict):
-    """Function used to make an interpolator to obtain spherical values"""
-    x_coordenates = fields['field_readed_masked']['values_readed']['Ex']['x_coordinates']
-    y_coordinates = fields['field_readed_masked']['values_readed']['Ex']['y_coordinates']
-    z_coordinates = fields['field_readed_masked']['values_readed']['Ex']['z_coordinates']
+    points_to_interpolate = generate_points_to_interpolate(x_spherical, y_spherical, z_spherical)
 
-    Ex = fields['field_readed_masked']['values_readed']['Ex']['E_value']
-    Ey = fields['field_readed_masked']['values_readed']['Ey']['E_value']
-    Ez = fields['field_readed_masked']['values_readed']['Ez']['E_value']
 
-    field_values = (Ex, Ey, Ez)
-    coordinates  = (x_coordenates, y_coordinates, z_coordinates)
-    coordinates = np.reshape(coordinates,[3,3,3])
+    Ex_interpolated = Ex_interpolator(points_to_interpolate)
+    Ey_interpolated = Ey_interpolator(points_to_interpolate)
+    Ez_interpolated = Ez_interpolator(points_to_interpolate)
 
-    # Creation of the interpolator
-    spherical_field_interpolador = RegularGridInterpolator(points=coordinates, values=field_values)
+    E_r, E_theta, E_phi = change_versor_coordinates_to_spherical(Ex_interpolated, Ey_interpolated, Ez_interpolated, theta_grid, phi_grid)
 
-    # return spherical_field_interpolador
+    return E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid
 
-def generate_spherical_grid(r_init: int, r_end: int, theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int):
+def generate_spherical_values(theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int, r: int = 1):
     """Function used to generate a spherical grid"""
+    
     # Creation of base coordinates
-    # r = np.arange(r_init, r_end)
-    r = 1
     theta = np.linspace(theta_init, theta_end, number_of_values)
     phi = np.linspace(phi_init, phi_end, number_of_values)
     
     r_grid, theta_grid, phi_grid = np.meshgrid(r, theta, phi, indexing='ij')
 
-    X_spherical = r_grid*np.sin(theta_grid)*np.cos(phi_grid)
-    Y_spherical = r_grid*np.sin(theta_grid)*np.sin(phi_grid)
-    Z_spherical = r_grid*np.cos(theta_grid)
-
-    return (X_spherical, Y_spherical, Z_spherical)
-
-def make_interpolatorOLD(field: dict, component: str, r_init: int, r_end: int, theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int):
+    return r_grid.flatten(), theta_grid.flatten(), phi_grid.flatten()
+    
+def make_interpolator(fields: dict, field_component: str):
     """Function used to make an interpolator to obtain spherical values"""
-
-    # Creation of base coordinates
-    # r = np.arange(r_init, r_end)
-    r = 1
-    theta = np.linspace(theta_init, theta_end, number_of_values)
-    phi = np.linspace(phi_init, phi_end, number_of_values)
-
-    spherical_field_component = []
-    if component == 'Ex':
-        for field_componenet_value in field[component]:
-            spherical_field_component.append(field_componenet_value*(np.sin(theta)*np.cos(phi) + np.sin(theta)*np.sin(phi) + np.cos(theta)))
-        print(spherical_field_component)
+    x_coordenates = fields['field_readed_masked']['values_readed'][field_component]['x_coordinates']
+    y_coordinates = fields['field_readed_masked']['values_readed'][field_component]['y_coordinates']
+    z_coordinates = fields['field_readed_masked']['values_readed'][field_component]['z_coordinates']
+    
+    measure_points_stack = np.column_stack((x_coordenates, y_coordinates, z_coordinates))
+    Evalue = fields['field_readed_masked']['values_readed'][field_component]['E_value']
 
     # Creation of the interpolator
-    spherical_field_interpolador = RegularGridInterpolator((r, theta, phi), spherical_field_component, bounds_error=False, fill_value=None)
+    linear_interpolador = LinearNDInterpolator(points=measure_points_stack, values=Evalue)
+
+    return linear_interpolador
+
+def generate_points_to_interpolate(r_grid: object, theta_grid: object, phi_grid: object):
+    """Function used to buils an array with the points to interpolate"""
+    return np.column_stack((r_grid, theta_grid, phi_grid))
+
+def change_versor_coordinates_to_spherical(Ex_interpolated: object, Ey_interpolated: object, Ez_interpolated: object , theta_grid: object, phi_grid: object):
+    """Function used to change the versor coordinates to spherical from cartesians"""
+    # Calcular componentes del vector en coordenadas esféricas
+    E_r = Ex_interpolated * np.sin(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.sin(theta_grid) * np.sin(phi_grid) + Ez_interpolated * np.cos(theta_grid)
+    E_theta = Ez_interpolated * np.cos(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.cos(theta_grid) * np.sin(phi_grid) - Ez_interpolated * np.sin(theta_grid)
+    E_phi = -Ez_interpolated * np.sin(phi_grid) + Ey_interpolated * np.cos(phi_grid)
+    
+    return E_r, E_theta, E_phi
+
+def translate_spherical_values_to_cartesians(r_grid: object, theta_grid: object, phi_grid: object):
+    """Function responsible for translating spherical coordinates to Cartesian coordinates"""
+    x_spherical = r_grid*np.sin(theta_grid)*np.cos(phi_grid)
+    y_spherical = r_grid*np.sin(theta_grid)*np.sin(phi_grid)
+    z_spherical = r_grid*np.cos(theta_grid)
+
+    return x_spherical, y_spherical, z_spherical
+
 
 if __name__ == '__main__':
 
@@ -226,34 +240,9 @@ if __name__ == '__main__':
     # Este método quita de en medio los NaN.
     # mask_values(fields, fields['file_type'])
 
-    change_coordinate_system_to_spherical(fields)
+    E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid = change_coordinate_system_to_spherical(fields)
 
-    # near_field_to_far_field_transformation(fields)
+    near_field_to_far_field_transformation(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid)
     
     print("FIN PROGRAMA")
  
-    #except Exception as exc:
-        #print(exc)
-
-
-def near_field_to_far_field_transformation(fields: dict, cut: int):
-    Nx = fields['field_readed_masked']['Ex'][cut].shape[0]
-    Ny = fields['field_readed_masked']['Ex'][cut].shape[1]
-    num = 0
-    for value in fields['field_readed_masked']['Ex'][cut]:
-
-        emn_calculated = calculate_emn_from_dipole_field()
-
-def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: int, k: int):
-    """Function used to obtain a single value of emn from our Dipole field"""
-    theta_values = np.linspace(0, np.pi, num=number_of_points)
-    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
-    delta_theta = theta_values[1] - theta_values[0]
-    delta_phi = phi_values[1] - phi_values[0]
-
-    total_result = 0
-    for theta in theta_values:
-        for phi in phi_values:
-            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
-            total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*funciones.b_sin_function(-m,n,theta,phi)
-    return total_result*delta_theta*delta_phi

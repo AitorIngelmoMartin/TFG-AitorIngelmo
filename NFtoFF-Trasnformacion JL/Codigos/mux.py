@@ -1,5 +1,17 @@
+from math import factorial
 import numpy as np
-array = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
+from numpy import cos, sin
+from scipy import special
 
-number_of_points =5
-print(np.linspace(np.pi, 0, num=number_of_points))
+
+def legendre_polinom(n: int, m: int, z: int):
+    """Function that calculate the legendre polinom"""
+    if np.abs(m) > n:
+        return 0
+    else:
+        return special.clpmn(m, n, z, 2)[0][np.abs(m)][n]
+    
+theta = np.linspace(-np.pi, np.pi, num=25)
+n = 1
+m = 1
+legendre_polinom(n,m,cos(theta))

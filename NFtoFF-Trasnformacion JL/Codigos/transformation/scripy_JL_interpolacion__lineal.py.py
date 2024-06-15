@@ -17,9 +17,9 @@ X = X[indices]
 Y = Y[indices]
 Z = Z[indices]
 points = np.column_stack((X, Y, Z))
-x2 = np.unique(points[:,0]);
-y2 = np.unique(points[:,1]);
-z2 = np.unique(points[:,2]);
+x2 = np.unique(points[:,0])
+y2 = np.unique(points[:,1])
+z2 = np.unique(points[:,2])
 # Estas nuevas coordenadas corresponden a los puntos donde queremos obtener el valor de la interpolación.
 # En tu caso serán las coordenadas no equiespaciadas en cartesianas que resultan de la traducción de la rejilla
 # regular que vas a definir en esféricas. Aquí por facilidad generamos una subrejilla regular.
