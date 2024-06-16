@@ -22,6 +22,7 @@ pauseinterval = 0.01
 threshold     = 1e-10
 delta_x, delta_y = 0 , 0
 file_type = ['Ex','Ey','Ez','normE']
+k_calculated = 0
 
 flow_config = { 
     'directory':r'c:\\Users\\aitor\\OneDrive\\Desktop\\TFG-AitorIngelmo\\NFtoFF-Trasnformacion JL\\Codigos\\transformation',
@@ -41,7 +42,7 @@ flow_config = {
 
 def input_data_process(flow_config: dict):
     """Function used to save inputs from our flow_config dictionary"""
-
+    global k_calculated
     try:
         fields,files = {}, {}
         if len(flow_config['file_type']) == len(flow_config['files_in_directory']):
@@ -56,9 +57,11 @@ def input_data_process(flow_config: dict):
         fields.update({"field_readed_masked":{}})
         fields.update({'fields_transformed':{}})
         fields.update({'quantitative_comparison':{}})
-        fields.update({'freq':flow_config['freq']})    
+        fields.update({'freq':flow_config['freq']})
         fields.update({'length_unit':flow_config['length_unit']})
         fields.update({'res':flow_config['res']})
+
+        k_calculated = (2*np.pi * flow_config['freq'])/c0
 
     except Exception as exc:
         print(f"ERROR:{exc}")
@@ -237,6 +240,9 @@ def near_field_to_far_field_transformation(E_r: object, E_theta: object, E_phi: 
     emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
     gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
 
+    bmnffcoef_from_emn = calculate_bmnffcoef_from_emn(number_of_modes, emn_calculated, r=r_grid[0], k=k_calculated)
+    amnffcoef_from_gmn = calculate_amnffcoef_from_gmn(number_of_modes, gmn_calculated, r=r_grid[0], k=k_calculated)
+
 def calculate_measure_point_increments(vector):
     """Function used to get the increment of a regular vector"""
     return np.max(np.unique(np.diff(vector)))
@@ -320,6 +326,42 @@ def calculate_gmn_value(E_r: object, E_theta: object, E_phi: object, r_grid: obj
             phi_index += phi_index
         theta_index += theta_index
     return total_result*delta_theta*delta_phi
+
+def calculate_bmnffcoef_from_emn(number_of_modes: int, emn: list, r: int, k: int):
+    """Function used to obtain a all values of bmnffcoef from bmn"""
+    total_result = []
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            b_coef_value = funciones.b_coef_function(e_data=emn,
+                                           m=m,
+                                           n=n,
+                                           k=k,
+                                           R=r)
+            if abs(b_coef_value) < threshold:
+                b_coef_value = 0.0
+            value_calculated.append(b_coef_value)
+        total_result.append(value_calculated)
+    return total_result
+
+def calculate_amnffcoef_from_gmn(number_of_modes: int, gmn: list, r: int, k: int):
+    """Function used to obtain a all values of Amnffcoef from gmn"""
+    total_result = []
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            b_coef_value = funciones.a_coef_function(g_data=gmn,
+                                           m=m,
+                                           n=n,
+                                           k=k,
+                                           R=r)
+            if abs(b_coef_value) < threshold:
+                b_coef_value = 0.0
+            value_calculated.append(b_coef_value)
+        total_result.append(value_calculated)
+    return total_result
 
 if __name__ == '__main__':
 
