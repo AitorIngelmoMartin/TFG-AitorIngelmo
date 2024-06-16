@@ -228,6 +228,98 @@ def translate_spherical_values_to_cartesians(r_grid: object, theta_grid: object,
 
     return x_spherical, y_spherical, z_spherical
 
+def near_field_to_far_field_transformation(E_r: object, E_theta: object, E_phi: object , r_grid: object, theta_grid: object, phi_grid: object, number_of_modes: int):
+    """Function used to transfor our near field mesures into far field ones"""
+    r = r_grid[0]
+    delta_theta = calculate_measure_point_increments(theta_grid)
+    delta_phi = calculate_measure_point_increments(phi_grid)
+
+    emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
+    gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
+
+def calculate_measure_point_increments(vector):
+    """Function used to get the increment of a regular vector"""
+    return np.max(np.unique(np.diff(vector)))
+
+def calculate_emn(E_r: object, E_theta: object, E_phi: object , r_grid: object, theta_grid: object, phi_grid: object, number_of_modes: int, delta_theta: int, delta_phi: int):
+    """Function used to obtain a single value of emn from our Dipole field"""
+    total_result = []
+    threshold = 1e-10
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            emn_value = calculate_emn_value(
+                E_r=E_r,
+                E_theta=E_theta,
+                E_phi=E_phi,
+                r_grid=r_grid,
+                theta_grid=theta_grid,
+                phi_grid=phi_grid,
+                m=m,
+                n=n,
+                delta_theta=delta_theta,
+                delta_phi=delta_theta)
+            aux = sum(emn_value)
+            if abs(aux) < threshold:
+                aux = 0.0
+            value_calculated.append(aux)
+        total_result.append(value_calculated)
+    return total_result
+
+def calculate_emn_value(E_r: object, E_theta: object, E_phi: object, r_grid: object, theta_grid: object, phi_grid: object, m: int, n: int, delta_theta: int, delta_phi: int):
+    """Function used to obtain a single value of emn from our Dipole field"""
+
+    total_result = 0
+    theta_index = 0    
+    for theta in theta_grid:
+        phi_index = 0
+        for phi in phi_grid:
+            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
+            total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.b_sin_function(-m,n,theta,phi)
+            phi_index += phi_index
+        theta_index += theta_index
+    return total_result*delta_theta*delta_phi
+
+def calculate_gmn(E_r: object, E_theta: object, E_phi: object , r_grid: object, theta_grid: object, phi_grid: object, number_of_modes: int, delta_theta: int, delta_phi: int):
+    """Function used to obtain a single value of gmn from our Dipole field"""
+    total_result = []
+    threshold = 1e-10
+    
+    for n in range(1, number_of_modes + 1):
+        value_calculated = []
+        for m in range(-n, n + 1):
+            gmn_value = calculate_gmn_value(
+                E_r=E_r,
+                E_theta=E_theta,
+                E_phi=E_phi,
+                r_grid=r_grid,
+                theta_grid=theta_grid,
+                phi_grid=phi_grid,
+                m=m,
+                n=n,
+                delta_theta=delta_theta,
+                delta_phi=delta_theta)
+            aux = sum(gmn_value)
+            if abs(aux) < threshold:
+                aux = 0.0
+            value_calculated.append(aux)
+        total_result.append(value_calculated)
+    return total_result
+
+def calculate_gmn_value(E_r: object, E_theta: object, E_phi: object, r_grid: object, theta_grid: object, phi_grid: object, m: int, n: int, delta_theta: int, delta_phi: int):
+    """Function used to obtain a single value of gmn from our Dipole field"""
+
+    total_result = 0
+    theta_index = 0    
+    for theta in theta_grid:
+        phi_index = 0
+        for phi in phi_grid:
+            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
+            total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.c_sin_function(-m,n,theta,phi)
+            phi_index += phi_index
+        theta_index += theta_index
+    return total_result*delta_theta*delta_phi
 
 if __name__ == '__main__':
 
@@ -242,7 +334,8 @@ if __name__ == '__main__':
 
     E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid = change_coordinate_system_to_spherical(fields)
 
-    near_field_to_far_field_transformation(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid)
+    number_of_modes = 5
+    near_field_to_far_field_transformation(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes)
     
     print("FIN PROGRAMA")
  
