@@ -11,6 +11,18 @@ threshold = 1e-10
 #### EfieldSint
 #####################
 
+def e_field_sint(*,k: int, R: int, acoeff: list, bcoeff: list, theta: int, phi: int):
+    """Function used to obtain a sintetic Field"""
+    M = len(acoeff)
+    total_result = 0
+    for n in range(1, M + 1):
+        values_calculated = 0
+        for m in range(-n, n + 1):
+            value = ((2*n+1)/(n*(n+1)))*(acoeff[n-1][m+n]*funciones.m_function(m,n,k,R,theta,phi) + bcoeff[n-1][m+n]*funciones.n_function(m,n,k,R,theta,phi))
+            values_calculated += value
+        total_result += values_calculated
+    return total_result
+
 # Print de la matriz triangular obtenida al cacular Z1
 def test_z1_matrix(N):
     """Function used to test the orthogonality of Z1"""
@@ -20,7 +32,7 @@ def test_z1_matrix(N):
         for m in range(-n, n + 1):
             value_calculated.append(funciones.z1(m,n))
         total_result.append(value_calculated)
-    print(total_result)
+    # print(total_result)
 
 # Calculo de Amncoef
 def make_dummy_a_coef(N):
@@ -75,11 +87,16 @@ def calculate_emn_from_EfieldSint(number_of_points: int, m: int, n: int, r: int,
     total_result = 0
     for theta in theta_values:
         for phi in phi_values:
-            total_result += funciones.e_field_sint(k=k, R=r, acoeff=acoeff,bcoeff=bcoeff,theta=0,phi=0)*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
-    return total_result
-# print(calculate_emn_from_EfieldSint(number_of_points=500, m=0, n=1, r=1, k=2*np.pi,N=5))
-# {-0.154949 + 0.951506 I, 0.109974 - 0.673486 I, -0.0778651 + 0.475551 I}
+            # total_result += e_field_sint_calculated*funciones.b_sin_function(-m,n,theta,phi)*delta_theta*delta_phi
+            total_result += (acoeff[n-1][m+n]*funciones.m_function(m,n,k,r,theta,phi) + bcoeff[n-1][m+n]*funciones.n_function(m,n,k,r,theta,phi))*funciones.b_sin_function(-m,n,theta,phi)
+    return total_result*delta_theta*delta_phi
 
+print(calculate_emn_from_EfieldSint(number_of_points=1500, m=0, n=1, r=1, k=2*np.pi, N=5))    
+# MATEMATICA: {-0.154949 + 0.951506 I, 0.109974 - 0.673486 I, -0.0778651 + 0.475551 I}
+#             [ 0.        +0.j        -0.32843936-0.9206222j  0.        +0.j       ]
+
+# {-0.10356 + 0.634203 I, 0.0733162 - 0.448991 I, -0.0517798 + 0.317101 I}
+# [0.        +0.j         0.07336505-0.44928977j 0.        +0.j        ]
 # PolarPlot de EfieldSint
 def make_polarplot_of_EfieldSint():
     """Function used to draw the polar plor of EfieldSint from [-pi,pi]"""

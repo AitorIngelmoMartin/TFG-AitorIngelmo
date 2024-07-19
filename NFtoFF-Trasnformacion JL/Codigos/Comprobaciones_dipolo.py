@@ -109,9 +109,6 @@ def make_polarplot_of_EdipoloTheta():
 #### Verificación del campo del Dipolo cambiando Nintegrate por sumatorios
 #####################
 
-theta_array = np.arange(-60, 61, 1)
-# print(len(theta_values))
-
 def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
     """Function used to obtain a single value of emn from our Dipole field"""
     theta_values = np.linspace(0, np.pi, num=number_of_points)
@@ -126,16 +123,16 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
             total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*funciones.b_sin_function(-m,n,theta,phi)
     return total_result*delta_theta*delta_phi
 
-# emn_dipole = calculate_emn_from_dipole_field(
-#     number_of_points=1000,
-#     m=0,
-#     n=3,
-#     r=1,
-#     k=2*np.pi,
-#     eta=120*np.pi,
-#     l=1/50,
-#     Io=1)
-# print(emn_dipole)
+emn_dipole = calculate_emn_from_dipole_field(
+    number_of_points=1000,
+    m=0,
+    n=3,
+    r=1,
+    k=2*np.pi,
+    eta=120*np.pi,
+    l=1/50,
+    Io=1)
+print(emn_dipole)
 # −0.0000000000367656364−0.000000000223229146j
 # -0.0000353043 - 0.000216205 I
 
@@ -279,20 +276,20 @@ def calculate_far_field(number_of_modes: int, a_coef_value: list, b_coef_value: 
             total_result += far_field_value
     return total_result*np.exp(1j*w*t)
 
-a_coef_dummy = [[0.0, 0.0, 0.0]]
-b_coef_dummy = [[0.0, (43.332568590557884-14.539313370261027j), 0.0]]
-ff_calculated = calculate_far_field(
-    number_of_modes=1,
-    a_coef_value=a_coef_dummy,
-    b_coef_value=b_coef_dummy,
-    r=1,
-    k=2*np.pi,
-    theta=1,
-    phi=1,
-    w=1,
-    t=1)
-print(ff_calculated)
+# a_coef_dummy = [[0.0, 0.0, 0.0]]
+# b_coef_dummy = [[0.0, (43.332568590557884-14.539313370261027j), 0.0]]
+# ff_calculated = calculate_far_field(
+#     number_of_modes=1,
+#     a_coef_value=a_coef_dummy,
+#     b_coef_value=b_coef_dummy,
+#     r=1,
+#     k=2*np.pi,
+#     theta=1,
+#     phi=1,
+#     w=1,
+#     t=1)
+# print(ff_calculated)
 
-def dipole_e_theta_far_field(k , I, l, theta, r):
-    return 1j*(120*np.pi)*k*I*l*sin(theta)*(1/(4*np.pi*r))*np.exp(-1j*k*r)
-print([0,dipole_e_theta_far_field(2*np.pi,1,1/50,1,1),0])
+# def dipole_e_theta_far_field(k , I, l, theta, r):
+#     return 1j*(120*np.pi)*k*I*l*sin(theta)*(1/(4*np.pi*r))*np.exp(-1j*k*r)
+# print([0,dipole_e_theta_far_field(2*np.pi,1,1/50,1,1),0])
