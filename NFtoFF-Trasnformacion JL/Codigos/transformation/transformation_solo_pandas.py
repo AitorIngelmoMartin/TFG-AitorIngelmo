@@ -456,14 +456,14 @@ if __name__ == '__main__':
     # # Points where i want to know the field
     # n = 100
     # theta_values = np.linspace(0, 2*np.pi, n)
-    # far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_value=50)
+    # far_field_calculated = calculate_far_field_2D(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_value=50)
     # module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
     # draw_radiation_diagram(theta_values, module_far_field_calculated)
 
     # # Points where i want to know the field
     # n = 100
     # phi_value = np.linspace(0, 2*np.pi, n)
-    # far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values=50, phi_value=phi_value)
+    # far_field_calculated = calculate_far_field_2D(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values=50, phi_value=phi_value)
     # module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
     # draw_radiation_diagram(phi_value, module_far_field_calculated)
 
