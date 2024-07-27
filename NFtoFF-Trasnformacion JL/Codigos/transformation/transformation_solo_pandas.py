@@ -399,7 +399,6 @@ def draw_radiation_diagram(thetha: list, module_far_field_calculated: list):
 
 def draw_module_diagram(far_field_calculated, theta_values, phi_values):
     """Function used to draw a 3D diagram of our field"""
-    # Er, Etheta, Ephi = obtain_field_components(far_field_calculated) #(100,100,3)
 
     # r = 1.0
     theta, phi = np.meshgrid(theta_values, phi_values)
@@ -423,18 +422,6 @@ def draw_module_diagram(far_field_calculated, theta_values, phi_values):
 
     # Mostrar la gráfica
     plt.show()
-
-def obtain_field_components(far_field_calculated):
-    """Function used to obtain each field component in separete arrays"""
-    Er = np.array([])
-    Etheta = np.array([])
-    Ephi = np.array([])
-    for value in far_field_calculated:
-        Er = np.append(Er, value[0])
-        Etheta = np.append(Etheta, value[1])
-        Ephi = np.append(Ephi, value[2])
-
-    return Er, Etheta, Ephi
 
 def change_coordinate_system_to_cartesian(far_field_calculated: object, theta, phi):
     """Function used to change the coordinate system to cartesian from spherical
