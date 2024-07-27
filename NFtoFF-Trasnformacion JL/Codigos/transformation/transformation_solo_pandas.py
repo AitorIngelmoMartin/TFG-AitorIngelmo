@@ -126,19 +126,19 @@ def extract_coordinates(flow_config: dict, fields: dict):
     """Function used to extract coordinates from our files"""
     fields['field_readed_masked']['coordinates'] = {}
 
-    # Definir las cabeceras manualmente
+    # Definition of dataframe header names
     column_names = ['x', 'y', 'z', 'Evalue']
 
     files_directory = flow_config['directory']
 
-    # Delete of the normE field
+    # Delete of the normE field read previously
     flow_config['files_in_directory'].pop()
 
     index = 0
     for file in flow_config['files_in_directory']:
         file_path = f"{files_directory}/{file}"
     
-        # Leer el archivo, saltando las líneas que comienzan con '%'
+        # Read the file, skipping lines starting with '%' (Comsol headers)
         data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names, skiprows=1)
         
         x_coordinates = np.ma.masked_invalid(data['x'].to_numpy())
@@ -152,11 +152,6 @@ def extract_coordinates(flow_config: dict, fields: dict):
 
         index += 1
 
-def mask_values(fields, datatypes):
-    for datatype in datatypes:
-        field_component_with_no_nan = np.nan_to_num(fields['field_readed'][datatype], nan=0)
-        fields['field_readed_masked'][datatype] = field_component_with_no_nan[np.nonzero(field_component_with_no_nan)]
-
 def change_coordinate_system_to_spherical(fields: dict):
     """Function used to change the coordinate system from cartesians to sphericals"""
 
@@ -165,7 +160,7 @@ def change_coordinate_system_to_spherical(fields: dict):
                                               phi_init=0,
                                               phi_end=2*np.pi,
                                               number_of_values = 5,
-                                              r=0.04)
+                                              r=0.01)
 
     Ex_interpolator = make_interpolator(fields, 'Ex')
     Ey_interpolator = make_interpolator(fields, 'Ey')
@@ -214,10 +209,9 @@ def generate_points_to_interpolate(r_grid: list, theta_grid: list, phi_grid: lis
 
 def change_versor_coordinates_to_spherical(Ex_interpolated: list, Ey_interpolated: list, Ez_interpolated: list , theta_grid: list, phi_grid: list):
     """Function used to change the versor coordinates to spherical from cartesians"""
-    # Calcular componentes del vector en coordenadas esféricas
-    E_r = Ex_interpolated * np.sin(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.sin(theta_grid) * np.sin(phi_grid) + Ez_interpolated * np.cos(theta_grid)
+    E_r     = Ex_interpolated * np.sin(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.sin(theta_grid) * np.sin(phi_grid) + Ez_interpolated * np.cos(theta_grid)
     E_theta = Ez_interpolated * np.cos(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.cos(theta_grid) * np.sin(phi_grid) - Ez_interpolated * np.sin(theta_grid)
-    E_phi = -Ez_interpolated * np.sin(phi_grid) + Ey_interpolated * np.cos(phi_grid)
+    E_phi   = -Ez_interpolated * np.sin(phi_grid) + Ey_interpolated * np.cos(phi_grid)
     
     return E_r, E_theta, E_phi
 
@@ -231,9 +225,9 @@ def translate_spherical_values_to_cartesians(r_grid: list, theta_grid: list, phi
 
 def near_field_to_far_field_transformation(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_grid: list, phi_grid: list, number_of_modes: int):
     """Function used to transfor our near field mesures into far field ones"""
-    r = r_grid[0]
+
     delta_theta = calculate_measure_point_increments(theta_grid)
-    delta_phi = calculate_measure_point_increments(phi_grid)
+    delta_phi   = calculate_measure_point_increments(phi_grid)
 
     emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
     gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
@@ -276,12 +270,11 @@ def calculate_emn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
 def calculate_emn_value(E_r: list, E_theta: list, E_phi: list, r_grid: list, theta_grid: list, phi_grid: list, m: int, n: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of emn from our Dipole field"""
 
-    total_result = 0
+    total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     theta_index = 0    
     for theta in theta_grid:
         phi_index = 0
         for phi in phi_grid:
-            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
             total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.b_sin_function(-m,n,theta,phi)
             phi_index += phi_index
         theta_index += theta_index
@@ -316,12 +309,11 @@ def calculate_gmn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
 def calculate_gmn_value(E_r: list, E_theta: list, E_phi: list, r_grid: list, theta_grid: list, phi_grid: list, m: int, n: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of gmn from our Dipole field"""
 
-    total_result = 0
+    total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     theta_index = 0    
     for theta in theta_grid:
         phi_index = 0
         for phi in phi_grid:
-            # total_result += [e_dipole_r_field(r, theta, k, eta, l, Io),e_dipole_theta_field(r,theta,k,eta,l,Io),0]*funciones.b_sin_function(-m,n,theta,phi)
             total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.c_sin_function(-m,n,theta,phi)
             phi_index += phi_index
         theta_index += theta_index
@@ -363,45 +355,43 @@ def calculate_amnffcoef_from_gmn(number_of_modes: int, gmn: list, r: int, k: int
         total_result.append(value_calculated)
     return total_result
 
-def calculate_far_field(number_of_modes: int, a_coef_value: list, b_coef_value: list, theta_values: list, phi_values: list):
+def calculate_far_field(number_of_modes: int, a_coef_value: list, b_coef_value: list, theta_values, phi_values):
     """Function used to obtainthe far field""" 
+    far_field_calculated = np.ndarray((np.size(phi_values),np.size(theta_values),3), dtype=complex)
+    theta_index = 0
+    for theta in theta_values:
+        phi_index = 0
+        for phi in phi_values:
+            far_field_value = calculate_far_field_value(number_of_modes, a_coef_value, b_coef_value, r=1, k=k_calculated, theta=theta, phi=phi)
+            far_field_calculated[phi_index,theta_index,:] = far_field_value
+            phi_index += 1
+        theta_index += 1
+    return far_field_calculated
+
+def calculate_far_field_2D(number_of_modes: int, a_coef_value: list, b_coef_value: list, theta_values, phi_values):
+    """Function used to obtainthe far field keeping theta or phi constant""" 
     far_field_calculated = []
     if type(phi_values) == int:
         for theta in theta_values:
-            far_field_value = calculate_far_field_value(number_of_modes, a_coef_value, b_coef_value, r=1, k=k_calculated, theta=theta, phi=phi_value)
+            far_field_value = calculate_far_field_value(number_of_modes, a_coef_value, b_coef_value, r=1, k=k_calculated, theta=theta, phi=phi_values)
             far_field_calculated.append(far_field_value)
     elif type(theta_values) == int:
         for phi in phi_values:
             far_field_value = calculate_far_field_value(number_of_modes, a_coef_value, b_coef_value, r=1, k=k_calculated, theta=theta_values, phi=phi)
             far_field_calculated.append(far_field_value)
-    else:
-        far_field_calculated = np.ndarray((np.size(phi_values),np.size(theta_values),3), dtype=complex)
-        theta_index = 0
-        for theta in theta_values:
-            phi_index = 0
-            for phi in phi_values:
-                far_field_value = calculate_far_field_value(number_of_modes, a_coef_value, b_coef_value, r=1, k=k_calculated, theta=theta, phi=phi)
-                far_field_calculated[phi_index,theta_index,:] = far_field_value
-                phi_index += 1
-            theta_index += 1
-    return far_field_calculated
 
 def calculate_far_field_value(number_of_modes: int, a_coef_value: list, b_coef_value: list, r: int, k: int, theta: int, phi: int):
     """Function used to obtainthe far field"""
-    total_result = 0
-    
+    total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     for n in range(1, number_of_modes + 1):
         for m in range(-n, n + 1):
-            far_field_value = ((2*n+1)/(n*(n+1)))*(a_coef_value[n-1][n+m]*funciones.m_function_far_field_aproximation(m,n,k,r,theta,phi)+b_coef_value[n-1][n+m]*funciones.n_function_far_field_aproximation(m,n,k,r,theta,phi))
-            # if abs(far_field_value) < threshold:
-            #     far_field_value = 0.0
-            total_result += far_field_value
+            total_result += ((2*n+1)/(n*(n+1)))*(a_coef_value[n-1][n+m]*funciones.m_function_far_field_aproximation(m,n,k,r,theta,phi)+b_coef_value[n-1][n+m]*funciones.n_function_far_field_aproximation(m,n,k,r,theta,phi))
     return total_result
 
-def draw_radiation_diagram(thetha: list, far_field_calculated: list):
+def draw_radiation_diagram(thetha: list, module_far_field_calculated: list):
     """Function used to make plots to review the results"""
     fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    ax.plot(theta_values, module_far_field_calculated)
+    ax.plot(thetha, module_far_field_calculated)
     ax.grid(True)
 
     ax.set_title("A line plot on a polar axis", va='bottom')
@@ -434,21 +424,7 @@ def draw_module_diagram(far_field_calculated, theta_values, phi_values):
     # Mostrar la gráfica
     plt.show()
 
-    print("")
-
 def obtain_field_components(far_field_calculated):
-    """Function used to obtain each field component in separete arrays"""
-    Er = np.array([])
-    Etheta = np.array([])
-    Ephi = np.array([])
-    for value in far_field_calculated:
-        Er = np.append(Er, value[0])
-        Etheta = np.append(Etheta, value[1])
-        Ephi = np.append(Ephi, value[2])
-
-    return Er, Etheta, Ephi
-
-def obtain_field_components_0(far_field_calculated):
     """Function used to obtain each field component in separete arrays"""
     Er = np.array([])
     Etheta = np.array([])
@@ -472,18 +448,7 @@ def change_coordinate_system_to_cartesian(far_field_calculated: object, theta, p
 
     return Ex, Ey, Ez
 
-def change_coordinate_system_to_cartesian_0(Er, Etheta, Ephi, theta, phi):
-    """Function used to change the coordinate system to cartesian from spherical"""
-
-    Ex = Er * np.sin(theta) * np.cos(phi) + Etheta * np.cos(theta) * np.cos(phi) - Ephi * np.sin(phi)
-    Ey = Er * np.sin(theta) * np.sin(phi) + Etheta * np.cos(theta) * np.sin(phi) + Ephi * np.cos(phi)
-    Ez = Er * np.cos(theta) - Etheta * np.sin(theta)
-
-    return Ex, Ey, Ez
-
 if __name__ == '__main__':
-
-    #try:
 
     fields = input_data_process(flow_config)
     
@@ -494,25 +459,25 @@ if __name__ == '__main__':
     number_of_modes = 5
     amnffcoef_from_gmn, bmnffcoef_from_emn = near_field_to_far_field_transformation(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes)
     
-    # Points where i whant to know the field
+    # Points where i want to know the field
     n = 100
     theta_values = np.linspace(0, np.pi, n)
     phi_values = np.linspace(0, 2 * np.pi, n)
     far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_values)
     draw_module_diagram(far_field_calculated,theta_values,phi_values)
 
-    # Points where i whant to know the field
-    n = 100
-    theta_values = np.linspace(0, 2*np.pi, n)
-    far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_value=50)
-    module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
-    draw_radiation_diagram(theta_values, far_field_calculated)
+    # # Points where i want to know the field
+    # n = 100
+    # theta_values = np.linspace(0, 2*np.pi, n)
+    # far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_value=50)
+    # module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
+    # draw_radiation_diagram(theta_values, module_far_field_calculated)
 
-    # Points where i whant to know the field
-    n = 100
-    phi_value = np.linspace(0, 2*np.pi, n)
-    far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values=50, phi_value=phi_value)
-    module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
-    draw_radiation_diagram(phi_value, far_field_calculated)
+    # # Points where i want to know the field
+    # n = 100
+    # phi_value = np.linspace(0, 2*np.pi, n)
+    # far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values=50, phi_value=phi_value)
+    # module_far_field_calculated = np.linalg.norm(far_field_calculated, axis=1)
+    # draw_radiation_diagram(phi_value, module_far_field_calculated)
 
     print("FIN PROGRAMA")
