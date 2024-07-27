@@ -70,96 +70,40 @@ def input_data_process(flow_config: dict):
 
 def read_data(fields):
     """Function used to read data from the files defined in 'flow_config'"""
-    # Definir las cabeceras manualmente
+    # Custom dataframe headers
     column_names = ['x', 'y', 'z', 'E_value']
 
     fields['field_readed_masked']['values_readed'] = {}
     for file_type, file_path in fields['files'].items():
-        with open(file_path) as file:
-            fields['lines'][file_type] = file.readlines()
 
-            # Leer el archivo, saltando las líneas que comienzan con '%'
-            data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names, skiprows=1)
-            
-            data_with_no_nans = data.dropna()
-
-            x_coordinates = data_with_no_nans['x'].to_numpy()
-            y_coordinates = data_with_no_nans['y'].to_numpy()
-            z_coordinates = data_with_no_nans['z'].to_numpy()
-            E_value = data_with_no_nans['E_value'].to_numpy()
-
-            E_value_str = np.array([str(val) for val in E_value])
-            E_value_j = np.char.replace(E_value_str , 'i', 'j')
-            complex_E_value = E_value_j.astype(complex)
-
-            fields['field_readed_masked']['values_readed'][file_type] = {}
-            fields['field_readed_masked']['values_readed'][file_type]['x_coordinates'] = x_coordinates
-            fields['field_readed_masked']['values_readed'][file_type]['y_coordinates'] = y_coordinates
-            fields['field_readed_masked']['values_readed'][file_type]['z_coordinates'] = z_coordinates
-            fields['field_readed_masked']['values_readed'][file_type]['E_value'] = complex_E_value
-
-def extract_matrix_data(fields):
-    """
-    Este método almacena en arrays los datos de los ficheros de Comsol leídos previamente con readData             
-    """
-    global delta_x, delta_y
-    #filetypes = lines.keys()
-    coord_flag = None
-    for file_type in fields['lines'].keys(): #file_type
-        datatype     = file_type
-        rawdatalines = fields['lines'][file_type][raw_data:]
-        if coord_flag == None:
-            coord_flag = 1
-            coord      = np.array([[float(s) for k,s in zip(range(4),rawdatalines[i].split()) if k<3 ] \
-                for i in range(len(rawdatalines))]).reshape(len(rawdatalines),3)
-            
-            coordx  = np.unique(coord[:,0])*fields['length_unit']
-            delta_x = coordx[1]-coordx[0]
-
-            coordy  = np.unique(coord[:,1])*fields['length_unit']
-            delta_y = coordy[1]-coordy[0]
-
-        fields['field_readed'][datatype] = np.array([complex(s.replace('i', 'j')) for i in range(len(rawdatalines)) \
-            for k,s in zip(range(4),rawdatalines[i].split()) if k == 3])
-
-def extract_coordinates(flow_config: dict, fields: dict):
-    """Function used to extract coordinates from our files"""
-    fields['field_readed_masked']['coordinates'] = {}
-
-    # Definition of dataframe header names
-    column_names = ['x', 'y', 'z', 'Evalue']
-
-    files_directory = flow_config['directory']
-
-    # Delete of the normE field read previously
-    flow_config['files_in_directory'].pop()
-
-    index = 0
-    for file in flow_config['files_in_directory']:
-        file_path = f"{files_directory}/{file}"
-    
         # Read the file, skipping lines starting with '%' (Comsol headers)
         data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names, skiprows=1)
         
-        x_coordinates = np.ma.masked_invalid(data['x'].to_numpy())
-        y_coordinates = np.ma.masked_invalid(data['y'].to_numpy())
-        z_coordinates = np.ma.masked_invalid(data['z'].to_numpy())
+        data_with_no_nans = data.dropna()
 
-        fields['field_readed_masked']['coordinates'][file_type[index]] = {}
-        fields['field_readed_masked']['coordinates'][file_type[index]]['x_coordinates'] = x_coordinates
-        fields['field_readed_masked']['coordinates'][file_type[index]]['y_coordinates'] = y_coordinates
-        fields['field_readed_masked']['coordinates'][file_type[index]]['z_coordinates'] = z_coordinates
+        x_coordinates = data_with_no_nans['x'].to_numpy()
+        y_coordinates = data_with_no_nans['y'].to_numpy()
+        z_coordinates = data_with_no_nans['z'].to_numpy()
+        E_value = data_with_no_nans['E_value'].to_numpy()
 
-        index += 1
+        E_value_str = np.array([str(val) for val in E_value])
+        E_value_j = np.char.replace(E_value_str , 'i', 'j')
+        complex_E_value = E_value_j.astype(complex)
+
+        fields['field_readed_masked']['values_readed'][file_type] = {}
+        fields['field_readed_masked']['values_readed'][file_type]['x_coordinates'] = x_coordinates
+        fields['field_readed_masked']['values_readed'][file_type]['y_coordinates'] = y_coordinates
+        fields['field_readed_masked']['values_readed'][file_type]['z_coordinates'] = z_coordinates
+        fields['field_readed_masked']['values_readed'][file_type]['E_value'] = complex_E_value
 
 def change_coordinate_system_to_spherical(fields: dict):
     """Function used to change the coordinate system from cartesians to sphericals"""
 
-    r_grid, theta_grid, phi_grid = generate_spherical_values(theta_init=-np.pi/3,
+    r_grid, theta_grid, phi_grid = generate_spherical_grid_values(theta_init=-np.pi/3,
                                               theta_end=np.pi/3,
                                               phi_init=0,
                                               phi_end=2*np.pi,
-                                              number_of_values = 5,
+                                              number_of_values = 10,
                                               r=0.01)
 
     Ex_interpolator = make_interpolator(fields, 'Ex')
@@ -178,14 +122,13 @@ def change_coordinate_system_to_spherical(fields: dict):
 
     return E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid
 
-def generate_spherical_values(theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int, r: int = 1):
+def generate_spherical_grid_values(theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int, r: int = 1):
     """Function used to generate a spherical grid"""
     
-    # Creation of base coordinates
     theta = np.linspace(theta_init, theta_end, number_of_values)
     phi = np.linspace(phi_init, phi_end, number_of_values)
     
-    r_grid, theta_grid, phi_grid = np.meshgrid(r, theta, phi, indexing='ij')
+    theta_grid, phi_grid, r_grid = np.meshgrid(theta, phi, r, indexing='ij')
 
     return r_grid.flatten(), theta_grid.flatten(), phi_grid.flatten()
     
@@ -203,9 +146,9 @@ def make_interpolator(fields: dict, field_component: str):
 
     return linear_interpolador
 
-def generate_points_to_interpolate(r_grid: list, theta_grid: list, phi_grid: list):
+def generate_points_to_interpolate(x_spherical: list, y_spherical: list, z_spherical: list):
     """Function used to buils an array with the points to interpolate"""
-    return np.column_stack((r_grid, theta_grid, phi_grid))
+    return np.column_stack((x_spherical, y_spherical, z_spherical))
 
 def change_versor_coordinates_to_spherical(Ex_interpolated: list, Ey_interpolated: list, Ez_interpolated: list , theta_grid: list, phi_grid: list):
     """Function used to change the versor coordinates to spherical from cartesians"""
@@ -435,8 +378,7 @@ def change_coordinate_system_to_cartesian(far_field_calculated: object, theta, p
 
     return Ex, Ey, Ez
 
-if __name__ == '__main__':
-
+def main():    
     fields = input_data_process(flow_config)
     
     read_data(fields)    
@@ -468,3 +410,5 @@ if __name__ == '__main__':
     # draw_radiation_diagram(phi_value, module_far_field_calculated)
 
     print("FIN PROGRAMA")
+
+main()
