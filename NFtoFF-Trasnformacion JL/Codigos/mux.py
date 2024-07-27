@@ -39,11 +39,10 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
     total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     for theta in theta_values:
         for phi in phi_values:
-            value =  np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*b_sin_function(-m,n,theta,phi)
             # mask = value >= 10e-10
             # value[mask] = np.complex128(0)
             # value = np.where(np.abs(value) < 10e-8, np.complex128(0), value)
-            total_result += value
+            total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*b_sin_function(-m,n,theta,phi)
 
     return total_result*delta_theta*delta_phi
 
@@ -58,10 +57,9 @@ emn_dipole = calculate_emn_from_dipole_field(
     Io=1)
 print(emn_dipole)
 
-# -0.00000000003685144939854857 - 0.00000000021474608533333545j
 # Obtenido :−0.0000000000367656364−0.000000000223229146j
 # Obtenido :-0.0000000005934889083833803 - 0.000000003634537662391554j
-# Obtenido: −0.000000386472918−0.00000236677214j (tras arreglar el sumatorio)
+# Obtenido: −0.000000386472918−0.00000236677214j (tras arreglar <<el sumatorio)
 # Esperado: -0.0000353043 - 0.000216205 I
 
 
