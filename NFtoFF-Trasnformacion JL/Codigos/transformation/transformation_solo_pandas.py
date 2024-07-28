@@ -1,8 +1,6 @@
 """File used to perform the NF2FF transformation"""
 import os, sys
 import numpy as np
-import numpy.ma as ma
-from math import cos, sin
 from pandas import read_csv
 import matplotlib.pyplot as plt
 from scipy.interpolate import LinearNDInterpolator
@@ -77,7 +75,7 @@ def read_data(fields):
     for file_type, file_path in fields['files'].items():
 
         # Read the file, skipping lines starting with '%' (Comsol headers)
-        data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names, skiprows=1)
+        data = read_csv(file_path, comment='%', delim_whitespace=True, names=column_names)
         
         data_with_no_nans = data.dropna()
 
@@ -106,9 +104,9 @@ def change_coordinate_system_to_spherical(fields: dict):
                                               number_of_values = 10,
                                               r=0.01)
 
-    Ex_interpolator = make_interpolator(fields, 'Ex')
-    Ey_interpolator = make_interpolator(fields, 'Ey')
-    Ez_interpolator = make_interpolator(fields, 'Ez')
+    Ex_interpolator = make_interpolator(fields, field_component = 'Ex')
+    Ey_interpolator = make_interpolator(fields, field_component = 'Ey')
+    Ez_interpolator = make_interpolator(fields, field_component = 'Ez')
 
     x_spherical, y_spherical, z_spherical = translate_spherical_values_to_cartesians(r_grid, theta_grid, phi_grid)
 
@@ -118,7 +116,7 @@ def change_coordinate_system_to_spherical(fields: dict):
     Ey_interpolated = Ey_interpolator(points_to_interpolate)
     Ez_interpolated = Ez_interpolator(points_to_interpolate)
 
-    E_r, E_theta, E_phi = change_versor_coordinates_to_spherical(Ex_interpolated, Ey_interpolated, Ez_interpolated, theta_grid, phi_grid)
+    E_r, E_theta, E_phi = change_versor_coordinates_to_spherical(Ex_interpolated, Ey_interpolated, Ez_interpolated, r_grid, theta_grid, phi_grid)
 
     return E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid
 
@@ -128,7 +126,7 @@ def generate_spherical_grid_values(theta_init: int, theta_end: int, phi_init: in
     theta = np.linspace(theta_init, theta_end, number_of_values)
     phi = np.linspace(phi_init, phi_end, number_of_values)
     
-    theta_grid, phi_grid, r_grid = np.meshgrid(theta, phi, r, indexing='ij')
+    theta_grid, phi_grid, r_grid = np.meshgrid(theta, phi, r)
 
     return r_grid.flatten(), theta_grid.flatten(), phi_grid.flatten()
     
@@ -150,11 +148,11 @@ def generate_points_to_interpolate(x_spherical: list, y_spherical: list, z_spher
     """Function used to buils an array with the points to interpolate"""
     return np.column_stack((x_spherical, y_spherical, z_spherical))
 
-def change_versor_coordinates_to_spherical(Ex_interpolated: list, Ey_interpolated: list, Ez_interpolated: list , theta_grid: list, phi_grid: list):
+def change_versor_coordinates_to_spherical(Ex_interpolated: list, Ey_interpolated: list, Ez_interpolated: list , r_grid: list, theta_grid: list, phi_grid: list):
     """Function used to change the versor coordinates to spherical from cartesians"""
-    E_r     = Ex_interpolated * np.sin(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.sin(theta_grid) * np.sin(phi_grid) + Ez_interpolated * np.cos(theta_grid)
-    E_theta = Ez_interpolated * np.cos(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.cos(theta_grid) * np.sin(phi_grid) - Ez_interpolated * np.sin(theta_grid)
-    E_phi   = -Ez_interpolated * np.sin(phi_grid) + Ey_interpolated * np.cos(phi_grid)
+    E_r     = Ex_interpolated  * np.sin(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.sin(theta_grid) * np.sin(phi_grid) + Ez_interpolated * np.cos(theta_grid)
+    E_theta = Ex_interpolated  * np.cos(theta_grid) * np.cos(phi_grid) + Ey_interpolated * np.cos(theta_grid) * np.sin(phi_grid) - Ez_interpolated * np.sin(theta_grid)
+    E_phi   = -Ex_interpolated * np.sin(phi_grid) + Ey_interpolated * np.cos(phi_grid)
     
     return E_r, E_theta, E_phi
 
@@ -172,8 +170,8 @@ def near_field_to_far_field_transformation(E_r: list, E_theta: list, E_phi: list
     delta_theta = calculate_measure_point_increments(theta_grid)
     delta_phi   = calculate_measure_point_increments(phi_grid)
 
-    emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
-    gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid,number_of_modes, delta_theta, delta_phi)
+    emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes, delta_theta, delta_phi)
+    gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes, delta_theta, delta_phi)
 
     amnffcoef_from_gmn = calculate_amnffcoef_from_gmn(number_of_modes, gmn_calculated, r=r_grid[0], k=k_calculated)
     bmnffcoef_from_emn = calculate_bmnffcoef_from_emn(number_of_modes, emn_calculated, r=r_grid[0], k=k_calculated)
