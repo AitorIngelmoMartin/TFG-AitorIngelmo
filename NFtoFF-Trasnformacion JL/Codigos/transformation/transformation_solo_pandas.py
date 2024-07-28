@@ -96,13 +96,13 @@ def read_data(fields):
 
 def change_coordinate_system_to_spherical(fields: dict):
     """Function used to change the coordinate system from cartesians to sphericals"""
-
-    r_grid, theta_grid, phi_grid = generate_spherical_grid_values(theta_init=-np.pi/3,
+    r = 0.01
+    r_grid, theta_grid, phi_grid, theta_linspace, phi_linspace = generate_spherical_grid_values(theta_init=-np.pi/3,
                                               theta_end=np.pi/3,
                                               phi_init=0,
                                               phi_end=2*np.pi,
                                               number_of_values = 10,
-                                              r=0.01)
+                                              r=r)
 
     Ex_interpolator = make_interpolator(fields, field_component = 'Ex')
     Ey_interpolator = make_interpolator(fields, field_component = 'Ey')
@@ -118,17 +118,17 @@ def change_coordinate_system_to_spherical(fields: dict):
 
     E_r, E_theta, E_phi = change_versor_coordinates_to_spherical(Ex_interpolated, Ey_interpolated, Ez_interpolated, r_grid, theta_grid, phi_grid)
 
-    return E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid
+    return E_r, E_theta, E_phi, r, theta_linspace, phi_linspace
 
 def generate_spherical_grid_values(theta_init: int, theta_end: int, phi_init: int, phi_end: int, number_of_values: int, r: int = 1):
     """Function used to generate a spherical grid"""
     
-    theta = np.linspace(theta_init, theta_end, number_of_values)
-    phi = np.linspace(phi_init, phi_end, number_of_values)
+    theta_linspace = np.linspace(theta_init, theta_end, number_of_values)
+    phi_linspace = np.linspace(phi_init, phi_end, number_of_values)
     
-    theta_grid, phi_grid, r_grid = np.meshgrid(theta, phi, r)
+    theta_grid, phi_grid, r_grid = np.meshgrid(theta_linspace, phi_linspace, r)
 
-    return r_grid.flatten(), theta_grid.flatten(), phi_grid.flatten()
+    return r_grid.flatten(), theta_grid.flatten(), phi_grid.flatten(), theta_linspace, phi_linspace
     
 def make_interpolator(fields: dict, field_component: str):
     """Function used to make an interpolator to obtain spherical values"""
@@ -164,25 +164,21 @@ def translate_spherical_values_to_cartesians(r_grid: list, theta_grid: list, phi
 
     return x_spherical, y_spherical, z_spherical
 
-def near_field_to_far_field_transformation(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_grid: list, phi_grid: list, number_of_modes: int):
+def near_field_to_far_field_transformation(E_r: list, E_theta: list, E_phi: list, r: int, theta_linspace: list, phi_linspace: list, number_of_modes: int):
     """Function used to transfor our near field mesures into far field ones"""
 
-    delta_theta = calculate_measure_point_increments(theta_grid)
-    delta_phi   = calculate_measure_point_increments(phi_grid)
+    delta_theta = theta_linspace[1] - theta_linspace[0]
+    delta_phi   = phi_linspace[1] - phi_linspace[0]
 
-    emn_calculated = calculate_emn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes, delta_theta, delta_phi)
-    gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes, delta_theta, delta_phi)
+    emn_calculated = calculate_emn(E_r, E_theta, E_phi, theta_linspace, phi_linspace, number_of_modes, delta_theta, delta_phi)
+    gmn_calculated = calculate_gmn(E_r, E_theta, E_phi, theta_linspace, phi_linspace, number_of_modes, delta_theta, delta_phi)
 
-    amnffcoef_from_gmn = calculate_amnffcoef_from_gmn(number_of_modes, gmn_calculated, r=r_grid[0], k=k_calculated)
-    bmnffcoef_from_emn = calculate_bmnffcoef_from_emn(number_of_modes, emn_calculated, r=r_grid[0], k=k_calculated)
+    amnffcoef_from_gmn = calculate_amnffcoef_from_gmn(number_of_modes, gmn_calculated, r=r, k=k_calculated)
+    bmnffcoef_from_emn = calculate_bmnffcoef_from_emn(number_of_modes, emn_calculated, r=r, k=k_calculated)
     
     return amnffcoef_from_gmn, bmnffcoef_from_emn
 
-def calculate_measure_point_increments(vector):
-    """Function used to get the increment of a regular vector"""
-    return np.max(np.unique(np.diff(vector)))
-
-def calculate_emn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_grid: list, phi_grid: list, number_of_modes: int, delta_theta: int, delta_phi: int):
+def calculate_emn(E_r: list, E_theta: list, E_phi: list , theta_linspace: list, phi_linspace: list, number_of_modes: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of emn from our Dipole field"""
     total_result = []
     threshold = 1e-10
@@ -194,9 +190,8 @@ def calculate_emn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
                 E_r=E_r,
                 E_theta=E_theta,
                 E_phi=E_phi,
-                r_grid=r_grid,
-                theta_grid=theta_grid,
-                phi_grid=phi_grid,
+                theta_linspace=theta_linspace,
+                phi_linspace=phi_linspace,
                 m=m,
                 n=n,
                 delta_theta=delta_theta,
@@ -208,20 +203,20 @@ def calculate_emn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
         total_result.append(value_calculated)
     return total_result
 
-def calculate_emn_value(E_r: list, E_theta: list, E_phi: list, r_grid: list, theta_grid: list, phi_grid: list, m: int, n: int, delta_theta: int, delta_phi: int):
+def calculate_emn_value(E_r: list, E_theta: list, E_phi: list, theta_linspace: list, phi_linspace: list, m: int, n: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of emn from our Dipole field"""
 
     total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     theta_index = 0    
-    for theta in theta_grid:
+    for theta in theta_linspace:
         phi_index = 0
-        for phi in phi_grid:
+        for phi in phi_linspace:
             total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.b_sin_function(-m,n,theta,phi)
             phi_index += phi_index
         theta_index += theta_index
     return total_result*delta_theta*delta_phi
 
-def calculate_gmn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_grid: list, phi_grid: list, number_of_modes: int, delta_theta: int, delta_phi: int):
+def calculate_gmn(E_r: list, E_theta: list, E_phi: list , theta_linspace: list, phi_linspace: list, number_of_modes: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of gmn from our Dipole field"""
     total_result = []
     threshold = 1e-10
@@ -233,9 +228,8 @@ def calculate_gmn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
                 E_r=E_r,
                 E_theta=E_theta,
                 E_phi=E_phi,
-                r_grid=r_grid,
-                theta_grid=theta_grid,
-                phi_grid=phi_grid,
+                theta_linspace=theta_linspace,
+                phi_linspace=phi_linspace,
                 m=m,
                 n=n,
                 delta_theta=delta_theta,
@@ -247,14 +241,14 @@ def calculate_gmn(E_r: list, E_theta: list, E_phi: list , r_grid: list, theta_gr
         total_result.append(value_calculated)
     return total_result
 
-def calculate_gmn_value(E_r: list, E_theta: list, E_phi: list, r_grid: list, theta_grid: list, phi_grid: list, m: int, n: int, delta_theta: int, delta_phi: int):
+def calculate_gmn_value(E_r: list, E_theta: list, E_phi: list, theta_linspace: list, phi_linspace: list, m: int, n: int, delta_theta: int, delta_phi: int):
     """Function used to obtain a single value of gmn from our Dipole field"""
 
     total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
     theta_index = 0    
-    for theta in theta_grid:
+    for theta in theta_linspace:
         phi_index = 0
-        for phi in phi_grid:
+        for phi in phi_linspace:
             total_result += np.array([E_r[0],E_theta[theta_index],E_phi[phi_index]])*funciones.c_sin_function(-m,n,theta,phi)
             phi_index += phi_index
         theta_index += theta_index
@@ -381,10 +375,10 @@ def main():
     
     read_data(fields)    
 
-    E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid = change_coordinate_system_to_spherical(fields)
+    E_r, E_theta, E_phi, r, theta_linspace, phi_linspace = change_coordinate_system_to_spherical(fields)
 
     number_of_modes = 5
-    amnffcoef_from_gmn, bmnffcoef_from_emn = near_field_to_far_field_transformation(E_r, E_theta, E_phi, r_grid, theta_grid, phi_grid, number_of_modes)
+    amnffcoef_from_gmn, bmnffcoef_from_emn = near_field_to_far_field_transformation(E_r, E_theta, E_phi, r, theta_linspace, phi_linspace, number_of_modes)
     
     # Points where i want to know the field
     n = 100
