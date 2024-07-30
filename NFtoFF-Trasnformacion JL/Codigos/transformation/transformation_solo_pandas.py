@@ -31,8 +31,7 @@ flow_config = {
         'microstrip_patch_antenna_normE.txt'                
     ],
     'file_type':file_type,
-    'work_mode':'NFtoFF',      
-    'shape':[100,100,100],
+    'work_mode':'NFtoFF',
     'freq':1.575e9,
     'length_unit':1e-3,
     'res':2e-3

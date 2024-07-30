@@ -49,7 +49,7 @@ def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: in
 emn_dipole = calculate_emn_from_dipole_field(
     number_of_points=100,
     m=0,
-    n=3,
+    n=1,
     r=1,
     k=2*np.pi,
     eta=120*np.pi,

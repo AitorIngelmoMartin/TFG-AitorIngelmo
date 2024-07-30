@@ -104,14 +104,14 @@ def z3(m: int, n: int):
 
 def a_coef_function(g_data: list, m: int, n: int, k: int, R: int):
     """Function used to calculate our spherical base function Acoefmn"""
-    return (((-1)**m)*(g_data[n-1][n+m])/(4*np.pi*gamma(m,n)))* (1/spherical_hankenl_H1(n, k*R))
+    return (((-1)**m)*(g_data[n-1][n+m])/(4*np.pi*gamma(m,n)))*(1/spherical_hankenl_H1(n, k*R))
 # g_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(g_data[1][1+1+1])
 # print(a_function(g_data,1,1,2,2))
 
 def b_coef_function(e_data: list, m: int, n: int, k: int, R: int):
     """Function used to calculate our spherical base function Bcoefmn"""
-    return (((-1)**m)*(e_data[n-1][n+m])/(4*np.pi*gamma(m,n)))* ((k*R)/hRDer(n, k, R))
+    return (((-1)**m)*(e_data[n-1][n+m])/(4*np.pi*gamma(m,n)))*((k*R)/hRDer(n, k, R))
 # e_data = [[1,2,3,4],[1,2,3,4],[1,2,3,4]]
 # print(e_data[1][1+1+1])
 # print(b_function(e_data,1,1,2,2))
