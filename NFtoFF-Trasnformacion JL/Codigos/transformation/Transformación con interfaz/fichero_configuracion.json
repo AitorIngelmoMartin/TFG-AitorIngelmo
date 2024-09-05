@@ -1,0 +1,26 @@
+{ 
+    "files_type_to_process": [
+        {
+            "file_type":"Ex",
+            "file_regular_expression":"(^(.*)_Ex\\.txt$)"
+        },
+        {
+            "file_type":"Ey",
+            "file_regular_expression":"(^(.*)_Ey\\.txt$)"
+        },
+        {
+            "file_type":"Ez",
+            "file_regular_expression":"(^(.*)_Ez\\.txt$)"
+        },
+        {
+            "file_type":"normE",
+            "file_regular_expression":"(^(.*)_normE\\.txt$)"
+        }           
+    ],
+    "raw_data": 9,
+    "freq":1.575e9,
+    "length_unit":1e-3,
+    "c0":299792458,
+    "res":2e-3,
+    "threshold": 1e-10
+}
