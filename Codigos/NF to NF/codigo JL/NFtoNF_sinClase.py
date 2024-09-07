@@ -169,29 +169,31 @@ def nearfieldPoint0toPoint1(fields,cut):
     w2[valoresNegativos] = -1j*np.sqrt(-1*w2[valoresNegativos])
     w = np.conjugate(w2)
 
-    plotValue(5,'parte real W',np.real(w))      
+    plotValue(5,'parte real W',np.real(w))
     plotValue(6,'parte imaginaria W',np.imag(w))
 
     phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3))  
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
+    plot_number = 7
     for i in range(len(fields['zValueZeroedplane'].keys())):
         Ehat_component_calculated = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))
-        plotValue(3,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
-
+        plotValue(plot_number,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
         fields['fields_transformed'].update({f"NF_{fields_to_transform[i]}":Ehat_component_calculated})
+        plot_number +=1
 
         EhatEnZ1 = Ehat_component_calculated*phaseShift
         EhatxReconstruido = np.fft.ifft2(EhatEnZ1)
-        plotValue(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
-
+        plotValue(plot_number,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
+        plot_number +=1
         
         comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],EhatxReconstruido)
-        plotValue(4,f'Comparación cuantitativa NFtoNF {fields_to_transform[i]}',comparison)
-        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})        
+        plotValue(plot_number,f'Comparación cuantitativa',comparison)
+        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})
+        plot_number +=1        
         
 
-def plotValue(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'jet'):
+def plotValue(plot_number, title, values_to_plot, leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'jet'):
         
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
