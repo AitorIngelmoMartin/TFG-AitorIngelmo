@@ -3,7 +3,6 @@ import funciones, os, re, logging
 import numpy as np
 from pathlib import Path
 from pandas import read_csv
-import matplotlib.pyplot as plt
 from main import logger
 from scipy.interpolate import LinearNDInterpolator
 
@@ -320,41 +319,6 @@ def calculate_far_field_value(number_of_modes: int, a_coef_value: list, b_coef_v
             total_result += ((2*n+1)/(n*(n+1)))*(a_coef_value[n-1][n+m]*funciones.m_function_far_field_aproximation(m,n,k,r,theta,phi)+b_coef_value[n-1][n+m]*funciones.n_function_far_field_aproximation(m,n,k,r,theta,phi))
     return total_result
 
-def draw_radiation_diagram(thetha: list, module_far_field_calculated: list):
-    """Function used to make plots to review the results"""
-    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
-    ax.plot(thetha, module_far_field_calculated)
-    ax.grid(True)
-
-    ax.set_title("A line plot on a polar axis", va='bottom')
-    plt.show()
-
-def draw_module_diagram(far_field_calculated, theta_values, phi_values):
-    """Function used to draw a 3D diagram of our field"""
-
-    # r = 1.0
-    theta, phi = np.meshgrid(theta_values, phi_values)
-    theta_flatten = theta.flatten()
-    phi_flatten = phi.flatten()
-
-    Ex, Ey, Ez = change_coordinate_system_to_cartesian(far_field_calculated, theta, phi)
-
-    # Obtain the module of the field
-    Emodule = np.sqrt(np.abs(Ex)**2 + np.abs(Ey)**2 + np.abs(Ez)**2)
-    R = Emodule
-
-    x = R * np.sin(theta) * np.cos(phi)
-    y = R * np.sin(theta) * np.sin(phi)
-    z = R * np.cos(theta)
-
-    # Crear la figura y el eje 3D
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    plot = ax.plot_surface(x, y, z, cmap=plt.get_cmap('jet'))
-
-    # Mostrar la gráfica
-    plt.show()
-
 def change_coordinate_system_to_cartesian(far_field_calculated: object, theta, phi):
     """Function used to change the coordinate system to cartesian from spherical
         far_field_calculated: Tensor de dimensiones 100,100,3 (shape de theta y phi) que contiene los valores del campo Er,Etheta,Ephi en
@@ -383,7 +347,6 @@ def main(file_to_process):
         theta_values = np.linspace(0, np.pi, n)
         phi_values = np.linspace(0, 2 * np.pi, n)
         far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_values)  
-        draw_module_diagram(far_field_calculated,theta_values,phi_values)
 
         return amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calculated
 

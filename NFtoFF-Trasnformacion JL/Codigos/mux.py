@@ -1,71 +1,77 @@
-from math import factorial
-import numpy as np
-from numpy import cos, sin
-from scipy import special
+# import pandas as pd
+# import csv
 
+# # # field_names= ['n','m=-5', 'm=-4', 'm=-3', 'm=-2', 'm=-1', 'm=0', 'm=1', 'm=2', 'm=3', 'm=4', 'm=5']
+# field_names= ['n','m=-5', 'm=-4', 'm=-3', 'm=-2', 'm=-1', 'm=0', 'm=1']
 
-def e_dipole_theta_field(r: int, theta: int, k: int, eta: int, l: int, Io: int):
-    """Function used to calculate the electric field using Balanis 4.10a and 4.10b"""
-    return ((1j*eta*((k*Io*l*sin(theta))/(4*np.pi*r))) * (1+(1/(1j*k*r))-(1/(k*k*r*r))))*np.exp(-1j*k*r)
+# amnffcoef_from_gmn = [
+#     {
+#         "n": 1, 
+#         "m=-5": 0, 
+#         "m=-4": 0, 
+#         "m=-3": 0, 
+#         "m=-2": 0, 
+#         "m=-1": -0.009484061533268234+0.008122318008372756j, 
+#         "m=0": 0.0, 
+#         "m=1":-0.009484061533268239+0.008122318008372749j
+#     }
+# ]
 
-def legendre_polinom(n: int, m: int, z: int):
-    """Function that calculate the legendre polinom"""
-    if np.abs(m) > n:
-        return 0
-    else:
-        return special.clpmn(m, n, z, 2)[0][np.abs(m)][n]
+# # # # convert np.arrays into dataframes
+# # # amnffcoef_from_gmn_df = pd.DataFrame(amnffcoef_from_gmn)
 
-def legendre_polinom_derived(n: int, m: int, theta: int):
-    """Function that calculate the derivate of the legendre polinom"""
-    return -0.5*(((n+m)*(n-m+1)*legendre_polinom(n,m-1,cos(theta))) - (legendre_polinom(n, m+1, cos(theta))))    
-# print(legendre_polinom_derived(1,1,5))    
+# # # # save the dataframes as a csv files
+# # # amnffcoef_from_gmn_df.to_csv(f"amnffcoef_from_gmn_calculated.csv")
 
-def legendre_polinom_derived_sin(n: int, m: int, theta: int):
-    """Function that calculate the derivate of the legendre polinom multiplied by Sin(Theta)"""
-    return sin(theta)*legendre_polinom_derived(n, m, theta)
+# with open(f"amnffcoef_from_gmn_calculated.csv", "w", newline="") as csv_file:
+#     writer = csv.DictWriter(csv_file, fieldnames=field_names)
+#     writer.writeheader()
+#     writer.writerows(amnffcoef_from_gmn)
 
-def b_sin_function(m: int, n: int, theta: int, phi: int):
-    """Function used to calculate our spherical base function Bmn*Sin(theta)"""
-    return np.array([0, legendre_polinom_derived_sin(n, m, theta)*np.exp(1j*m*phi), 1j*m*legendre_polinom(n,m,cos(theta))*np.exp(1j*m*phi)])
-# print(b_sin_function(2,2,5,5))
+# field_names= ['No', 'Company', 'Car Model']
 
-def calculate_emn_from_dipole_field(number_of_points: int, m: int, n: int, r: int, k: int, eta: int, l: int, Io: int):
-    """Function used to obtain a single value of emn from our Dipole field"""
-    theta_values = np.linspace(0, np.pi, num=number_of_points)
-    phi_values = np.linspace(0, 2*np.pi, num=number_of_points)
-    delta_theta = theta_values[1] - theta_values[0]
-    delta_phi = phi_values[1] - phi_values[0]
+# cars = [
+#     {"No": 1, "Company": "Ferrari", "Car Model": "488 GTB"},
+#     {"No": 2, "Company": "Porsche", "Car Model": "918 Spyder"},
+#     {"No": 3, "Company": "Bugatti", "Car Model": "La Voiture Noire"},
+#     {"No": 4, "Company": "Rolls Royce", "Car Model": "Phantom"},
+#     {"No": 5, "Company": "BMW", "Car Model": "BMW X7"},
+# ]
 
-    total_result = np.array([np.complex128(0),np.complex128(0),np.complex128(0)])
-    for theta in theta_values:
-        for phi in phi_values:
-            # mask = value >= 10e-10
-            # value[mask] = np.complex128(0)
-            # value = np.where(np.abs(value) < 10e-8, np.complex128(0), value)
-            total_result += np.array([0,e_dipole_theta_field(r,theta,k,eta,l,Io),0])*b_sin_function(-m,n,theta,phi)
+# # with open('Names.csv', 'w') as csvfile:
+# #     writer = csv.DictWriter(csvfile, fieldnames=field_names)
+# #     writer.writeheader()
+# #     writer.writerows(cars)
 
-    return total_result*delta_theta*delta_phi
+# Datos a guardar
 
-emn_dipole = calculate_emn_from_dipole_field(
-    number_of_points=100,
-    m=0,
-    n=1,
-    r=1,
-    k=2*np.pi,
-    eta=120*np.pi,
-    l=1/50,
-    Io=1)
-print(emn_dipole)
+# Definir los datos complejos
+data = [
+    [(-0.009484061533268234+0.008122318008372756j), 0.0, (-0.009484061533268239+0.008122318008372749j)],
+    [(-0.0016652721737404487+0.0013942088587150156j), (-0.001778615302666982+0.0014891026526039227j), 0.0, (-0.0017786153026669838+0.0014891026526039214j), (0.0016652721737404476-0.001394208858715018j)],
+    [(-0.00013155522533815265+0.00011012250860670187j), (-0.00019265309369180007+0.00016126643326899644j), (-0.00011473695020549277+9.604423354552053e-05j), 0.0, (-0.00011473695020549267+9.604423354552046e-05j), (0.0001926530936918-0.00016126643326899674j), (-0.00013155522533815257+0.0001101225086067021j)],
+    [(-6.742180433498912e-06+5.643754700633718e-06j), (-1.1572587562285198e-05+9.687199281797875e-06j), (-9.781263425396204e-06+8.187714935799833e-06j), (-3.7000170367048654e-06+3.09721591542917e-06j), 0.0, (-3.7000170367048666e-06+3.097215915429166e-06j), (9.781263425396192e-06-8.187714935799841e-06j), (-1.1572587562285186e-05+9.6871992817979e-06j), (6.74218043349891e-06-5.643754700633718e-06j)],
+    [(-2.5607532232000537e-07+2.1435592193900312e-07j), (-4.888211636218883e-07+4.0918316627373284e-07j), (-4.953618733500669e-07+4.146582735633257e-07j), (-2.7072818373993713e-07+2.2662156155729087e-07j), (-8.024248332897942e-08+6.716950050799489e-08j), 0.0, (-8.024248332897951e-08+6.71695005079948e-08j), (2.7072818373993687e-07-2.2662156155729122e-07j), (-4.953618733500664e-07+4.146582735633262e-07j), (4.888211636218881e-07-4.0918316627373274e-07j), (-2.5607532232000447e-07+2.1435592193900386e-07j)]
+]
 
-# Obtenido :−0.0000000000367656364−0.000000000223229146j
-# Obtenido :-0.0000000005934889083833803 - 0.000000003634537662391554j
-# Obtenido: −0.000000386472918−0.00000236677214j (tras arreglar <<el sumatorio)
-# Esperado: -0.0000353043 - 0.000216205 I
+# Función para guardar los datos en un archivo
+def guardar_datos_complejos(file_name, data):
+    n_id = 1
+    header = '''% Valor guardado: Coeficiente Amn \n% Description: Coeficiente Amn a partir del cual podemos calcular el campo eléctrico en otros puntos\n'''
+    with open(file_name, 'w',encoding='utf-8') as file:
+        # Iterar sobre cada fila del array
+        file.write(header)
+        for row in data:
+            # Convertir cada elemento a string, formateando los números complejos
+            row_str = '   '.join(
+                f'{x.real:.17g}+{x.imag:.17g}j' if isinstance(x, complex) else f'{x:.17g}'
+                for x in row
+            )
+            # Escribir la fila formateada en el archivo
+            file.write(f"n={n_id}\t\t\t{row_str}\n")
+            n_id += 1
 
+# Guardar los datos en un archivo de texto
+guardar_datos_complejos('datos_complejos.txt', data)
 
-# m = 0
-# n=3
-# theta = 0.0031447373909807737
-# phi = 0.37736848691769287
-# result = b_sin_function(-m,n,theta,phi)
-
+print("Archivo con datos complejos guardado con éxito.")

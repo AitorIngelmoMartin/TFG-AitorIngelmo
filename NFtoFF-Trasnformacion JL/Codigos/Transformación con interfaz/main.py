@@ -1,9 +1,9 @@
 """Fichero encargado de soportar la interfaz"""
-import json, transformation, logging, queue, threading
-import pandas as pd 
+import json, transformation, logging, queue, threading, os
 import tkinter as tk
 from pathlib import Path
 from datetime import datetime
+from pandas import DataFrame
 from tkinter.scrolledtext import ScrolledText
 from tkinter import filedialog, messagebox, ttk, Menu, Text 
 
@@ -18,7 +18,7 @@ filemenu = None
 # Logs config
 logger = logging.getLogger('logger_maestro')
 Path(f"{current_directory}/log_files/").mkdir(parents=True, exist_ok=True)
-logging.basicConfig(filename=f'{current_directory}/log_files/log_file_from {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.log', 
+logging.basicConfig(filename=f"{current_directory}/log_files/log_file_from {datetime.now().strftime('%Y-%m-%d %H-%M-%S')}.log", 
                 encoding='utf-8', 
                 datefmt='%m/%d/%Y %I:%M:%S %p',
                 level=logging.DEBUG)
@@ -104,8 +104,6 @@ def read_json_file():
             logger.info(f'Se ha cargado el fichero {file_path} correctamente')
             filemenu.entryconfig("Procesar fichero", state= 'active')
 
-
-
 def create_label():
     """Function used to create a label"""
     label = ttk.Label(text="Ficheros cargados:")
@@ -116,6 +114,7 @@ def create_empty_combobox():
     # Creamos un combo para mostrar los ficheros cargados
     combo = ttk.Combobox(
         state="readonly",
+        width=30,
         values=[]
     )
     combo.place(x=110, y=10)
@@ -135,19 +134,38 @@ def process_file():
 def save_results_in_file(amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calculated):
     """Function used to save the results obtained from a processed file"""
 
-    folder = f"output/{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-
-    # convert np.arrays into dataframes
-    amnffcoef_from_gmn_df = pd.DataFrame(amnffcoef_from_gmn)
-    bmnffcoef_from_emn_df = pd.DataFrame(bmnffcoef_from_emn)
-    far_field_calculated_df = pd.DataFrame(far_field_calculated)
+    # Check if the directory exists and create it if it doesn
+    folder = f"outputs/{datetime.now().strftime('%Y-%m-%d %H_%M_%S')}"
+    if not os.path.exists(f"{exit_directory}/{folder}"):
+        os.makedirs(f"{exit_directory}/{folder}")    
     
     # save the dataframes as a csv files
-    amnffcoef_from_gmn_df.to_csv(f"{exit_directory}/{folder}/amnffcoef_from_gmn_calculated.csv")
-    bmnffcoef_from_emn_df.to_csv(f"{exit_directory}/{folder}/bmnffcoef_from_emn_calculated.csv")
-    far_field_calculated_df.to_csv(f"{exit_directory}/{folder}/far_field_calculated.csv")
+    save_data_to_file(f"{exit_directory}/{folder}/amnffcoef_from_gmn_calculated.txt",amnffcoef_from_gmn,coefficient='Amn')
+    save_data_to_file(f"{exit_directory}/{folder}/bmnffcoef_from_emn_calculated.txt",bmnffcoef_from_emn,coefficient='Bmn')
+
+    e_components = ["Ex","Ey","Ez"]
+    for i in range(3):
+        far_field_calculated_df = DataFrame(far_field_calculated[:,:,i])
+        far_field_calculated_df.to_csv(f"{exit_directory}/{folder}/far_field_calculated_{e_components[i]}.csv")
 
     logger.info(f'Resultados guardados correctamente en el directorio {exit_directory}/{folder}')
+
+def save_data_to_file(file_name, data, coefficient):
+    """Function used to save the results on files"""
+    n_id = 1
+    header = f'''% Valor guardado: Coeficiente {coefficient} \n% Description: Coeficiente Amn a partir del cual podemos calcular el campo eléctrico en otros puntos\n'''
+    with open(file_name, 'w',encoding='utf-8') as file:
+        # Write the header of the file
+        file.write(header)
+        for row in data:
+            # Fomating the complex numbers
+            row_str = '   '.join(
+                f'{x.real:.17g}+{x.imag:.17g}j' if isinstance(x, complex) else f'{x:.17g}'
+                for x in row
+            )
+            # write the row on the file
+            file.write(f"n={n_id}\t\t\t{row_str}\n")
+            n_id += 1
 
 def modify_exit_directory():
     """Function used to modify the exit directory"""
