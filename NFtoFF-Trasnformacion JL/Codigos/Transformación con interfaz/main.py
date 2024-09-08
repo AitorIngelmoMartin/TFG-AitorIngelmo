@@ -220,18 +220,20 @@ def create_menu(root):
     filemenu = Menu(menubar, tearoff=0)
     filemenu.add_command(label="Cargar fichero", command=read_json_file)
     filemenu.add_command(label="Procesar fichero", state="disabled",command=threading.Thread(target=process_file).start)
-    filemenu.add_separator()
-    filemenu.add_command(label="Salir", command=root.quit)
-
+  
     editmenu = Menu(menubar, tearoff=0)
     editmenu.add_command(label="Seleccionar directorio de salida", command=modify_exit_directory)
 
     helpmenu = Menu(menubar, tearoff=0)
     helpmenu.add_command(label="Uso de la interfaz", command=open_info_window)
 
-    menubar.add_cascade(label="Archivo", menu=filemenu)
-    menubar.add_cascade(label="Editar", menu=editmenu)
+    exitmenu = Menu(menubar, tearoff=0)
+    exitmenu.add_command(label="Salir", command=root.quit)
+
+    menubar.add_cascade(label="Archivos", menu=filemenu)
+    menubar.add_cascade(label="Configuración", menu=editmenu)
     menubar.add_cascade(label="Ayuda", menu=helpmenu)
+    menubar.add_cascade(label="Salir", command=root.quit)
 
 
 if __name__ == '__main__':

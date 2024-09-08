@@ -18,8 +18,8 @@ def input_data_process(flow_config: dict):
         file_type_list = []
         for file in os.listdir(current_working_directory):
             if os.path.isfile(f"{current_working_directory}/{file}"):
-                for file_type_to_process in flow_config['files_type_to_process']:
-                    if re.match(file_type_to_process['file_regular_expression'], file):
+                for file_type_to_process in flow_config['files_to_process']:
+                    if re.match(file_type_to_process['file_name_regular_expression'], file):
                         file_type = file_type_to_process['file_type']
                         files[file_type] = f"{current_working_directory}\\{file}"
                         file_type_list.append(file_type)
@@ -34,8 +34,6 @@ def input_data_process(flow_config: dict):
         fields['fields_transformed'] = {}
         fields['quantitative_comparison'] = {}
         fields['freq'] = flow_config['freq']
-        fields['length_unit'] = flow_config['length_unit']
-        fields['res'] = flow_config['res']
 
         k_calculated = (2*np.pi * flow_config['freq'])/flow_config['c0']
 
