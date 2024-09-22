@@ -153,7 +153,7 @@ def save_results_in_file(amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calcu
 def save_data_to_file(file_name, data, coefficient):
     """Function used to save the results on files"""
     n_id = 1
-    header = f'''% Valor guardado: Coeficiente {coefficient} \n% Description: Coeficiente Amn a partir del cual podemos calcular el campo eléctrico en otros puntos\n'''
+    header = f'''% Valor guardado: Coeficiente {coefficient} \n% Descripción: Coeficiente Amn a partir del cual podemos calcular el campo eléctrico en otros puntos\n'''
     with open(file_name, 'w',encoding='utf-8') as file:
         # Write the header of the file
         file.write(header)
