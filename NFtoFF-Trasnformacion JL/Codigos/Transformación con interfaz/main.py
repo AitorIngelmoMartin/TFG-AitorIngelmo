@@ -144,9 +144,17 @@ def save_results_in_file(amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calcu
     save_data_to_file(f"{exit_directory}/{folder}/bmnffcoef_from_emn_calculated.txt",bmnffcoef_from_emn,coefficient='Bmn')
 
     e_components = ["Ex","Ey","Ez"]
-    for i in range(3):
+    for i in range(3):        
         far_field_calculated_df = DataFrame(far_field_calculated[:,:,i])
-        far_field_calculated_df.to_csv(f"{exit_directory}/{folder}/far_field_calculated_{e_components[i]}.csv")
+        
+        num_cols = len(far_field_calculated_df.columns)
+        colum_names = [f'Field_value_{i+1}' for i in range(num_cols)]
+
+        # Asignar los nombres generados dinámicamente
+        far_field_calculated_df.columns = colum_names
+
+        far_field_calculated_df.to_csv(f"{exit_directory}/{folder}/far_field_calculated_{e_components[i]}.csv"
+                                       ,index=False)
 
     logger.info(f'Resultados guardados correctamente en el directorio {exit_directory}/{folder}')
 

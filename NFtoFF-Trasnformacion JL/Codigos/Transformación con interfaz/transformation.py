@@ -341,7 +341,7 @@ def main(file_to_process):
         amnffcoef_from_gmn, bmnffcoef_from_emn = near_field_to_far_field_transformation(E_r, E_theta, E_phi, r, theta_linspace, phi_linspace, number_of_modes)
         
         # Points where i want to know the field
-        n = 5
+        n = 100
         theta_values = np.linspace(0, np.pi, n)
         phi_values = np.linspace(0, 2 * np.pi, n)
         far_field_calculated = calculate_far_field(number_of_modes, amnffcoef_from_gmn, bmnffcoef_from_emn, theta_values, phi_values)  
