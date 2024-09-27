@@ -130,7 +130,7 @@ def zeroedvalueCut(fields,datatypes):
 
 def plotZvalueCut(plotnumber,value_to_plot,plotinfo,datatype,cutNumber,func=lambda x:x,aspect='equal',extent=None,colorbar=True,cmap='binary'):
     plt.figure(plotnumber)
-    im = plt.imshow(func(value_to_plot[datatype][cutNumber]).transpose(),cmap=cmap,aspect=aspect,extent=extent)
+    im = plt.imshow(np.rot90(np.rot90(func(value_to_plot[datatype][cutNumber]))),cmap=cmap,aspect=aspect,extent=extent)
     plt.xlabel(plotinfo['xlabel'])
     plt.ylabel(plotinfo['ylabel'])
     plt.title(plotinfo['title'])
@@ -169,29 +169,31 @@ def nearfieldPoint0toPoint1(fields,cut):
     w2[valoresNegativos] = -1j*np.sqrt(-1*w2[valoresNegativos])
     w = np.conjugate(w2)
 
-    plotValue(5,'parte real W',np.real(w))      
+    plotValue(5,'parte real W',np.real(w))
     plotValue(6,'parte imaginaria W',np.imag(w))
 
-    phaseShift = np.exp(-j*w*(31.e-3 - 15.e-3))  
+    phaseShift = np.exp(-j*w*(30.e-3 - 15.e-3))  
 
     fields_to_transform = list(fields['zValueZeroedplane'].keys())
+    plot_number = 7
     for i in range(len(fields['zValueZeroedplane'].keys())):
         Ehat_component_calculated = factorf*np.fft.fft2((fields['zValueZeroedplane'][fields_to_transform[i]][cut]))
-        plotValue(3,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
-
+        plotValue(plot_number,f'FFT 2D de {fields_to_transform[i]}',np.abs(Ehat_component_calculated))
         fields['fields_transformed'].update({f"NF_{fields_to_transform[i]}":Ehat_component_calculated})
+        plot_number +=1
 
         EhatEnZ1 = Ehat_component_calculated*phaseShift
         EhatxReconstruido = np.fft.ifft2(EhatEnZ1)
-        plotValue(3,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
-
+        plotValue(plot_number,f'FFT 2D de {fields_to_transform[i]} en FF',np.abs(EhatxReconstruido).transpose())
+        plot_number +=1
         
         comparison = quantitativeComparison(fields['zValueZeroedplane'][fields_to_transform[i]][1],EhatxReconstruido)
-        plotValue(4,f'Comparación cuantitativa NFtoNF {fields_to_transform[i]}',comparison)
-        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})        
+        plotValue(plot_number,f'Comparación cuantitativa',comparison)
+        fields['quantitative_comparison'].update({f"{fields_to_transform[i]}_comparison":comparison})
+        plot_number +=1        
         
 
-def plotValue(plot_number, title, values_to_plot,leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'hot'):
+def plotValue(plot_number, title, values_to_plot, leyenda = 'Electric field\n Ex (V/m)',mapaDeColores = 'jet'):
         
     plt.figure(plot_number)
     im = plt.imshow(values_to_plot,cmap=mapaDeColores,aspect='equal',extent=None)
@@ -209,6 +211,21 @@ def quantitativeComparison(comsol_simulated_value,value_calculated_value):
     comparison = np.abs(comsol_simulated_value - value_calculated_value) / np.abs(comsol_simulated_value)
     return comparison
 
+def represent_polar_diagram(plotnumber: int, field: list):
+    """Function used to generate polar plots"""
+
+    #Cálculo de r y phi
+    r = np.abs(field)
+    phi = np.angle(field)
+
+    # Crear el gráfico polar
+    plt.figure(plotnumber)
+    plt.polar(r,np.radians(phi))
+
+    # Mostrar el gráfico
+    plt.show()
+
+
 if __name__ == '__main__':
     plt.close('all')
     #try:
@@ -219,21 +236,26 @@ if __name__ == '__main__':
     
     extractMatrixData(fields)   
 
-    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,31.e-3])
+    extractZvalueCut(fields,fields['file_type'],cuts_to_extract = [15.e-3,30.e-3])
     
     #Este método quita de en medio los NaN.
     maskvalueCut(fields,fields['file_type'])
 
     #En estas líneas se hacen las representaciones de los cortes.
-    plotinfo = {'xlabel':'x','ylabel':'y','title':'Ex','legend':'Electric field\n Ex (V/m)'}
-    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='hot')
-    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='hot')
+    plotinfo = {'xlabel':'x','ylabel':'y','title':'Enorm','legend':'Electric field\n (V/m)'}
+    plotZvalueCut(1,fields['zValueMaskedplane'],plotinfo,'Ex',0,func=np.abs,cmap='jet')
+    plotZvalueCut(2,fields['zValueMaskedplane'],plotinfo,'Ex',1,func=np.abs,cmap='jet')
     
     #fields.pop('lines')
-    #print(fields)
+    # print(fields['zValueZeroedplane'].keys())
     
     #fields.zeroedvalueCut(['Ex','Ey','Ez','normE'])
-    nearfieldPoint0toPoint1(fields,cut = 0)                
+    nearfieldPoint0toPoint1(fields,cut = 0)
+
+    #Plots diagramas de radiación
+    # print(fields['fields_transformed'].keys())
+    represent_polar_diagram(30,fields['fields_transformed'][f"NF_normE"])
+
     print("FIN PROGRAMA")
     #     
     #except Exception as exc:

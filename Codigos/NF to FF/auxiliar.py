@@ -1,19 +1,10 @@
-header = """% Model:              microstrip_patch_antenna.mph
-% Version:            COMSOL 5.0.0.243
-% Date:               Mar 31 2023, 16:50
-% Dimension:          3
-% Nodes:              1000000
-% Expressions:        1
-% Description:        Electric field, y component
-% Length unit:        mm
-% Theta                       Phi                        r
-"""
-with open('python_FF_normR.txt', 'w') as f:
-    f.write(header)
+import numpy as np
 
-# Número entero
-numero_entero = 5
+# Crear un array de ejemplo de dimensiones (100, 100)
+array = np.random.rand(100, 100)
 
-# Convertir el número entero a float y formatearlo con 2 decimales
-numero_formateado = "{:.2f}".format(numero_entero)
-print(numero_formateado)  # Salida: 5.00
+# Quedarse solo con los primeros 100 valores de la izquierda
+valores_izquierda = array[:,0]
+
+# Verificar las dimensiones del nuevo array
+print("Dimensiones del nuevo array:", valores_izquierda.shape)

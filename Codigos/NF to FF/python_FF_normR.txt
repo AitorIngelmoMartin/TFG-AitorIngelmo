@@ -6,7 +6,7 @@
 % Expressions:        1
 % Description:        Electric field, y component
 % Length unit:        mm
-% Theta                       Phi                        r
+% Theta           Phi              r
 0.00000000        0.00000000       0.02854212
 0.00000000        0.06346652       0.02725261
 0.00000000        0.12693304       0.02684268

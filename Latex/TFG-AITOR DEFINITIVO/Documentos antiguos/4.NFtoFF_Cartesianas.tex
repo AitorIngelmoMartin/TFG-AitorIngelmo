@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{tikz}
+\usepackage{amsmath}
+
+\begin{document}
+%Archivo 'definitivo' sobre la obtención del FF 
+\section{Algoritmo para transformar el valor del campo cercano en un
+plano a valores en una superficie esférica}
+
+Para poder calcular el campo lejano a partir de medidas hechas en campo cercano, necesitamos tener en mente diversos conceptos teóricos que vamos a ir presentando poco a poco.
+
+A modo de introducción, lo primero que vamos a hacer es presentar la expresión con la que se calcula el campo lejano. La cual tiene la siguiente forma:
+\begin{equation}
+\vec{E}(x,y,z)=\frac{jk_{z}}{2\pi r}\,e^{-jk_{0}r}{\vec{\mathcal{E}}}(k_{x}=k \sin\theta \cos\phi,k_{y}= k\sin\theta \sin\phi)
+\label{eq-fourier3}
+\end{equation}
+En esta expresión, $k_{x}$ y $ k_{y}$  contienen la información de los ángulos del sistema de referencia esférico que sirve de base para la expresión del diagrama de radiación en el campo lejano. Mientras que el valor de $k_{z}$ se corresponde con $k \cos\theta$, siendo $k$ el número de onda en el vacío.
+\\
+
+Una vez definido el significado de los valores de $k_{x}$, $k_{y}$ y $k_{z}$, el valor del espectro o función de modos ${\vec{\mathcal{E}}}(k_{x},k_{y})$ es el siguiente objeto de nuestro interés, y viene dado por la siguiente expresión:
+\begin{equation}
+{\vec{\mathcal{E}}}(k_{x},k_{y})=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}\vec{E}(x,y,z=z_{0})\,e^{-j k_{x}x}\,e^{-jk_{y}y} dx dy.
+\label{eq-fourier2}
+\end{equation}
+ \\
+A partir de esta expresión, podemos definir una característica importante. Y es que la extracción de las componentes modales se hace a partir de un plano  $z$ cualquiera, pero no depende de dicho plano.
+Por lo que, si usásemos otro plano, tendríamos la misma descomposición.
+\\
+
+No obstante, debemos tener en cuenta que en la realidad no vamos a disponer de un conjunto de valores continuo pertenecientes al plano $z$. Sino que  conoceremos como es el campo  $\vec{E}(x,y,z=z_{0})$ en un conjunto discreto de puntos $(x,y) = (x_{n_{x}},y_{n_{y}})$ con   $n_{x}=0,1,2,\ldots,N_{x}-1$ y  $n_{y}=0,1,2,\ldots,N_{y}-1$.
+Por lo que debemos adaptar nuestra ecuación de modos a este conjunto de valores.
+
+Además, debemos añadir el uso de la transformada discreta de fourier sobre nuestro campo medido. Ya que emplearemos la FFT como herramienta para poder extrapolar más tarde los puntos del campo cercano al lejano.
+
+\newpage
+Con todo lo anterior en mente,  nuestra $\vec{\mathcal{E}}(k_{x},k_{y})$ pasa a tener la siguiente forma: 
+\begin{align}
+{\vec{\mathcal{E}}}(k_{x},k_{y})&=\frac{L_{x}L_{y}N_{x}N_{y}}{4 \pi^2 (N_{x}-1)(N_{y}-1)} \nonumber \\
+&\times \sum_{n_{x}=1}^{N_{x}-1}\sum_{n_{y}=1}^{N_{y}-1} DFT(\vec{E}(x=n_{x}\Delta
+x,y=n_{y}\Delta
+y,z=z_{0}))\,e^{-j k_{x}n_{x} \Delta x}\,e^{-jk_{y}n_{y} \Delta y}
+\label{eq-fourier2}
+\end{align}
+donde:
+\begin{itemize}
+    \item $N_{x}$ y $N_{y}$ son, respectivamente, el número de puntos del campo cercano en la dirección $x$ e $y$ .
+    \item $L_{x}$ y $L_{y}$  es la longitud de la apertura en las dimensiones  $x$ e $y$.
+\end{itemize}
+
+   Llegados a este punto, hemos obtenido la expresión de la descomposición modal. Sin embargo, debemos ajustar los valores  $k_{x}$ y $k_{y}$ para poder aplicar la DFT. Para lo cual basta con discretizar los valores de  $k_{x}$ y $k_{y}$  de la siguiente forma: 
+\begin{subequations}
+\begin{align}
+k_{x}&= m_{x}\Delta k_{x}
+\\
+k_{y}&= m_{y}\Delta k_{y}
+\\
+\Delta x \Delta k_{x}&=\frac{2\pi}{N_{x}}
+\\
+\Delta y \Delta k_{y}&=\frac{2\pi}{N_{y}}.
+\end{align}
+\end{subequations}
+
+\begin{itemize}
+    \item [DUDA SOBRE ESTE PUNTO]Nota: Este paso podemos hacerlo dado que hay una definición implícita de la $k_{x}$ y $k_{y}$ . Ya que, a partir de la teoría de la DFT  y de su valor como estimador espectral, necesitamos que la multiplicación de $\Delta x \Delta k_{x}$ sea igual a $\frac{2\pi}{N_{x}}$ para poder convertir la expresión en una sobre la cual poder hacer la DFT. 
+\end{itemize}
+
+En el contexto de nuestras medidas y del algoritmo que las convierte en valores en dicho campo lejano, trabajaremos con esta malla regular de valores  $k_{x}\times k_{y}$,  que son coordenadas cartesianas del sistema de referencia del dominio transformado. A partir de la cual, podremos corresponder los valores de $k_{x}$ y $k_{y}$ con valores pertenecientes a la malla irregular en el dominio angular $\theta \times \phi$.
+\\\\
+\newpage
+Si ajustamos la expresión anterior a la discretización, obtenemos lo siguiente:
+\begin{equation}
+{\vec{\mathcal{E}}}_{m_{x},m_{y}}=\frac{1}{N_{x} N_{y}}
+\sum_{n_{x}=0}^{N_{x}-1}\sum_{n_{y}=0}^{N_{y}-1}
+\vec{E}(x=n_{x}\Delta x,y=n_{y} \Delta y,z=z_{0}) \,e^{j 2\pi
+\frac{m_{x} n_{x}}{N_{x}}}\,e^{j 2\pi \frac{m_{y} n_{y}}{N_{y}}}
+\label{eq-fft1}
+\end{equation}
+ Finalmente, podemos reescribir la ecuación original de la siguiente forma, introduciendo el uso de los ángulos $\theta \times \phi$:
+\begin{align}
+\vec{E}(r,\theta,\phi)&=\frac{jk_{z}}{2\pi r}\,e^{-jk_{0}}{{\vec{\mathcal{E}}}}(k_{x}=k \sin\theta \cos\phi,k_{y}= k\sin\theta \sin\phi)\nonumber
+\\
+\vec{E}(r,\theta_{m},\phi_{m})&=\frac{jk_{z}}{2\pi r}\,e^{-jk_{0}}{{\vec{\mathcal{E}}}}(k_{x}=m_{x}\Delta k_{x},k_{y}= m_{y}\Delta k_{y})=\frac{jk_{z}}{2\pi r}\,e^{-jk_{0}}{{\vec{\mathcal{E}}}}_{m_{x},m_{y}}\nonumber
+\\
+\label{eq-fourier3}
+\end{align}
+
+El uso de esta expresión trae consigo un posible problema. Y es que los valores de los ángulos $\theta \times \phi$ pueden corresponder a valores que no formen parte de nuestra malla $k_{x}\times k_{y}$. Por lo que, para solucionar esto, debemos hacer uso de una interpolación y así obtener el valores de los ángulos pertenecientes a la malla $k_{x}\times k_{y}$.
+
+
+--------------------------------------------------------------------------------------------------
+\newpage
+
+Advertencias:
+\begin{enumerate}
+\item Si efectuamos este cálculo sobre una antena bajo test, debemos saber que tiene una limitación ligada a cómo medimos fisicamente la antena. Ya que solo será válido mientras respetemos ángulos de medidas menores a los siguientes:
+\begin{equation}
+\vartheta = \pm\arctan \frac{S-D}{2r_{0}}
+\end{equation}
+Donde "$S$" es la longitud del área de muestreo: $D$  es el diámetro de la antena bajo test; y $r_ {0}$ es la distancia de separación entre la abertura de la antena bajo test y el plano de medida.
+
+\end{document}
+

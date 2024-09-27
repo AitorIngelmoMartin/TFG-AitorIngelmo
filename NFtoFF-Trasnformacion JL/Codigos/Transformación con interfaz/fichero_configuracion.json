@@ -1,0 +1,20 @@
+{ 
+    "files_to_process": [
+        {
+            "file_type":"Ex",
+            "file_name_regular_expression":"(^(.*)_Ex\\.txt$)"
+        },
+        {
+            "file_type":"Ey",
+            "file_name_regular_expression":"(^(.*)_Ey\\.txt$)"
+        },
+        {
+            "file_type":"Ez",
+            "file_name_regular_expression":"(^(.*)_Ez\\.txt$)"
+        }       
+    ],
+    "raw_data": 9,
+    "freq":1.575e9,
+    "c0":299792458,
+    "threshold": 1e-10
+}

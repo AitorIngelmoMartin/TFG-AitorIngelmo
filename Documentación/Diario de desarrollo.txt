@@ -105,6 +105,18 @@ Para esto voy a leer detenidamente el capítulo del libro que me adjuntó Jose L
 Tras esto, creo que ya tendría los conocimientos teóricos básicos suficientes como para programar todo lo necesario. Debería empezar por extraer
 datos y comprobar que con una fila de valores obtengo el campo lejano correcto. 
 
+13/01/2024
+Una vez más, mantener un diario me ha servido para nada. Dejé de añadir entradas al poco de comenzarlo; y no vi el momento o la utilidad de volver a él.
+He releido las entradas anteriores para darme cuenta de lo inútil que eran esos esfuerzos (y puede que los actuales).
+Esto empezó con mucho ánimo y tras empezar a trabajar se ha ido todo a pique.
+Actualmente debo implementar en WM la comprobación de las ecuaciones de Hansen que me ha facilitado JL. Además de empezar a programar estas ecuaciones
+en python.
+
+En este tiempo he trabajado con SpringBoot. Un potente frameWork de Java para hacer microservicios WEB. Lo que me ha valido para determinar que, FLASK es una basura.
+En Python solo Django puede pelear con SpringBoot. Por lo que quizá toca usarlo.
+Por otro lado, Tkinter no deja de ser una opción por mucho que lo negase en entradas anteriores.
+Independientemente de todo esto, creo que la interfaz es lo de menos. Una vez funcione todo el código puedo hacerlo a destajo por las noches y listo.
+
 
 
 
