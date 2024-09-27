@@ -3,10 +3,13 @@ import funciones, os, re, logging
 import numpy as np
 from pathlib import Path
 from pandas import read_csv
+from pandas import DataFrame
+from datetime import datetime
 from scipy.interpolate import LinearNDInterpolator
 
 #VARIABLES GLOBALES
 current_working_directory = Path(__file__).parent.resolve()
+exit_directory = Path(__file__).parent.resolve()
 k_calculated, threshold  = 0, 0
 
 # Logs config
@@ -375,5 +378,51 @@ def main(file_to_process):
     except Exception as exc:
         print(f'Se ha producido un error al procesar el fichero: {exc}')
 
+def save_results_in_file(amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calculated):
+    """Function used to save the results obtained from a processed file"""
+
+    # Check if the directory exists and create it if it doesn
+    folder = f"outputs/{datetime.now().strftime('%Y-%m-%d %H_%M_%S')}"
+    if not os.path.exists(f"{exit_directory}/{folder}"):
+        os.makedirs(f"{exit_directory}/{folder}")    
+    
+    # save the dataframes as a csv files
+    save_data_to_file(f"{exit_directory}/{folder}/amnffcoef_from_gmn_calculated.txt",amnffcoef_from_gmn,coefficient='Amn')
+    save_data_to_file(f"{exit_directory}/{folder}/bmnffcoef_from_emn_calculated.txt",bmnffcoef_from_emn,coefficient='Bmn')
+
+    e_components = ["Ex","Ey","Ez"]
+    for i in range(3):        
+        far_field_calculated_df = DataFrame(far_field_calculated[:,:,i])
+        
+        num_cols = len(far_field_calculated_df.columns)
+        colum_names = [f'Field_value_{i+1}' for i in range(num_cols)]
+
+        # Asignar los nombres generados dinámicamente
+        far_field_calculated_df.columns = colum_names
+
+        far_field_calculated_df.to_csv(f"{exit_directory}/{folder}/far_field_calculated_{e_components[i]}.csv"
+                                       ,index=False)
+
+    logger.info(f'Resultados guardados correctamente en el directorio {exit_directory}/{folder}')
+
+def save_data_to_file(file_name, data, coefficient):
+    """Function used to save the results on files"""
+    n_id = 1
+    header = f'''% Valor guardado: Coeficiente {coefficient} \n% Descripción: Coeficiente Amn a partir del cual podemos calcular el campo eléctrico en otros puntos\n'''
+    with open(file_name, 'w',encoding='utf-8') as file:
+        # Write the header of the file
+        file.write(header)
+        for row in data:
+            # Fomating the complex numbers
+            row_str = '   '.join(
+                f'{x.real:.17g}+{x.imag:.17g}j' if isinstance(x, complex) else f'{x:.17g}'
+                for x in row
+            )
+            # write the row on the file
+            file.write(f"n={n_id}\t\t\t{row_str}\n")
+            n_id += 1
+
+
 if __name__ == "__main__":
-    main(file_to_process)
+    amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calculated = main(file_to_process)
+    save_results_in_file(amnffcoef_from_gmn, bmnffcoef_from_emn, far_field_calculated)
