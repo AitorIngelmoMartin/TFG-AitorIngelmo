@@ -1,8 +1,0 @@
-﻿Referencia pobre pero rápida
-	https://www.wolfram.com/language/fast-introduction-for-math-students/es/sequences-sums-and-series/
-
-Polinomio de legendre
-	https://reference.wolfram.com/language/ref/LegendreP.html
-
-Funcion esférica de 2º orden de hanke
-	https://mathworld.wolfram.com/SphericalHankelFunctionoftheSecondKind.html

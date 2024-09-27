@@ -1,3 +1,0 @@
-Prueba ejeX con menos puntos d50 i29
-	Reduciendo en el comsol los valores a la mitad, obtenemos unos de la antena algo difuminados, pero al hacer la FFT
-	tenemos resultados válidos (siguiendo el criterio aproximado de que no se solapen las faldas de la montaña)
